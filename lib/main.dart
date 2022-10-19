@@ -5,10 +5,12 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     const appTitle = 'badger';
@@ -34,18 +36,18 @@ class MyCustomForm extends StatelessWidget {
       children: <Widget>[
         StreamBuilder(
           stream: FirebaseFirestore.instance.collection('people').snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
 
-            return Expanded(child: ListView(
+            return Expanded(
+                child: ListView(
               children: (snapshot.data!).docs.map((document) {
-                return Container(
-                  child: Center(child: Text(document['name'])),
-                );
+                return Center(child: Text(document['name']));
               }).toList(),
             ));
           },
@@ -53,7 +55,7 @@ class MyCustomForm extends StatelessWidget {
         Center(
           child: FloatingActionButton(
             backgroundColor: Colors.green,
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
             onPressed: () {
               FirebaseFirestore.instance
                   .collection('people')
@@ -67,27 +69,27 @@ class MyCustomForm extends StatelessWidget {
 }
 
 class ReadData extends StatelessWidget {
+  const ReadData({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("geeksforgeeks"),
+        title: const Text("geeksforgeeks"),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('people').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
           return ListView(
             children: (snapshot.data!).docs.map((document) {
-              return Container(
-                child: Center(child: Text(document['name'])),
-              );
+              return Center(child: Text(document['name']));
             }).toList(),
           );
         },
@@ -97,17 +99,19 @@ class ReadData extends StatelessWidget {
 }
 
 class AddData extends StatelessWidget {
+  const AddData({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("geeksforgeeks"),
+        title: const Text("geeksforgeeks"),
       ),
-      body:Center(
+      body: Center(
         child: FloatingActionButton(
           backgroundColor: Colors.green,
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
           onPressed: () {
             FirebaseFirestore.instance
                 .collection('people')
