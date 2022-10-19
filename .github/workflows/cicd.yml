@@ -74,4 +74,4 @@ jobs:
           appId: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
           token: ${{ secrets.FIREBASE_ANDROID_TOKEN }}
           groups: devs
-          file: app/build/outputs/apk/release/app-release.apk
+          file: ./build/outputs/apk/release/app-release.apk
