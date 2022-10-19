@@ -57,7 +57,7 @@ jobs:
           java-version: "12"
           distribution: "zulu"
       - name: Decrypt Android keys
-        run: 7z x -o"./android/app" ./android/android-keys.7z -p"$GPG_PASSPHRASE"
+        run: 7z x -o"./android/" ./android/android-keys.7z -p"$GPG_PASSPHRASE"
         env:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
       - name: Setup Flutter
