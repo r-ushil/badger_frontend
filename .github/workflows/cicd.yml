@@ -68,8 +68,10 @@ jobs:
         run: flutter pub get
       - name: Build APK
         run: flutter build apk --release
-      - name: Run Fastlane
-        uses: maierj/fastlane-action@v1.4.0
+      - name: Upload to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          lane: closed_beta
-          subdirectory: android
+          appId: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
+          token: ${{ secrets.FIREBASE_ANDROID_TOKEN }}
+          groups: devs
+          file: app/build/outputs/apk/release/app-release.apk
