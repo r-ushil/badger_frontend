@@ -6,6 +6,7 @@ import 'package:badger_frontend/performance_overview.dart';
 import 'package:badger_frontend/home.dart';
 import 'package:badger_frontend/take_video.dart';
 import 'package:badger_frontend/recording_preview.dart';
+import 'package:badger_frontend/login.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/home',
+      initialRoute: '/login',
       routes: {
         '/home': (context) => const Home(),
         '/performanceOverview': (context) => const PerformanceOverview(),
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
               camera: camera,
             ),
         '/recordingPreview': (context) => const RecordingPreview(),
+        '/login': (context) => Login()
       },
     );
   }
