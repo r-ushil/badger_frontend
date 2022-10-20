@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       initialRoute: '/home',
       routes: {
@@ -32,8 +31,8 @@ class MyApp extends StatelessWidget {
         '/performanceOverview': (context) => const PerformanceOverview(),
         '/drillInstructions': (context) => const DrillInstructions(),
         '/takeVideo': (context) => TakeVideo(
-          camera: camera,
-        ),
+              camera: camera,
+            ),
         '/recordingPreview': (context) => const RecordingPreview(),
       },
     );
