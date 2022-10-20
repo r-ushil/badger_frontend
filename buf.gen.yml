@@ -1,0 +1,10 @@
+version: v1
+plugins:
+  - name: dart
+      out: lib/api
+      opt: paths=source_relative
+  - remote: buf.build/protocolbuffers/plugins/dart:v20.0.1-1
+      out: lib/api
+      opt:
+        - paths=source_relative
+        - require_unimplemented_servers=false
