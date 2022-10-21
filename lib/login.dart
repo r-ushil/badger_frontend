@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -28,6 +29,7 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   TextEditingController numberController = TextEditingController();
+  TextEditingController codeController = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
@@ -46,9 +48,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       fontWeight: FontWeight.w500,
                       fontSize: 30),
                 )),
+
             Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
+                alignment: Alignment.center,
+                child: TextField(
                 controller: numberController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -62,13 +65,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 child: ElevatedButton(
                   child: const Text('Login'),
                   onPressed: () async {
-                    await FirebaseAuth.instance.verifyPhoneNumber(
-                      phoneNumber: numberController.text,
-                      verificationCompleted: (PhoneAuthCredential credential) {},
-                      verificationFailed: (FirebaseAuthException e) {},
-                      codeSent: (String verificationId, int? resendToken) {},
-                      codeAutoRetrievalTimeout: (String verificationId) {},
-                    );
 
                     await auth.verifyPhoneNumber(
                       phoneNumber: numberController.text,
@@ -77,26 +73,52 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         // Sign the user in (or link) with the auto-generated credential
                         final userCredential = await auth.signInWithCredential(credential);
                         final user = userCredential.user;
-                        print(user?.uid);
+                        if (kDebugMode) {
+                          print(user?.uid);
+                        }
+                        Navigator.of(context).pushNamed("home");
                       },
                       verificationFailed: (FirebaseAuthException error) {
                         if (error.code == 'invalid-phone-number') {
-                          // tell user invalid number
-                          print('The provided phone number is not valid.');
+                          const Text("The provided phone number is not valid",
+                            textAlign: TextAlign.center,);
+                          if (kDebugMode) {
+                            print('The provided phone number is not valid.');
+                          }
                         }
                       },
                       codeSent: (String verificationId, int? forceResendingToken) async {
                         // Update the UI - wait for the user to enter the SMS code
-                        String smsCode = 'xxxx';
+                        Container(
+                          alignment: Alignment.center,
+                          child: TextField(
+                            controller: codeController,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'SMS code',
+                            ),
+                          ),
+                        );
+                        const Text("Enter SMS code",
+                          textAlign: TextAlign.center,);
+
+                        String smsCode = codeController.text;
 
                         // Create a PhoneAuthCredential with the code
                         PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
 
                         // Sign the user in (or link) with the credential
-                        await auth.signInWithCredential(credential);
+                        final userCredential =  await auth.signInWithCredential(credential);
+                        final user = userCredential.user;
+                        if (kDebugMode) {
+                          print(user?.uid);
+                        }
+                        Navigator.of(context).pushNamed("home");
                       },
                       codeAutoRetrievalTimeout: (String verificationId) {
                         // Auto-resolution timed out...
+                        const Text("Auto-resultion timed out",
+                          textAlign: TextAlign.center,);
                       },
                     );
                   },
