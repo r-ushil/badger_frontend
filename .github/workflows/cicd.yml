@@ -67,7 +67,7 @@ jobs:
       - uses: subosito/flutter-action@v1.5.3
 
       - name: Install Dependencies
-        run: flutter packages get
+        run: flutter pub get
 
       - name: Install the Apple certificate and provisioning profile
         env:
