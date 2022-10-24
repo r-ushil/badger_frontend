@@ -106,7 +106,7 @@ jobs:
 
       - name: Build xArchive
         run: |
-          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration "Release-staging" DEVELOPMENT_TEAM="RDTLMN2TVZ" -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE="7G4R6MWRA8" clean archive CODE_SIGN_IDENTITY="ad4b0581-47b1-485c-9281-ffc6fba2eb41"
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration "Release-staging" DEVELOPMENT_TEAM="RDTLMN2TVZ" -sdk 'iphoneos' -destination 'generic/platform=iOS' -archivePath build-output/app.xcarchive PROVISIONING_PROFILE="7G4R6MWRA8" clean archive CODE_SIGN_IDENTITY="Apple Distribution: Rushil Patel (RDTLMN2TVZ)"
 
       - name: Export ipa
         run: |
