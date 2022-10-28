@@ -1,11 +1,11 @@
-import 'package:badger_frontend/drill_instructions.dart';
+import 'package:badger_frontend/initial_dev/drill_instructions.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:badger_frontend/performance_overview.dart';
-import 'package:badger_frontend/home.dart';
-import 'package:badger_frontend/take_video.dart';
-import 'package:badger_frontend/recording_preview.dart';
+import 'package:badger_frontend/initial_dev/performance_overview.dart';
+import 'package:badger_frontend/initial_dev/home.dart';
+import 'package:badger_frontend/initial_dev/take_video.dart';
+import 'package:badger_frontend/initial_dev/recording_preview.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
