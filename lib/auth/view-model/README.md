@@ -1,0 +1,1 @@
+Logic for detecting UI changes and business changes in here. view-model is responsible for updating and detecting changes in the UI / model

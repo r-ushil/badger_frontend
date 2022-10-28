@@ -1,0 +1,1 @@
+Business logic of the program goes in this folder (caching api requests, dart types, etc)
