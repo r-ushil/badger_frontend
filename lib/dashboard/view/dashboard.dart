@@ -2,8 +2,6 @@ import 'package:badger_frontend/dashboard/view/widgets/metric_chart.dart';
 import 'package:badger_frontend/dashboard/view/widgets/progress_bars.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/bottom_tab_bar.dart';
-
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
 

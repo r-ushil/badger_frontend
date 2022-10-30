@@ -1,1 +1,0 @@
-External API requests go in this folder
