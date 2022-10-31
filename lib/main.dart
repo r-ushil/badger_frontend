@@ -1,5 +1,6 @@
 import 'package:badger_frontend/auth/view/login.dart';
 import 'package:badger_frontend/auth/view-model/login_view_model.dart';
+import 'package:badger_frontend/common/auth/auth_model.dart';
 import 'package:badger_frontend/dashboard/view-model/dashboard_view_model.dart';
 import 'package:badger_frontend/drill_list/view-model/drill_list_view_model.dart';
 import 'package:badger_frontend/record_video/view_model/record_video_view_model.dart';
@@ -36,7 +37,8 @@ class RootApp extends StatelessWidget {
         Provider<DrillEvaluationViewModel>(
             create: (context) => DrillEvaluationViewModel()),
         ChangeNotifierProvider<RecordVideoViewModel>(
-            create: (context) => RecordVideoViewModel())
+            create: (context) => RecordVideoViewModel()),
+        Provider<BadgerAuth>(create: (context) => BadgerAuth()),
       ],
       child: MaterialApp(
         theme: getThemeData(),
