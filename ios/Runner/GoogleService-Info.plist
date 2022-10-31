@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1028764820655-66j1jf0ihju362ibsmobhgcb4d8e1aip.apps.googleusercontent.com</string>
+	<string>785650598829-eiji7atrbq6r5qmn5ttpb53tf5hnlgcg.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1028764820655-66j1jf0ihju362ibsmobhgcb4d8e1aip</string>
+	<string>com.googleusercontent.apps.785650598829-eiji7atrbq6r5qmn5ttpb53tf5hnlgcg</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>785650598829-mbn7pilmo1di5u9844ncuf1qacd4n446.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC3pzzVQ58-LhyHHqKDFvy0LsaxtE00b7E</string>
+	<string>AIzaSyAVb8NEjrUyx8Dh5adHdzfynzwt0vJq9ok</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1028764820655</string>
+	<string>785650598829</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.seg.badger</string>
 	<key>PROJECT_ID</key>
-	<string>badger-vd131</string>
+	<string>seg-badger-dev</string>
 	<key>STORAGE_BUCKET</key>
-	<string>badger-vd131.appspot.com</string>
+	<string>seg-badger-dev.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1028764820655:ios:b234317ad48d6d9e93205a</string>
+	<string>1:785650598829:ios:6fff7d061b1fb277edd724</string>
 </dict>
 </plist>

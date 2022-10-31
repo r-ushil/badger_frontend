@@ -31,10 +31,10 @@
               "client_type": 3
             },
             {
-              "client_id": "785650598829-fts9b2rhvjtjhinuk8jla5prtf4tr81e.apps.googleusercontent.com",
+              "client_id": "785650598829-eiji7atrbq6r5qmn5ttpb53tf5hnlgcg.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.flutterSkeleton"
+                "bundle_id": "com.seg.badger"
               }
             }
           ]
