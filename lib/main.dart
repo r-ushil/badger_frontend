@@ -1,3 +1,4 @@
+import 'package:badger_frontend/auth/view/login.dart';
 import 'package:badger_frontend/dashboard/view-model/dashboard_view_model.dart';
 import 'package:badger_frontend/dashboard/view/dashboard.dart';
 import 'package:badger_frontend/drill_list/view-model/drill_view_model.dart';
@@ -22,7 +23,7 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: getThemeData(),
-        home: const Dashboard(),
+        home: const Login(),
       ),
     );
   }
