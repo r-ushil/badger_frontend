@@ -1,3 +1,4 @@
+import 'package:badger_frontend/common/auth/auth_model.dart';
 import 'package:badger_frontend/dashboard/view-model/dashboard_view_model.dart';
 import 'package:badger_frontend/dashboard/view/dashboard.dart';
 import 'package:badger_frontend/drill_list/view-model/drill_view_model.dart';
@@ -26,7 +27,8 @@ class RootApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<DashboardViewModel>(create: (context) => DashboardViewModel()),
-        Provider<DrillViewModel>(create: (context) => DrillViewModel())
+        Provider<DrillViewModel>(create: (context) => DrillViewModel()),
+        Provider<BadgerAuth>(create: (context) => BadgerAuth()),
       ],
       child: MaterialApp(
         theme: getThemeData(),
