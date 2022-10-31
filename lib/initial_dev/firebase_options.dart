@@ -65,6 +65,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'badger-vd131.appspot.com',
     iosClientId:
         '1028764820655-66j1jf0ihju362ibsmobhgcb4d8e1aip.apps.googleusercontent.com',
-    iosBundleId: 'com.example.badgerFrontend',
+    iosBundleId: 'com.seg.badger',
   );
 }
