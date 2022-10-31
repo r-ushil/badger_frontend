@@ -12,25 +12,24 @@ class MetricChart extends StatelessWidget {
     final metricData = dashboardViewModel.getMetrics();
     final totalScore = dashboardViewModel.getTotalScore();
 
-    return SfCircularChart(
-        series: <CircularSeries>[
-          // Render pie chart
-          DoughnutSeries<MetricData, String>(
-              dataSource: metricData,
-              xValueMapper: (MetricData data, _) => data.name,
-              yValueMapper: (MetricData data, _) => data.score,
-              innerRadius: '70%',
-              explode: false,
-              dataLabelMapper: (MetricData data, _) =>
-                  "${data.name}: ${data.score}",
-              animationDuration: 1000)
-        ],
-        annotations: <CircularChartAnnotation>[
-          CircularChartAnnotation(widget: Text(
-            '$totalScore',
-            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 64, fontFamily: 'Segoe UI'),
-            )
-            )
-        ]);
+    return SfCircularChart(series: <CircularSeries>[
+      // Render pie chart
+      DoughnutSeries<MetricData, String>(
+          dataSource: metricData,
+          xValueMapper: (MetricData data, _) => data.name,
+          yValueMapper: (MetricData data, _) => data.score,
+          innerRadius: '70%',
+          explode: false,
+          dataLabelMapper: (MetricData data, _) =>
+              "${data.name}: ${data.score}",
+          animationDuration: 1000)
+    ], annotations: <CircularChartAnnotation>[
+      CircularChartAnnotation(
+          widget: Text(
+        '$totalScore',
+        style: const TextStyle(
+            fontWeight: FontWeight.w500, fontSize: 64, fontFamily: 'Segoe UI'),
+      ))
+    ]);
   }
 }
