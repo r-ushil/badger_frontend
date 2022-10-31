@@ -1,4 +1,4 @@
-package com.example.badger_frontend
+package com.seg.badger
 
 import io.flutter.embedding.android.FlutterActivity
 

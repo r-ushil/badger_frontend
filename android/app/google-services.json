@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1028764820655:android:89ce29c15537456993205a",
         "android_client_info": {
-          "package_name": "com.example.badger_frontend"
+          "package_name": "com.seg.badger"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "1028764820655-66j1jf0ihju362ibsmobhgcb4d8e1aip.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.badgerFrontend"
+                "bundle_id": "com.seg.badger"
               }
             }
           ]
