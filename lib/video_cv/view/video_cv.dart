@@ -14,8 +14,7 @@ class _VideoCVState extends State<VideoCV> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-        'https://drive.google.com/file/d/1qdUiELWFjI8A3rzCrEJFy6j4K3nWX7bv/view?usp=drivesdk')
+    _controller = VideoPlayerController.asset('assets/videos/sprint_drill.mp4')
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
