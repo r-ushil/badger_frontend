@@ -1,6 +1,7 @@
 import 'package:badger_frontend/dashboard/view/widgets/metric_chart.dart';
 import 'package:badger_frontend/dashboard/view/widgets/progress_bars.dart';
 import 'package:badger_frontend/drill_list/view/drill_list.dart';
+import 'package:badger_frontend/video_cv/view/video_cv.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -19,9 +20,19 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const <Widget>[
-            MetricChart(),
-            MetricProgressBars(),
+          children: <Widget>[
+            const MetricChart(),
+            const MetricProgressBars(),
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              ),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const VideoCV()));
+              },
+              child: const Text('Video CV'),
+            )
           ]),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
