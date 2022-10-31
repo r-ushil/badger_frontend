@@ -1,5 +1,6 @@
 import 'package:badger_frontend/dashboard/view/widgets/metric_chart.dart';
 import 'package:badger_frontend/dashboard/view/widgets/progress_bars.dart';
+import 'package:badger_frontend/drill_list/view/drill_list.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -17,14 +18,17 @@ class _DashboardState extends State<Dashboard> {
         title: const Text('Dashboard'),
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: const <Widget>[
-          MetricChart(),
-          MetricProgressBars(),
-      ]),
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const <Widget>[
+            MetricChart(),
+            MetricProgressBars(),
+          ]),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const DrillList()));
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       //bottomNavigationBar: const BottomTabBar(),
