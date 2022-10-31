@@ -1,3 +1,4 @@
+import 'package:badger_frontend/ar_cones.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -77,6 +78,14 @@ class Home extends StatelessWidget {
       ),
       body: Column(
         children: [
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LocalAndWebObjectsView()));
+              },
+              child: const Text("AR testing")),
           title,
           Expanded(
               child: ListView(
