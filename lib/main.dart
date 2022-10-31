@@ -9,13 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'drill_evaluation/view-model/drill_evaluation_view_model.dart';
 
-void main() {
+import "common/firebase/firebase.dart";
+
+void main() async {
+  /* Initialise widgets library */
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const App());
+
+  /* Initialise plugins */
+  await initializeFirebase();
+
+  /* Bootstrap Flutter App */
+  runApp(const RootApp());
 }
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+class RootApp extends StatelessWidget {
+  const RootApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,40 +1,40 @@
 {
   "project_info": {
-    "project_number": "1028764820655",
-    "project_id": "badger-vd131",
-    "storage_bucket": "badger-vd131.appspot.com"
+    "project_number": "785650598829",
+    "project_id": "seg-badger-dev",
+    "storage_bucket": "seg-badger-dev.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1028764820655:android:89ce29c15537456993205a",
+        "mobilesdk_app_id": "1:785650598829:android:88aede2e2c25c859edd724",
         "android_client_info": {
           "package_name": "com.seg.badger"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1028764820655-6jga8v08qgfld9a0t8567tcmqorn42ho.apps.googleusercontent.com",
+          "client_id": "785650598829-og29v4rclg6jumh9f8dlqtkkb0amt718.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAM47LWyZBHXTtYt14xyeYjS3qL8mVkoeo"
+          "current_key": "AIzaSyA02X5MDrhbzJO1luDIcpBY1SQBR-DTytE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1028764820655-6jga8v08qgfld9a0t8567tcmqorn42ho.apps.googleusercontent.com",
+              "client_id": "785650598829-og29v4rclg6jumh9f8dlqtkkb0amt718.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "1028764820655-66j1jf0ihju362ibsmobhgcb4d8e1aip.apps.googleusercontent.com",
+              "client_id": "785650598829-fts9b2rhvjtjhinuk8jla5prtf4tr81e.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.seg.badger"
+                "bundle_id": "com.example.flutterSkeleton"
               }
             }
           ]
