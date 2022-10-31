@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 ThemeData getThemeData() {
   return ThemeData(
       colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: Colors.black,
-          secondary: Colors.grey,
+          primary: const Color(0x00bb86fc),
+          secondary: const Color(0x0003dac6),
           background: Colors.black,
           tertiary: Colors.blueAccent),
-      scaffoldBackgroundColor: Colors.black,
+      scaffoldBackgroundColor: const Color(0x00121212),
       fontFamily: "Segoe UI",
       textTheme: getTextTheme());
 }
