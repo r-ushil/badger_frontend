@@ -1,3 +1,4 @@
+import 'package:badger_frontend/ar/view/ar.dart';
 import 'package:badger_frontend/dashboard/view/widgets/metric_chart.dart';
 import 'package:badger_frontend/dashboard/view/widgets/progress_bars.dart';
 import 'package:badger_frontend/drill_list/view/drill_list.dart';
@@ -27,7 +28,7 @@ class _DashboardState extends State<Dashboard> {
         child: const Icon(Icons.add),
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const DrillList()));
+              MaterialPageRoute(builder: (context) => const AR()));
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
