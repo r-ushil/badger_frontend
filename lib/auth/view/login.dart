@@ -21,7 +21,6 @@ class _LoginState extends State<Login> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: const <Widget>[
             Logo(),
-            SizedBox(height: 50), // margin between logo and welcome text
             WelcomeHeader(),
           ]),
       floatingActionButton: FloatingActionButton(

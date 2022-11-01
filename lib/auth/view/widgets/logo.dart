@@ -5,6 +5,14 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Image.asset("images/logo.png",
+                    height: 200,
+                    width: 200,),
+        const SizedBox(height: 50), // margin after logo
+      ],
+    );
     return Image.asset("images/logo.png",
                         height: 200,
                         width: 200,);
