@@ -6,7 +6,6 @@ class WelcomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text('WELCOME',
-                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 50,
                                  fontWeight: FontWeight.bold
                                 )

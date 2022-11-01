@@ -17,12 +17,26 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+      //resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(child: Column(
           children: const <Widget>[
-            Logo(),
+            Center(child: Logo()),
             WelcomeHeader(),
-          ]),
+            SizedBox(height: 50), // margin welcome text
+            Padding(padding: EdgeInsets.only(right: 150.0), child: Text("Phone Number", style: TextStyle(fontSize: 20))),
+            SizedBox(height: 10), // margin before textbox
+            SizedBox(width: 300, child: TextField(decoration: InputDecoration(filled: true, fillColor: Colors.grey))),
+
+            /*Padding(padding: const EdgeInsets.only(left: 50.0), child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children:const <Widget>[
+                  Align(alignment: Alignment.centerLeft, child: Text("Phone Number", style: TextStyle(fontSize: 20))),
+                  SizedBox(height: 10), // margin before textbox
+                  SizedBox(width: 300, child: TextField(decoration: InputDecoration(filled: true, fillColor: Colors.grey, hintText: "Phone number"))),
+                ])
+            )*/
+
+          ])),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
