@@ -24,6 +24,8 @@ class _ARState extends State<AR> {
   late ARObjectManager arObjectManager;
   late ARAnchorManager arAnchorManager;
 
+  double coneDistance = 0;
+
   ARNode? cone1Node;
   ARAnchor? cone1Anchor;
   ARNode? cone2Node;
@@ -32,7 +34,7 @@ class _ARState extends State<AR> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('AR Cones')),
+        appBar: AppBar(title: Text(coneDistance.toString())),
         body: Column(
           children: [
             Expanded(
@@ -97,7 +99,14 @@ class _ARState extends State<AR> {
 
   }
 
-  onPanChanged(String nodeName) {
+  onPanChanged(String nodeName) async {
+    if (cone1Anchor == null || cone2Anchor == null) {
+      return;
+    }
+    coneDistance = (await arSessionManager.getDistanceBetweenAnchors(cone1Anchor!, cone2Anchor!))!;
+    setState(() {
+
+    });
   }
 
   @override
