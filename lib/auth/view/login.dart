@@ -4,6 +4,7 @@ import 'package:badger_frontend/drill_list/view/drill_list.dart';
 import 'package:flutter/material.dart';
 import 'package:badger_frontend/auth/view/widgets/logo.dart';
 import 'package:badger_frontend/auth/view/widgets/welcome_header.dart';
+import 'package:badger_frontend/auth/view/widgets/phone_textbox.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -23,18 +24,8 @@ class _LoginState extends State<Login> {
             Center(child: Logo()),
             WelcomeHeader(),
             SizedBox(height: 50), // margin welcome text
-            Padding(padding: EdgeInsets.only(right: 150.0), child: Text("Phone Number", style: TextStyle(fontSize: 20, color: Colors.grey))),
-            SizedBox(height: 10), // margin before textbox
-            SizedBox(width: 300, child: TextField(decoration: InputDecoration(prefixIcon: Icon(Icons.phone, color: Colors.grey), filled: true, fillColor: Colors.white12))),
+            PhoneTextbox(),
 
-            /*Padding(padding: const EdgeInsets.only(left: 50.0), child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:const <Widget>[
-                  Align(alignment: Alignment.centerLeft, child: Text("Phone Number", style: TextStyle(fontSize: 20))),
-                  SizedBox(height: 10), // margin before textbox
-                  SizedBox(width: 300, child: TextField(decoration: InputDecoration(filled: true, fillColor: Colors.grey, hintText: "Phone number"))),
-                ])
-            )*/
 
           ])),
       floatingActionButton: FloatingActionButton(
