@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CustomTextButton extends StatelessWidget {
-  const CustomTextButton(this.text, {Key? key}) : super(key: key);
+  const CustomTextButton(this.text, this.goto, {super.key});
 
   final String text;
+  final Widget goto;
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,9 @@ class CustomTextButton extends StatelessWidget {
       style: TextButton.styleFrom(
           foregroundColor: Colors.grey
       ),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(context,
+          MaterialPageRoute(builder: (context) => goto));},
       child: Text(text),
     );
   }

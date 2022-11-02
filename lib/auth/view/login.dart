@@ -1,7 +1,5 @@
 import 'package:badger_frontend/dashboard/view/dashboard.dart';
-import 'package:badger_frontend/dashboard/view/widgets/metric_chart.dart';
-import 'package:badger_frontend/dashboard/view/widgets/progress_bars.dart';
-import 'package:badger_frontend/drill_list/view/drill_list.dart';
+import 'package:badger_frontend/auth/view/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:badger_frontend/auth/view/widgets/logo.dart';
 import 'package:badger_frontend/auth/view/widgets/welcome_header.dart';
@@ -25,24 +23,15 @@ class _LoginState extends State<Login> {
       body: SingleChildScrollView(child: Column(
           children: const <Widget>[
             Center(child: Logo()),
-            WelcomeHeader(),
+            Header("WELCOME"),
             SizedBox(height: 50), // margin welcome text
             TextBoxWithLabelAndIcon("Phone Number", Icons.phone),
             TextBoxWithLabelAndIcon("Password", Icons.lock),
-            CustomTextButton("Forgot your Password?"),
+            CustomTextButton("Forgot your Password?", Dashboard()), //TODO
             SizedBox(height: 20),
             CustomButton("Login", Dashboard()),
-            CustomTextButton("Need an account? SIGNUP"),
+            CustomTextButton("Need an account? SIGNUP", Signup()),
           ])),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const DrillList()));
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      //bottomNavigationBar: const BottomTabBar(),
     );
   }
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-class WelcomeHeader extends StatelessWidget {
-  const WelcomeHeader({Key? key}) : super(key: key);
+class Header extends StatelessWidget {
+  const Header(this.text, {super.key});
+
+  final String text;
 
   @override
   Widget build(BuildContext context) {
-    return const Text('WELCOME',
-                style: TextStyle(fontSize: 50,
+    return Text(text,
+                style: const TextStyle(fontSize: 50,
                                  fontWeight: FontWeight.bold
                                 )
                 );
