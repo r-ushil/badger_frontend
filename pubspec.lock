@@ -674,7 +674,18 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
+<<<<<<< HEAD
 >>>>>>> 4872bbf (feat: created empty AR view with tappable duck 3d models)
+=======
+  statemachine:
+    dependency: "direct main"
+    description:
+      name: statemachine
+      sha256: a1ab590b9121fbde980dcbbf945d2f1e392bf288bb0bb4a2a7f445eb0cdbe832
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.0"
+>>>>>>> 42b1c16 (feat: added state machine to track user set up progress and display instructions)
   stream_channel:
     dependency: transitive
     description:
