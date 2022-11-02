@@ -19,7 +19,7 @@ class CustomButton extends StatelessWidget {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => goto));
           },
-          child: Text(text),
+          child: Text(text, style: const TextStyle(fontSize: 20)),
         )
     );
   }
