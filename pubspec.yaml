@@ -53,6 +53,7 @@ dependencies:
   camera: ^0.10.0+4
   image: ^3.2.2
   grpc: ^3.1.0
+  protobuf: ^2.1.0
 
 dev_dependencies:
   flutter_test:
