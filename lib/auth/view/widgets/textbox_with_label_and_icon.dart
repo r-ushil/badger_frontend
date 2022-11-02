@@ -9,13 +9,13 @@ class TextBoxWithLabelAndIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(padding: const EdgeInsets.only(right: 150.0),
-              child: Text(title,
-                           style: const TextStyle(fontSize: 20,
-                                            color: Colors.grey,
-                           ),
-              )
+          Text(title,
+            style: const TextStyle(
+              fontSize: 20,
+              color: Colors.grey,
+            ),
           ),
           const SizedBox(height: 10), // margin before textbox
           SizedBox(width: 300,
