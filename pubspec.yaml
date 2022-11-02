@@ -58,6 +58,7 @@ dependencies:
     git:
       url: https://github.com/zhengbomo/flutter_tflite.git
       ref: master
+  protobuf: ^2.1.0
 
 dev_dependencies:
   flutter_test:
