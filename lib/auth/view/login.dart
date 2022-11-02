@@ -24,9 +24,8 @@ class _LoginState extends State<Login> {
             Center(child: Logo()),
             WelcomeHeader(),
             SizedBox(height: 50), // margin welcome text
-            PhoneTextbox(),
-
-
+            TextBoxWithLabelAndIcon("Phone Number", Icons.phone),
+            TextBoxWithLabelAndIcon("Password", Icons.lock),
           ])),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
