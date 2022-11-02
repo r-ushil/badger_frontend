@@ -23,9 +23,9 @@ class _LoginState extends State<Login> {
             Center(child: Logo()),
             WelcomeHeader(),
             SizedBox(height: 50), // margin welcome text
-            Padding(padding: EdgeInsets.only(right: 150.0), child: Text("Phone Number", style: TextStyle(fontSize: 20))),
+            Padding(padding: EdgeInsets.only(right: 150.0), child: Text("Phone Number", style: TextStyle(fontSize: 20, color: Colors.grey))),
             SizedBox(height: 10), // margin before textbox
-            SizedBox(width: 300, child: TextField(decoration: InputDecoration(filled: true, fillColor: Colors.grey))),
+            SizedBox(width: 300, child: TextField(decoration: InputDecoration(prefixIcon: Icon(Icons.phone, color: Colors.grey), filled: true, fillColor: Colors.white12))),
 
             /*Padding(padding: const EdgeInsets.only(left: 50.0), child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
