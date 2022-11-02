@@ -13,8 +13,8 @@ class TextBoxWithLabelAndIcon extends StatelessWidget {
           Padding(padding: const EdgeInsets.only(right: 150.0),
               child: Text(title,
                            style: const TextStyle(fontSize: 20,
-                                            color: Colors.grey
-                           )
+                                            color: Colors.grey,
+                           ),
               )
           ),
           const SizedBox(height: 10), // margin before textbox

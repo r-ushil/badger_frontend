@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:badger_frontend/auth/view/widgets/logo.dart';
 import 'package:badger_frontend/auth/view/widgets/welcome_header.dart';
 import 'package:badger_frontend/auth/view/widgets/phone_textbox.dart';
+import 'package:badger_frontend/auth/view/widgets/text_button.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -20,12 +21,28 @@ class _LoginState extends State<Login> {
       appBar: AppBar(),
       //resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(child: Column(
-          children: const <Widget>[
-            Center(child: Logo()),
-            WelcomeHeader(),
-            SizedBox(height: 50), // margin welcome text
-            TextBoxWithLabelAndIcon("Phone Number", Icons.phone),
-            TextBoxWithLabelAndIcon("Password", Icons.lock),
+          children: <Widget>[
+            const Center(child: Logo()),
+            const WelcomeHeader(),
+            const SizedBox(height: 50), // margin welcome text
+            const TextBoxWithLabelAndIcon("Phone Number", Icons.phone),
+            const TextBoxWithLabelAndIcon("Password", Icons.lock),
+            const CustomTextButton("Forgot your Password?"),
+            const SizedBox(height: 20),
+            SizedBox(width: 300,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white
+              ),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const DrillList()));
+              },
+              child: const Text("Login"),
+            )
+            ),
+            const CustomTextButton("Need an account? SIGNUP"),
           ])),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
