@@ -40,7 +40,8 @@ class _DashboardState extends State<Dashboard> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ConeDrillMobilenet(cameras: cameras)));
+                    builder: (context) =>
+                        ConeDrillMobilenet(cameras: cameras)));
           });
         },
       ),
