@@ -96,7 +96,7 @@ class _ARState extends State<AR> {
   }
 
   onConeMoved(String nodeName) async {
-    var userState = getCurrentUserState();
+    var userState = getUserState();
 
     if (userState == UserState.noConesPlaced ||
         userState == UserState.oneConePlaced) {
@@ -104,6 +104,41 @@ class _ARState extends State<AR> {
     }
 
     await updateUserState();
+  }
+
+  Future<void> onTap(List<ARHitTestResult> results) async {
+    var userState = getUserState();
+
+    if (!(userState == UserState.noConesPlaced ||
+        userState == UserState.oneConePlaced)) {
+      return;
+    }
+
+    ARHitTestResult planeHit =
+        results.firstWhere((r) => r.type == ARHitTestResultType.plane);
+
+    var planeHitAnchor = await constructAnchorFromPlaneHit(planeHit);
+    var planeHitNode = await addNodeToAnchor(planeHitAnchor);
+
+    if (userState == UserState.noConesPlaced) {
+      cone1Anchor = planeHitAnchor;
+      cone1Node = planeHitNode;
+
+      userStateMachine.current = UserState.oneConePlaced;
+      setState(() {});
+    } else {
+      cone2Anchor = planeHitAnchor;
+      cone2Node = planeHitNode;
+
+      await updateUserState();
+
+      if (getUserState() == UserState.confirmCones) {
+        await SystemChrome.setPreferredOrientations([
+          DeviceOrientation.landscapeRight,
+          DeviceOrientation.landscapeLeft,
+        ]);
+      }
+    }
   }
 
   Future<void> updateUserState() async {
@@ -120,7 +155,7 @@ class _ARState extends State<AR> {
     setState(() {});
   }
 
-  UserState getCurrentUserState() {
+  UserState getUserState() {
     return userStateMachine.current!.identifier;
   }
 
@@ -138,7 +173,7 @@ class _ARState extends State<AR> {
       return "";
     }
 
-    var userState = getCurrentUserState();
+    var userState = getUserState();
 
     if (userState == UserState.noConesPlaced) {
       return "Place your first cone down";
@@ -191,42 +226,6 @@ class _ARState extends State<AR> {
     this.arObjectManager.onPanChange = onConeMoved;
   }
 
-  Future<void> onTap(List<ARHitTestResult> results) async {
-    var userState = getCurrentUserState();
-
-    if (!(userState == UserState.noConesPlaced ||
-        userState == UserState.oneConePlaced)) {
-      return;
-    }
-
-    ARHitTestResult planeHit =
-        results.firstWhere((r) => r.type == ARHitTestResultType.plane);
-
-    var planeHitAnchor = await constructAnchorFromPlaneHit(planeHit);
-    var planeHitNode = await addNodeToAnchor(planeHitAnchor);
-
-    if (userState == UserState.noConesPlaced) {
-      cone1Anchor = planeHitAnchor;
-      cone1Node = planeHitNode;
-
-      userStateMachine.current = UserState.oneConePlaced;
-      setState(() {});
-    } else {
-      cone2Anchor = planeHitAnchor;
-      cone2Node = planeHitNode;
-
-      await updateUserState();
-
-      if (getCurrentUserState() == UserState.confirmCones) {
-        await SystemChrome.setPreferredOrientations([
-          DeviceOrientation.landscapeRight,
-          DeviceOrientation.landscapeLeft,
-        ]);
-      }
-
-      setState(() {});
-    }
-  }
 
   Future<ARPlaneAnchor> constructAnchorFromPlaneHit(
       ARHitTestResult planeHit) async {
