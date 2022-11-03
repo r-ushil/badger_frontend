@@ -103,6 +103,10 @@ class _ARState extends State<AR> {
       return;
     }
 
+    await updateUserState();
+  }
+
+  Future<void> updateUserState() async {
     coneDistance = await getDistanceBetweenCones();
 
     if (coneDistance < idealConeDistance) {
@@ -204,20 +208,16 @@ class _ARState extends State<AR> {
     if (userState == UserState.noConesPlaced) {
       cone1Anchor = planeHitAnchor;
       cone1Node = planeHitNode;
+
       userStateMachine.current = UserState.oneConePlaced;
       setState(() {});
     } else {
       cone2Anchor = planeHitAnchor;
       cone2Node = planeHitNode;
 
-      coneDistance = await getDistanceBetweenCones();
+      await updateUserState();
 
-      if (coneDistance < idealConeDistance) {
-        userStateMachine.current = UserState.conesAreTooClose;
-      } else if (coneDistance > idealConeDistance) {
-        userStateMachine.current = UserState.conesAreTooFar;
-      } else {
-        userStateMachine.current = UserState.confirmCones;
+      if (getCurrentUserState() == UserState.confirmCones) {
         await SystemChrome.setPreferredOrientations([
           DeviceOrientation.landscapeRight,
           DeviceOrientation.landscapeLeft,
