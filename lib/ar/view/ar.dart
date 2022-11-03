@@ -92,14 +92,14 @@ class _ARState extends State<AR> {
       ARLocationManager _) {
     initializeStates();
     initializeArManagers(arSessionManager, arObjectManager, arAnchorManager,
-        onPlaneOrPointTapped, onPanChanged);
+        onTap, onConeMoved);
   }
 
-  onPanChanged(String nodeName) async {
-    var uState = userStateMachine.current!.identifier;
+  onConeMoved(String nodeName) async {
+    var userState = getCurrentUserState();
 
-    if (uState == UserState.noConesPlaced ||
-        uState == UserState.oneConePlaced) {
+    if (userState == UserState.noConesPlaced ||
+        userState == UserState.oneConePlaced) {
       return;
     }
 
@@ -116,6 +116,10 @@ class _ARState extends State<AR> {
     setState(() {});
   }
 
+  UserState getCurrentUserState() {
+    return userStateMachine.current!.identifier;
+  }
+
   Future<double> getDistanceBetweenCones() async {
     return round1((await arSessionManager.getDistanceBetweenAnchors(
         cone1Anchor!, cone2Anchor!))!);
@@ -125,12 +129,12 @@ class _ARState extends State<AR> {
     return buildPortrait();
   }
 
-  String getInstruction(state.Machine<UserState> machine) {
-    if (machine.current == null) {
+  String getInstruction(state.Machine<UserState> stateMachine) {
+    if (stateMachine.current == null) {
       return "";
     }
 
-    var userState = machine.current?.identifier;
+    var userState = getCurrentUserState();
 
     if (userState == UserState.noConesPlaced) {
       return "Place your first cone down";
@@ -168,8 +172,8 @@ class _ARState extends State<AR> {
       ARSessionManager arSessionManager,
       ARObjectManager arObjectManager,
       ARAnchorManager arAnchorManager,
-      Future<void> Function(List<ARHitTestResult>) onPlaneOrPointTap,
-      dynamic Function(String) onPanChanged) {
+      Future<void> Function(List<ARHitTestResult>) onTap,
+      dynamic Function(String) onConeMoved) {
     this.arSessionManager = arSessionManager;
     this.arObjectManager = arObjectManager;
     this.arAnchorManager = arAnchorManager;
@@ -179,47 +183,47 @@ class _ARState extends State<AR> {
         .onInitialize(handlePans: true, showAnimatedGuide: false);
     this.arObjectManager.onInitialize();
 
-    this.arSessionManager.onPlaneOrPointTap = onPlaneOrPointTapped;
-    this.arObjectManager.onPanChange = onPanChanged;
+    this.arSessionManager.onPlaneOrPointTap = onTap;
+    this.arObjectManager.onPanChange = onConeMoved;
   }
 
-  Future<void> onPlaneOrPointTapped(List<ARHitTestResult> results) async {
-    var userState = userStateMachine.current?.identifier;
+  Future<void> onTap(List<ARHitTestResult> results) async {
+    var userState = getCurrentUserState();
 
     if (!(userState == UserState.noConesPlaced ||
         userState == UserState.oneConePlaced)) {
       return;
     }
 
-    ARHitTestResult result =
+    ARHitTestResult planeHit =
         results.firstWhere((r) => r.type == ARHitTestResultType.plane);
 
-    var anchor = ARPlaneAnchor(transformation: result.worldTransform);
-    var added = await arAnchorManager.addAnchor(anchor);
+    var planeHitAnchor = ARPlaneAnchor(transformation: planeHit.worldTransform);
+    var anchorAdded = await arAnchorManager.addAnchor(planeHitAnchor);
+    assert(anchorAdded != null && anchorAdded);
 
-    if (added == null || added == false) {
-      return;
-    }
-
-    var node = ARNode(
+    var planeHitNode = ARNode(
         type: NodeType.webGLB,
         uri:
             "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF-Binary/Duck.glb",
         scale: Vector3(0.2, 0.2, 0.2),
         position: Vector3(0, 0, 0),
         rotation: Vector4(1.0, 0.0, 0.0, 0.0));
-    added = await arObjectManager.addNode(node, planeAnchor: anchor);
-    if (added == null || added == false) {
-      return;
-    }
+
+    var nodeAdded = await arObjectManager.addNode(planeHitNode, planeAnchor: planeHitAnchor);
+    assert(nodeAdded != null && nodeAdded);
+
     if (userState == UserState.noConesPlaced) {
-      cone1Anchor = anchor;
-      cone1Node = node;
+
+      cone1Anchor = planeHitAnchor;
+      cone1Node = planeHitNode;
       userStateMachine.current = UserState.oneConePlaced;
       setState(() {});
+
     } else {
-      cone2Anchor = anchor;
-      cone2Node = node;
+
+      cone2Anchor = planeHitAnchor;
+      cone2Node = planeHitNode;
       coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(
           cone1Anchor!, cone2Anchor!))!);
       if (coneDistance < idealConeDistance) {
