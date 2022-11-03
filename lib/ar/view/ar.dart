@@ -10,7 +10,6 @@ import 'package:ar_flutter_plugin/models/ar_hittest_result.dart';
 import 'package:ar_flutter_plugin/models/ar_node.dart';
 import 'package:ar_flutter_plugin/widgets/ar_view.dart';
 import 'package:badger_frontend/cone_drill_mobile_net/view/cone_drill_mobilenet.dart';
-import 'package:badger_frontend/cone_drill_posenet/view/cone_drill_posenet.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart';
@@ -24,7 +23,6 @@ enum UserState {
   conesAreTooClose,
   conesAreTooFar,
   confirmCones,
-  alignCones
 }
 
 class AR extends StatefulWidget {
