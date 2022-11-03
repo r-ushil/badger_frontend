@@ -97,12 +97,14 @@ class _ARState extends State<AR> {
 
   onPanChanged(String nodeName) async {
     var uState = userStateMachine.current!.identifier;
+
     if (uState == UserState.noConesPlaced ||
         uState == UserState.oneConePlaced) {
       return;
     }
-    coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(
-        cone1Anchor!, cone2Anchor!))!);
+
+    coneDistance = await getDistanceBetweenCones();
+
     if (coneDistance < idealConeDistance) {
       userStateMachine.current = UserState.conesAreTooClose;
     } else if (coneDistance > idealConeDistance) {
@@ -110,7 +112,13 @@ class _ARState extends State<AR> {
     } else {
       userStateMachine.current = UserState.confirmCones;
     }
+
     setState(() {});
+  }
+
+  Future<double> getDistanceBetweenCones() async {
+    return round1((await arSessionManager.getDistanceBetweenAnchors(
+        cone1Anchor!, cone2Anchor!))!);
   }
 
   Widget buildLandscape() {
