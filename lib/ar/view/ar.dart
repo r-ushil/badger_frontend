@@ -73,21 +73,21 @@ class _ARState extends State<AR> {
       Visibility(
           visible: confirmButtonVisibility,
           child: IconButton(
-              onPressed: () {
+              onPressed: () async {
                 // TODO: do this initialization inside the class, and pass cameras down
                 // view hierarchy
-                availableCameras().then((cameras) => {
-                      Tflite.loadModel(
-                        model: "assets/ssd_mobilenet.tflite",
-                        labels: "assets/ssd_mobilenet.txt",
-                      ).then((_) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ConeDrillMobilenet(cameras: cameras)));
-                      })
-                    });
+                var cameras = await availableCameras();
+                
+                await Tflite.loadModel(
+                  model: "assets/ssd_mobilenet.tflite",
+                  labels: "assets/ssd_mobilenet.txt",
+                ).then((_) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ConeDrillMobilenet(cameras: cameras)));
+                });
               },
               icon: const Icon(
                 Icons.check_circle,
