@@ -91,8 +91,8 @@ class _ARState extends State<AR> {
       ARAnchorManager arAnchorManager,
       ARLocationManager _) {
     initializeStates();
-    initializeArManagers(arSessionManager, arObjectManager, arAnchorManager,
-        onTap, onConeMoved);
+    initializeArManagers(
+        arSessionManager, arObjectManager, arAnchorManager, onTap, onConeMoved);
   }
 
   onConeMoved(String nodeName) async {
@@ -198,34 +198,20 @@ class _ARState extends State<AR> {
     ARHitTestResult planeHit =
         results.firstWhere((r) => r.type == ARHitTestResultType.plane);
 
-    var planeHitAnchor = ARPlaneAnchor(transformation: planeHit.worldTransform);
-    var anchorAdded = await arAnchorManager.addAnchor(planeHitAnchor);
-    assert(anchorAdded != null && anchorAdded);
-
-    var planeHitNode = ARNode(
-        type: NodeType.webGLB,
-        uri:
-            "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF-Binary/Duck.glb",
-        scale: Vector3(0.2, 0.2, 0.2),
-        position: Vector3(0, 0, 0),
-        rotation: Vector4(1.0, 0.0, 0.0, 0.0));
-
-    var nodeAdded = await arObjectManager.addNode(planeHitNode, planeAnchor: planeHitAnchor);
-    assert(nodeAdded != null && nodeAdded);
+    var planeHitAnchor = await constructAnchorFromPlaneHit(planeHit);
+    var planeHitNode = await addNodeToAnchor(planeHitAnchor);
 
     if (userState == UserState.noConesPlaced) {
-
       cone1Anchor = planeHitAnchor;
       cone1Node = planeHitNode;
       userStateMachine.current = UserState.oneConePlaced;
       setState(() {});
-
     } else {
-
       cone2Anchor = planeHitAnchor;
       cone2Node = planeHitNode;
-      coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(
-          cone1Anchor!, cone2Anchor!))!);
+
+      coneDistance = await getDistanceBetweenCones();
+
       if (coneDistance < idealConeDistance) {
         userStateMachine.current = UserState.conesAreTooClose;
       } else if (coneDistance > idealConeDistance) {
@@ -240,6 +226,32 @@ class _ARState extends State<AR> {
 
       setState(() {});
     }
+  }
+
+  Future<ARPlaneAnchor> constructAnchorFromPlaneHit(
+      ARHitTestResult planeHit) async {
+    assert(planeHit.type == ARHitTestResultType.plane);
+    var planeHitAnchor = ARPlaneAnchor(transformation: planeHit.worldTransform);
+    var anchorAdded = await arAnchorManager.addAnchor(planeHitAnchor);
+    assert(anchorAdded != null && anchorAdded);
+
+    return planeHitAnchor;
+  }
+
+  Future<ARNode> addNodeToAnchor(ARPlaneAnchor planeHitAnchor) async {
+    var planeHitNode = ARNode(
+        type: NodeType.webGLB,
+        uri:
+            "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF-Binary/Duck.glb",
+        scale: Vector3(0.2, 0.2, 0.2),
+        position: Vector3(0, 0, 0),
+        rotation: Vector4(1.0, 0.0, 0.0, 0.0));
+
+    var nodeAdded = await arObjectManager.addNode(planeHitNode,
+        planeAnchor: planeHitAnchor);
+    assert(nodeAdded != null && nodeAdded);
+
+    return planeHitNode;
   }
 
   @override
