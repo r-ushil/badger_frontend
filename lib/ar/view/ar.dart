@@ -131,13 +131,6 @@ class _ARState extends State<AR> {
       cone2Node = planeHitNode;
 
       await updateUserState();
-
-      if (getUserState() == UserState.confirmCones) {
-        await SystemChrome.setPreferredOrientations([
-          DeviceOrientation.landscapeRight,
-          DeviceOrientation.landscapeLeft,
-        ]);
-      }
     }
   }
 
