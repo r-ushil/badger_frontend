@@ -16,11 +16,12 @@ class ConeDrillMobilenet extends StatefulWidget {
 
 class _ConeDrill extends State<ConeDrillMobilenet> {
 
-  late CameraController controller;
+  late CameraController _controller;
   late Future<void> _initializeControllerFuture;
-  double previewWidth = 0;
-  double previewHeight = 0;
-  bool isDetecting = false;
+  List<dynamic> _results = List.empty();
+  double _previewWidth = 0;
+  double _previewHeight = 0;
+  bool _isDetecting = false;
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +52,8 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
               children: [
                 OrientationBuilder(builder: (context, orientation) {
                   return AspectRatio(
-                      aspectRatio: orientation == Orientation.portrait ? 1 / controller.value.aspectRatio : controller.value.aspectRatio,
-                      child: CameraPreview(controller)
+                      aspectRatio: orientation == Orientation.portrait ? 1 / _controller.value.aspectRatio : _controller.value.aspectRatio,
+                      child: CameraPreview(_controller)
                   );
                 }),
               ],
@@ -69,17 +70,17 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
       DeviceOrientation.landscapeRight,
     ]);
 
-    controller = CameraController(_cameras[0], ResolutionPreset.low);
-    _initializeControllerFuture = controller.initialize().then((_) {
-      previewHeight = MediaQuery.of(context).size.height - 90; //TODO: Calculator size of app bar at runtime
-      previewWidth = previewHeight * controller.value.aspectRatio;
+    _controller = CameraController(_cameras[0], ResolutionPreset.low);
+    _initializeControllerFuture = _controller.initialize().then((_) {
+      _previewHeight = MediaQuery.of(context).size.height - 90; //TODO: Calculator size of app bar at runtime
+      _previewWidth = _previewHeight * _controller.value.aspectRatio;
       setState(() {});
 
-      controller.startImageStream((image) async {
-        if (isDetecting) {
+      _controller.startImageStream((image) async {
+        if (_isDetecting) {
           return;
         }
-        isDetecting = true;
+        _isDetecting = true;
         Tflite.detectObjectOnFrame(
             bytesList: image.planes.map((plane) => plane.bytes).toList(),
             model: "SSDMobileNet",
@@ -88,7 +89,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
             imageWidth: image.width
         ).then((results) {
           print(results);
-          isDetecting = false;
+          _isDetecting = false;
         });
       });
     });
@@ -97,7 +98,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   @override
   Future<void> dispose() async {
     super.dispose();
-    controller.dispose();
+    _controller.dispose();
     await Tflite.close();
   }
 }
