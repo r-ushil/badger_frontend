@@ -90,7 +90,7 @@ class _ARState extends State<AR> {
       ARObjectManager arObjectManager,
       ARAnchorManager arAnchorManager,
       ARLocationManager _) {
-    initializeStates();
+    initializeUserStateMachine();
     initializeArManagers(
         arSessionManager, arObjectManager, arAnchorManager, onTap, onConeMoved);
   }
@@ -153,7 +153,7 @@ class _ARState extends State<AR> {
     }
   }
 
-  void initializeStates() {
+  void initializeUserStateMachine() {
     for (UserState userState in UserState.values) {
       var state = userStateMachine.newState(userState);
       if (userState == UserState.confirmCones) {
