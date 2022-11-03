@@ -82,6 +82,8 @@ flutter:
 
   assets:
     - assets/posenet_mv1_075_float_from_checkpoints.tflite
+    - assets/ssd_mobilenet.tflite
+    - assets/ssd_mobilenet.txt
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -6,7 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
 
-import '../../cone_drill/view/cone_drill.dart';
+import '../../cone_drill_mobile_net/view/cone_drill_mobilenet.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -32,11 +32,16 @@ class _DashboardState extends State<Dashboard> {
         child: const Icon(Icons.add),
         onPressed: () async {
           List<CameraDescription> cameras = await availableCameras();
+          // await Tflite.loadModel(
+          //     model: "assets/posenet_mv1_075_float_from_checkpoints.tflite");
+          // print("loaded");
           await Tflite.loadModel(
-              model: "assets/posenet_mv1_075_float_from_checkpoints.tflite");
-          print("loaded");
+            model: "assets/ssd_mobilenet.tflite",
+            labels: "assets/ssd_mobilenet.txt",
+          );
+          //TODO: Look into async gap warning
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ConeDrill(cameras: cameras)));
+              MaterialPageRoute(builder: (context) => ConeDrillMobilenet(cameras: cameras)));
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
