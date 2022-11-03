@@ -52,6 +52,7 @@ dependencies:
   vector_math: ^2.1.4
   statemachine: ^3.3.0
   camera: ^0.10.0+4
+  image: ^3.2.2
   tflite:
     git:
       url: https://github.com/zhengbomo/flutter_tflite.git
@@ -78,6 +79,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/posenet_mv1_075_float_from_checkpoints.tflite
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
