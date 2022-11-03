@@ -32,6 +32,8 @@ class AR extends StatefulWidget {
 }
 
 class _ARState extends State<AR> {
+  static const idealConeDistance = 1;
+
   late ARSessionManager arSessionManager;
   late ARObjectManager arObjectManager;
   late ARAnchorManager arAnchorManager;
@@ -101,9 +103,9 @@ class _ARState extends State<AR> {
     }
     coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(
         cone1Anchor!, cone2Anchor!))!);
-    if (coneDistance < 1) {
+    if (coneDistance < idealConeDistance) {
       userStateMachine.current = UserState.conesAreTooClose;
-    } else if (coneDistance > 1) {
+    } else if (coneDistance > idealConeDistance) {
       userStateMachine.current = UserState.conesAreTooFar;
     } else {
       userStateMachine.current = UserState.confirmCones;
@@ -212,9 +214,9 @@ class _ARState extends State<AR> {
       cone2Node = node;
       coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(
           cone1Anchor!, cone2Anchor!))!);
-      if (coneDistance < 1.0) {
+      if (coneDistance < idealConeDistance) {
         userStateMachine.current = UserState.conesAreTooClose;
-      } else if (coneDistance > 1.0) {
+      } else if (coneDistance > idealConeDistance) {
         userStateMachine.current = UserState.conesAreTooFar;
       } else {
         userStateMachine.current = UserState.confirmCones;
