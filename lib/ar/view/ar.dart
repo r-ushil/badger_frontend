@@ -142,7 +142,7 @@ class _ARState extends State<AR> {
   }
 
   Future<void> updateUserState() async {
-    coneDistance = await getDistanceBetweenCones();
+    await updateConeDistance();
 
     if (coneDistance < idealConeDistance) {
       userStateMachine.current = UserState.conesAreTooClose;
@@ -159,8 +159,8 @@ class _ARState extends State<AR> {
     return userStateMachine.current!.identifier;
   }
 
-  Future<double> getDistanceBetweenCones() async {
-    return round1((await arSessionManager.getDistanceBetweenAnchors(
+  Future<void> updateConeDistance() async {
+    coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(
         cone1Anchor!, cone2Anchor!))!);
   }
 
@@ -225,7 +225,6 @@ class _ARState extends State<AR> {
     this.arSessionManager.onPlaneOrPointTap = onTap;
     this.arObjectManager.onPanChange = onConeMoved;
   }
-
 
   Future<ARPlaneAnchor> constructAnchorFromPlaneHit(
       ARHitTestResult planeHit) async {
