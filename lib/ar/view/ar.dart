@@ -36,7 +36,7 @@ class _ARState extends State<AR> {
   late ARObjectManager arObjectManager;
   late ARAnchorManager arAnchorManager;
 
-  state.Machine<UserState> sMachine = state.Machine<UserState>();
+  state.Machine<UserState> userState = state.Machine<UserState>();
 
   double coneDistance = 0;
 
@@ -68,7 +68,7 @@ class _ARState extends State<AR> {
                 planeDetectionConfig: PlaneDetectionConfig.horizontal,
               )
           ),
-          Text(getInstruction(sMachine)),
+          Text(getInstruction(userState)),
           Visibility(
             visible: confirmButtonVisibility,
               child: IconButton(onPressed: () async {
@@ -76,7 +76,7 @@ class _ARState extends State<AR> {
                   DeviceOrientation.landscapeRight,
                   DeviceOrientation.landscapeLeft,
                 ]);
-                sMachine.current = UserState.alignCones;
+                userState.current = UserState.alignCones;
 
               }, icon: const Icon(Icons.check_circle, color: Color(0x0000FFc8),))
           )
@@ -110,7 +110,7 @@ class _ARState extends State<AR> {
 
   void onARViewCreated(ARSessionManager arSessionManager, ARObjectManager arObjectManager, ARAnchorManager arAnchorManager, ARLocationManager arLocationManager) {
     for (UserState uState in UserState.values) {
-      var s = sMachine.newState(uState);
+      var s = userState.newState(uState);
       if (uState == UserState.confirmCones) {
         s.onEntry(() {
           confirmButtonVisibility = true;
@@ -122,7 +122,7 @@ class _ARState extends State<AR> {
         });
       }
     }
-    sMachine.start();
+    userState.start();
     setState(() {});
     this.arSessionManager = arSessionManager;
     this.arObjectManager = arObjectManager;
@@ -143,7 +143,7 @@ class _ARState extends State<AR> {
   }
 
   Future<void> onPlaneOrPointTapped(List<ARHitTestResult> results) async {
-    var uState = sMachine.current?.identifier;
+    var uState = userState.current?.identifier;
 
     if (!(uState == UserState.start || uState == UserState.oneCone)) {
       return;
@@ -169,18 +169,18 @@ class _ARState extends State<AR> {
     if (uState == UserState.start) {
       cone1Anchor = anchor;
       cone1Node = node;
-      sMachine.current = UserState.oneCone;
+      userState.current = UserState.oneCone;
       setState(() {});
     } else {
       cone2Anchor = anchor;
       cone2Node = node;
       coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(cone1Anchor!, cone2Anchor!))!);
       if (coneDistance < 1.0) {
-        sMachine.current = UserState.tooClose;
+        userState.current = UserState.tooClose;
       }  else if (coneDistance > 1.0)  {
-        sMachine.current = UserState.tooFar;
+        userState.current = UserState.tooFar;
       } else {
-        sMachine.current = UserState.confirmCones;
+        userState.current = UserState.confirmCones;
         await SystemChrome.setPreferredOrientations([
           DeviceOrientation.landscapeRight,
           DeviceOrientation.landscapeLeft,
@@ -193,17 +193,17 @@ class _ARState extends State<AR> {
   }
 
   onPanChanged(String nodeName) async {
-    var uState = sMachine.current?.identifier;
+    var uState = userState.current?.identifier;
     if (uState == UserState.start || uState == UserState.oneCone) {
       return;
     }
     coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(cone1Anchor!, cone2Anchor!))!);
     if (coneDistance < 1) {
-      sMachine.current = UserState.tooClose;
+      userState.current = UserState.tooClose;
     } else if (coneDistance > 1) {
-      sMachine.current = UserState.tooFar;
+      userState.current = UserState.tooFar;
     } else {
-      sMachine.current = UserState.confirmCones;
+      userState.current = UserState.confirmCones;
     }
     setState(() {});
   }
