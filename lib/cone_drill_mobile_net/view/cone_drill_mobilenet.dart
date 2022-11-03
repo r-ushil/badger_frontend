@@ -17,9 +17,9 @@ class ConeDrillMobilenet extends StatefulWidget {
 class _ConeDrill extends State<ConeDrillMobilenet> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
-  List<dynamic> _results = List.empty();
-  double _previewWidth = 0;
-  double _previewHeight = 0;
+  // List<dynamic> _results = List.empty();
+  // double _previewWidth = 0;
+  // double _previewHeight = 0;
   bool _isDetecting = false;
 
   @override
@@ -37,7 +37,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Cone"),
+          title: const Text("Cone"),
         ),
         body: FutureBuilder(
             future: _initializeControllerFuture,
@@ -71,9 +71,9 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
 
     _controller = CameraController(_cameras[0], ResolutionPreset.low);
     _initializeControllerFuture = _controller.initialize().then((_) {
-      _previewHeight = MediaQuery.of(context).size.height -
-          90; //TODO: Calculator size of app bar at runtime
-      _previewWidth = _previewHeight * _controller.value.aspectRatio;
+      // _previewHeight = MediaQuery.of(context).size.height -
+      //     90; //TODO: Calculator size of app bar at runtime
+      // _previewWidth = _previewHeight * _controller.value.aspectRatio;
       setState(() {});
 
       _controller.startImageStream((image) async {
@@ -88,7 +88,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
                 imageHeight: image.height,
                 imageWidth: image.width)
             .then((results) {
-          print(results);
+          // print(results);
           _isDetecting = false;
         });
       });

@@ -228,7 +228,6 @@ class _ARState extends State<AR> {
     }
   }
 
-
   @override
   Future<void> dispose() async {
     super.dispose();
