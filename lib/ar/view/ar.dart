@@ -15,13 +15,13 @@ import 'package:statemachine/statemachine.dart' as state;
 import 'package:flutter/services.dart';
 
 enum UserState {
-  Sart,
-  OneCone,
-  TwoCones,
-  TooClose,
-  TooFar,
-  ConfirmCones,
-  AllignCones
+  start,
+  oneCone,
+  twoCones,
+  tooClose,
+  tooFar,
+  confirmCones,
+  alignCones
 }
 
 class AR extends StatefulWidget {
@@ -76,7 +76,7 @@ class _ARState extends State<AR> {
                   DeviceOrientation.landscapeRight,
                   DeviceOrientation.landscapeLeft,
                 ]);
-                sMachine.current = UserState.AllignCones;
+                sMachine.current = UserState.alignCones;
 
               }, icon: const Icon(Icons.check_circle, color: Color(0x0000FFc8),))
           )
@@ -95,13 +95,13 @@ class _ARState extends State<AR> {
 
     var uState = machine.current?.identifier;
 
-    if (uState == UserState.Sart) {
+    if (uState == UserState.start) {
       return "Place your first cone down";
-    } else if (uState == UserState.OneCone) {
+    } else if (uState == UserState.oneCone) {
       return "Place your second cone down";
-    } else if (uState  == UserState.TooFar) {
+    } else if (uState  == UserState.tooFar) {
       return "Move cones closer";
-    } else if (uState == UserState.TooClose){
+    } else if (uState == UserState.tooClose){
       return "Move cones further away";
     } else {
       return "Done";
@@ -111,7 +111,7 @@ class _ARState extends State<AR> {
   void onARViewCreated(ARSessionManager arSessionManager, ARObjectManager arObjectManager, ARAnchorManager arAnchorManager, ARLocationManager arLocationManager) {
     for (UserState uState in UserState.values) {
       var s = sMachine.newState(uState);
-      if (uState == UserState.ConfirmCones) {
+      if (uState == UserState.confirmCones) {
         s.onEntry(() {
           confirmButtonVisibility = true;
           setState(() {});
@@ -145,7 +145,7 @@ class _ARState extends State<AR> {
   Future<void> onPlaneOrPointTapped(List<ARHitTestResult> results) async {
     var uState = sMachine.current?.identifier;
 
-    if (!(uState == UserState.Sart || uState == UserState.OneCone)) {
+    if (!(uState == UserState.start || uState == UserState.oneCone)) {
       return;
     }
     ARHitTestResult result = results.firstWhere((r) => r.type == ARHitTestResultType.plane);
@@ -166,21 +166,21 @@ class _ARState extends State<AR> {
     if (added == null || added == false) {
       return;
     }
-    if (uState == UserState.Sart) {
+    if (uState == UserState.start) {
       cone1Anchor = anchor;
       cone1Node = node;
-      sMachine.current = UserState.OneCone;
+      sMachine.current = UserState.oneCone;
       setState(() {});
     } else {
       cone2Anchor = anchor;
       cone2Node = node;
       coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(cone1Anchor!, cone2Anchor!))!);
       if (coneDistance < 1.0) {
-        sMachine.current = UserState.TooClose;
+        sMachine.current = UserState.tooClose;
       }  else if (coneDistance > 1.0)  {
-        sMachine.current = UserState.TooFar;
+        sMachine.current = UserState.tooFar;
       } else {
-        sMachine.current = UserState.ConfirmCones;
+        sMachine.current = UserState.confirmCones;
         await SystemChrome.setPreferredOrientations([
           DeviceOrientation.landscapeRight,
           DeviceOrientation.landscapeLeft,
@@ -194,16 +194,16 @@ class _ARState extends State<AR> {
 
   onPanChanged(String nodeName) async {
     var uState = sMachine.current?.identifier;
-    if (uState == UserState.Sart || uState == UserState.OneCone) {
+    if (uState == UserState.start || uState == UserState.oneCone) {
       return;
     }
     coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(cone1Anchor!, cone2Anchor!))!);
     if (coneDistance < 1) {
-      sMachine.current = UserState.TooClose;
+      sMachine.current = UserState.tooClose;
     } else if (coneDistance > 1) {
-      sMachine.current = UserState.TooFar;
+      sMachine.current = UserState.tooFar;
     } else {
-      sMachine.current = UserState.ConfirmCones;
+      sMachine.current = UserState.confirmCones;
     }
     setState(() {});
   }
