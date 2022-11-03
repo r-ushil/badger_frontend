@@ -83,6 +83,16 @@ class _ARState extends State<AR> {
     ]);
   }
 
+  void onARViewCreated(
+      ARSessionManager arSessionManager,
+      ARObjectManager arObjectManager,
+      ARAnchorManager arAnchorManager,
+      ARLocationManager _) {
+    initializeStates();
+    initializeArManagers(arSessionManager, arObjectManager, arAnchorManager,
+        onPlaneOrPointTapped, onPanChanged);
+  }
+
   Widget buildLandscape() {
     return buildPortrait();
   }
@@ -107,11 +117,7 @@ class _ARState extends State<AR> {
     }
   }
 
-  void onARViewCreated(
-      ARSessionManager arSessionManager,
-      ARObjectManager arObjectManager,
-      ARAnchorManager arAnchorManager,
-      ARLocationManager arLocationManager) {
+  void initializeStates() {
     for (UserState userState in UserState.values) {
       var state = userStateMachine.newState(userState);
       if (userState == UserState.confirmCones) {
@@ -125,9 +131,17 @@ class _ARState extends State<AR> {
         });
       }
     }
+
     userStateMachine.start();
     setState(() {});
+  }
 
+  void initializeArManagers(
+      ARSessionManager arSessionManager,
+      ARObjectManager arObjectManager,
+      ARAnchorManager arAnchorManager,
+      Future<void> Function(List<ARHitTestResult>) onPlaneOrPointTap,
+      dynamic Function(String) onPanChanged) {
     this.arSessionManager = arSessionManager;
     this.arObjectManager = arObjectManager;
     this.arAnchorManager = arAnchorManager;
@@ -141,7 +155,7 @@ class _ARState extends State<AR> {
     this.arObjectManager.onPanChange = onPanChanged;
   }
 
-  double round1(double x) {
+  static double round1(double x) {
     return double.parse(x.toStringAsFixed(1));
   }
 
