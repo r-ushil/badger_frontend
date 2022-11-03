@@ -26,9 +26,6 @@ class _DashboardState extends State<Dashboard> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          // await Tflite.loadModel(
-          //     model: "assets/posenet_mv1_075_float_from_checkpoints.tflite");
-          // print("loaded");
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => const AR()));
         },
