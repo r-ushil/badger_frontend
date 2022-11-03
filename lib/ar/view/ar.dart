@@ -9,6 +9,9 @@ import 'package:ar_flutter_plugin/models/ar_anchor.dart';
 import 'package:ar_flutter_plugin/models/ar_hittest_result.dart';
 import 'package:ar_flutter_plugin/models/ar_node.dart';
 import 'package:ar_flutter_plugin/widgets/ar_view.dart';
+import 'package:badger_frontend/cone_drill_mobile_net/view/cone_drill_mobilenet.dart';
+import 'package:badger_frontend/cone_drill_posenet/view/cone_drill_posenet.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart';
 import 'package:statemachine/statemachine.dart' as state;
@@ -71,12 +74,14 @@ class _ARState extends State<AR> {
       Visibility(
           visible: confirmButtonVisibility,
           child: IconButton(
-              onPressed: () async {
-                await SystemChrome.setPreferredOrientations([
-                  DeviceOrientation.landscapeRight,
-                  DeviceOrientation.landscapeLeft,
-                ]);
-                userStateMachine.current = UserState.alignCones;
+              onPressed: () {
+                availableCameras().then((cameras) => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ConeDrillMobilenet(cameras: cameras)))
+                    });
               },
               icon: const Icon(
                 Icons.check_circle,
