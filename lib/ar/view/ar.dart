@@ -67,7 +67,7 @@ class _ARState extends State<AR> {
         onARViewCreated: onARViewCreated,
         planeDetectionConfig: PlaneDetectionConfig.horizontal,
       )),
-      Text(getInstruction(userStateMachine)),
+      Text(getInstruction()),
       Visibility(
           visible: confirmButtonVisibility,
           child: IconButton(
@@ -168,8 +168,8 @@ class _ARState extends State<AR> {
     return buildPortrait();
   }
 
-  String getInstruction(state.Machine<UserState> stateMachine) {
-    if (stateMachine.current == null) {
+  String getInstruction() {
+    if (userStateMachine.current == null) {
       return "";
     }
 
