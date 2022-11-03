@@ -102,6 +102,7 @@ class _ARState extends State<AR> {
         userState == UserState.oneConePlaced) {
       return;
     }
+    // Two cones are already placed
 
     await updateUserState();
   }
@@ -113,6 +114,7 @@ class _ARState extends State<AR> {
         userState == UserState.oneConePlaced)) {
       return;
     }
+    // We are currently placing a cone
 
     ARHitTestResult planeHit =
         results.firstWhere((r) => r.type == ARHitTestResultType.plane);
@@ -123,26 +125,27 @@ class _ARState extends State<AR> {
     if (userState == UserState.noConesPlaced) {
       cone1Anchor = planeHitAnchor;
       cone1Node = planeHitNode;
-
-      userStateMachine.current = UserState.oneConePlaced;
-      setState(() {});
-    } else {
+    } else if (userState == UserState.oneConePlaced) {
       cone2Anchor = planeHitAnchor;
       cone2Node = planeHitNode;
-
-      await updateUserState();
     }
+
+    await updateUserState();
   }
 
   Future<void> updateUserState() async {
-    await updateConeDistance();
-
-    if (coneDistance < idealConeDistance) {
-      userStateMachine.current = UserState.conesAreTooClose;
-    } else if (coneDistance > idealConeDistance) {
-      userStateMachine.current = UserState.conesAreTooFar;
+    if (cone1Node != null && cone2Node == null) {
+      userStateMachine.current = UserState.oneConePlaced;
     } else {
-      userStateMachine.current = UserState.confirmCones;
+      await updateConeDistance();
+
+      if (coneDistance < idealConeDistance) {
+        userStateMachine.current = UserState.conesAreTooClose;
+      } else if (coneDistance > idealConeDistance) {
+        userStateMachine.current = UserState.conesAreTooFar;
+      } else {
+        userStateMachine.current = UserState.confirmCones;
+      }
     }
 
     setState(() {});
