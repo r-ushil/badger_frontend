@@ -15,11 +15,11 @@ import 'package:statemachine/statemachine.dart' as state;
 import 'package:flutter/services.dart';
 
 enum UserState {
-  start,
-  oneCone,
-  twoCones,
-  tooClose,
-  tooFar,
+  noConesPlaced,
+  oneConePlaced,
+  twoConesPlaced,
+  conesAreTooClose,
+  conesAreTooFar,
   confirmCones,
   alignCones
 }
@@ -36,7 +36,7 @@ class _ARState extends State<AR> {
   late ARObjectManager arObjectManager;
   late ARAnchorManager arAnchorManager;
 
-  state.Machine<UserState> userState = state.Machine<UserState>();
+  state.Machine<UserState> userStateMachine = state.Machine<UserState>();
 
   double coneDistance = 0;
 
@@ -65,7 +65,7 @@ class _ARState extends State<AR> {
         onARViewCreated: onARViewCreated,
         planeDetectionConfig: PlaneDetectionConfig.horizontal,
       )),
-      Text(getInstruction(userState)),
+      Text(getInstruction(userStateMachine)),
       Visibility(
           visible: confirmButtonVisibility,
           child: IconButton(
@@ -74,7 +74,7 @@ class _ARState extends State<AR> {
                   DeviceOrientation.landscapeRight,
                   DeviceOrientation.landscapeLeft,
                 ]);
-                userState.current = UserState.alignCones;
+                userStateMachine.current = UserState.alignCones;
               },
               icon: const Icon(
                 Icons.check_circle,
@@ -92,15 +92,15 @@ class _ARState extends State<AR> {
       return "";
     }
 
-    var uState = machine.current?.identifier;
+    var userState = machine.current?.identifier;
 
-    if (uState == UserState.start) {
+    if (userState == UserState.noConesPlaced) {
       return "Place your first cone down";
-    } else if (uState == UserState.oneCone) {
+    } else if (userState == UserState.oneConePlaced) {
       return "Place your second cone down";
-    } else if (uState == UserState.tooFar) {
+    } else if (userState == UserState.conesAreTooFar) {
       return "Move cones closer";
-    } else if (uState == UserState.tooClose) {
+    } else if (userState == UserState.conesAreTooClose) {
       return "Move cones further away";
     } else {
       return "Done";
@@ -112,21 +112,22 @@ class _ARState extends State<AR> {
       ARObjectManager arObjectManager,
       ARAnchorManager arAnchorManager,
       ARLocationManager arLocationManager) {
-    for (UserState uState in UserState.values) {
-      var s = userState.newState(uState);
-      if (uState == UserState.confirmCones) {
-        s.onEntry(() {
+    for (UserState userState in UserState.values) {
+      var state = userStateMachine.newState(userState);
+      if (userState == UserState.confirmCones) {
+        state.onEntry(() {
           confirmButtonVisibility = true;
           setState(() {});
         });
-        s.onExit(() {
+        state.onExit(() {
           confirmButtonVisibility = false;
           setState(() {});
         });
       }
     }
-    userState.start();
+    userStateMachine.start();
     setState(() {});
+
     this.arSessionManager = arSessionManager;
     this.arObjectManager = arObjectManager;
     this.arAnchorManager = arAnchorManager;
@@ -145,15 +146,19 @@ class _ARState extends State<AR> {
   }
 
   Future<void> onPlaneOrPointTapped(List<ARHitTestResult> results) async {
-    var uState = userState.current?.identifier;
+    var userState = userStateMachine.current?.identifier;
 
-    if (!(uState == UserState.start || uState == UserState.oneCone)) {
+    if (!(userState == UserState.noConesPlaced ||
+        userState == UserState.oneConePlaced)) {
       return;
     }
+
     ARHitTestResult result =
         results.firstWhere((r) => r.type == ARHitTestResultType.plane);
+
     var anchor = ARPlaneAnchor(transformation: result.worldTransform);
     var added = await arAnchorManager.addAnchor(anchor);
+
     if (added == null || added == false) {
       return;
     }
@@ -169,10 +174,10 @@ class _ARState extends State<AR> {
     if (added == null || added == false) {
       return;
     }
-    if (uState == UserState.start) {
+    if (userState == UserState.noConesPlaced) {
       cone1Anchor = anchor;
       cone1Node = node;
-      userState.current = UserState.oneCone;
+      userStateMachine.current = UserState.oneConePlaced;
       setState(() {});
     } else {
       cone2Anchor = anchor;
@@ -180,11 +185,11 @@ class _ARState extends State<AR> {
       coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(
           cone1Anchor!, cone2Anchor!))!);
       if (coneDistance < 1.0) {
-        userState.current = UserState.tooClose;
+        userStateMachine.current = UserState.conesAreTooClose;
       } else if (coneDistance > 1.0) {
-        userState.current = UserState.tooFar;
+        userStateMachine.current = UserState.conesAreTooFar;
       } else {
-        userState.current = UserState.confirmCones;
+        userStateMachine.current = UserState.confirmCones;
         await SystemChrome.setPreferredOrientations([
           DeviceOrientation.landscapeRight,
           DeviceOrientation.landscapeLeft,
@@ -196,18 +201,19 @@ class _ARState extends State<AR> {
   }
 
   onPanChanged(String nodeName) async {
-    var uState = userState.current?.identifier;
-    if (uState == UserState.start || uState == UserState.oneCone) {
+    var uState = userStateMachine.current?.identifier;
+    if (uState == UserState.noConesPlaced ||
+        uState == UserState.oneConePlaced) {
       return;
     }
     coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(
         cone1Anchor!, cone2Anchor!))!);
     if (coneDistance < 1) {
-      userState.current = UserState.tooClose;
+      userStateMachine.current = UserState.conesAreTooClose;
     } else if (coneDistance > 1) {
-      userState.current = UserState.tooFar;
+      userStateMachine.current = UserState.conesAreTooFar;
     } else {
-      userState.current = UserState.confirmCones;
+      userStateMachine.current = UserState.confirmCones;
     }
     setState(() {});
   }
