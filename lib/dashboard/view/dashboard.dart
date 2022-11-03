@@ -1,7 +1,5 @@
-import 'package:badger_frontend/ar/view/ar.dart';
 import 'package:badger_frontend/dashboard/view/widgets/metric_chart.dart';
 import 'package:badger_frontend/dashboard/view/widgets/progress_bars.dart';
-import 'package:badger_frontend/drill_list/view/drill_list.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
@@ -38,12 +36,12 @@ class _DashboardState extends State<Dashboard> {
           await Tflite.loadModel(
             model: "assets/ssd_mobilenet.tflite",
             labels: "assets/ssd_mobilenet.txt",
-          );
-          //TODO: Look into async gap warning
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ConeDrillMobilenet(cameras: cameras)));
+          ).then((_) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ConeDrillMobilenet(cameras: cameras)));
+          });
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
