@@ -6,7 +6,8 @@ import 'package:tflite/tflite.dart';
 late List<CameraDescription> _cameras;
 
 class BoundingBox {
-  BoundingBox(this.x, this.y, this.width, this.height, this.className, this.confidenceScore);
+  BoundingBox(this.x, this.y, this.width, this.height, this.className,
+      this.confidenceScore);
 
   double x;
   double y;
@@ -38,41 +39,39 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
       return List.empty();
     }
     return outputs.map((output) {
-        var rectangle = output["rect"];
-        return BoundingBox(rectangle["x"],  rectangle["y"],
-            rectangle["w"], rectangle["h"], output["detectedClass"],
-            output["confidenceInClass"]);
+      var rectangle = output["rect"];
+      return BoundingBox(rectangle["x"], rectangle["y"], rectangle["w"],
+          rectangle["h"], output["detectedClass"], output["confidenceInClass"]);
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(title: Text("Cone"),),
-      body: FutureBuilder(
-          future: _initializeControllerFuture,
-          builder: (context, snapshot) {
-            //TODO: Check if other states need to be handled explicitly
-            if (!(snapshot.connectionState == ConnectionState.done)) {
-              //TODO: Replace with loading icon, extract shared widget
-              return const Icon(Icons.downloading);
-            }
+        appBar: AppBar(
+          title: const Text("Cone"),
+        ),
+        body: FutureBuilder(
+            future: _initializeControllerFuture,
+            builder: (context, snapshot) {
+              //TODO: Check if other states need to be handled explicitly
+              if (!(snapshot.connectionState == ConnectionState.done)) {
+                //TODO: Replace with loading icon, extract shared widget
+                return const Icon(Icons.downloading);
+              }
 
-
-
-            return Stack(
-              children: [
-                OrientationBuilder(builder: (context, orientation) {
-                  return AspectRatio(
-                      aspectRatio: orientation == Orientation.portrait ? 1 / _controller.value.aspectRatio : _controller.value.aspectRatio,
-                      child: CameraPreview(_controller)
-                  );
-                }),
-              ],
-            );
-          })
-    );
+              return Stack(
+                children: [
+                  OrientationBuilder(builder: (context, orientation) {
+                    return AspectRatio(
+                        aspectRatio: orientation == Orientation.portrait
+                            ? 1 / _controller.value.aspectRatio
+                            : _controller.value.aspectRatio,
+                        child: CameraPreview(_controller));
+                  }),
+                ],
+              );
+            }));
   }
 
   @override
@@ -115,6 +114,12 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   @override
   Future<void> dispose() async {
     super.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     _controller.dispose();
     await Tflite.close();
   }
