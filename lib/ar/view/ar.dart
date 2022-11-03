@@ -183,6 +183,8 @@ class _ARState extends State<AR> {
       return "Move cones closer";
     } else if (userState == UserState.conesAreTooClose) {
       return "Move cones further away";
+    } else if (userState == UserState.confirmCones) {
+      return "Get both of the cones in frame";
     } else {
       return "Done";
     }
