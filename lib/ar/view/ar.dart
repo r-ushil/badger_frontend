@@ -12,6 +12,7 @@ import 'package:ar_flutter_plugin/widgets/ar_view.dart';
 import 'package:badger_frontend/cone_drill_mobile_net/view/cone_drill_mobilenet.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:tflite/tflite.dart';
 import 'package:vector_math/vector_math_64.dart';
 import 'package:statemachine/statemachine.dart' as state;
 import 'package:flutter/services.dart';
@@ -73,12 +74,19 @@ class _ARState extends State<AR> {
           visible: confirmButtonVisibility,
           child: IconButton(
               onPressed: () {
+                // TODO: do this initialization inside the class, and pass cameras down
+                // view hierarchy
                 availableCameras().then((cameras) => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ConeDrillMobilenet(cameras: cameras)))
+                      Tflite.loadModel(
+                        model: "assets/ssd_mobilenet.tflite",
+                        labels: "assets/ssd_mobilenet.txt",
+                      ).then((_) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ConeDrillMobilenet(cameras: cameras)));
+                      })
                     });
               },
               icon: const Icon(
