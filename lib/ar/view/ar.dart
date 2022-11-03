@@ -93,6 +93,24 @@ class _ARState extends State<AR> {
         onPlaneOrPointTapped, onPanChanged);
   }
 
+  onPanChanged(String nodeName) async {
+    var uState = userStateMachine.current!.identifier;
+    if (uState == UserState.noConesPlaced ||
+        uState == UserState.oneConePlaced) {
+      return;
+    }
+    coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(
+        cone1Anchor!, cone2Anchor!))!);
+    if (coneDistance < 1) {
+      userStateMachine.current = UserState.conesAreTooClose;
+    } else if (coneDistance > 1) {
+      userStateMachine.current = UserState.conesAreTooFar;
+    } else {
+      userStateMachine.current = UserState.confirmCones;
+    }
+    setState(() {});
+  }
+
   Widget buildLandscape() {
     return buildPortrait();
   }
@@ -155,10 +173,6 @@ class _ARState extends State<AR> {
     this.arObjectManager.onPanChange = onPanChanged;
   }
 
-  static double round1(double x) {
-    return double.parse(x.toStringAsFixed(1));
-  }
-
   Future<void> onPlaneOrPointTapped(List<ARHitTestResult> results) async {
     var userState = userStateMachine.current?.identifier;
 
@@ -214,23 +228,6 @@ class _ARState extends State<AR> {
     }
   }
 
-  onPanChanged(String nodeName) async {
-    var uState = userStateMachine.current?.identifier;
-    if (uState == UserState.noConesPlaced ||
-        uState == UserState.oneConePlaced) {
-      return;
-    }
-    coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(
-        cone1Anchor!, cone2Anchor!))!);
-    if (coneDistance < 1) {
-      userStateMachine.current = UserState.conesAreTooClose;
-    } else if (coneDistance > 1) {
-      userStateMachine.current = UserState.conesAreTooFar;
-    } else {
-      userStateMachine.current = UserState.confirmCones;
-    }
-    setState(() {});
-  }
 
   @override
   Future<void> dispose() async {
@@ -240,5 +237,10 @@ class _ARState extends State<AR> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+  }
+
+  // Static methods
+  static double round1(double x) {
+    return double.parse(x.toStringAsFixed(1));
   }
 }
