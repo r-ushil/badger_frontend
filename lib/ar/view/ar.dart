@@ -52,36 +52,35 @@ class _ARState extends State<AR> {
     return Scaffold(
         appBar: AppBar(title: Text(coneDistance.toString())),
         body: OrientationBuilder(
-          builder: (context, orientation)
-          => orientation == Orientation.portrait ? buildPortrait()
-                                                 : buildLandscape(),
-        )
-    );
+          builder: (context, orientation) => orientation == Orientation.portrait
+              ? buildPortrait()
+              : buildLandscape(),
+        ));
   }
 
   Widget buildPortrait() {
-    return Column(
-        children: [
-          Expanded(
-              child: ARView(
-                onARViewCreated: onARViewCreated,
-                planeDetectionConfig: PlaneDetectionConfig.horizontal,
-              )
-          ),
-          Text(getInstruction(userState)),
-          Visibility(
-            visible: confirmButtonVisibility,
-              child: IconButton(onPressed: () async {
+    return Column(children: [
+      Expanded(
+          child: ARView(
+        onARViewCreated: onARViewCreated,
+        planeDetectionConfig: PlaneDetectionConfig.horizontal,
+      )),
+      Text(getInstruction(userState)),
+      Visibility(
+          visible: confirmButtonVisibility,
+          child: IconButton(
+              onPressed: () async {
                 await SystemChrome.setPreferredOrientations([
                   DeviceOrientation.landscapeRight,
                   DeviceOrientation.landscapeLeft,
                 ]);
                 userState.current = UserState.alignCones;
-
-              }, icon: const Icon(Icons.check_circle, color: Color(0x0000FFc8),))
-          )
-        ]
-    );
+              },
+              icon: const Icon(
+                Icons.check_circle,
+                color: Color(0x0000FFc8),
+              )))
+    ]);
   }
 
   Widget buildLandscape() {
@@ -99,16 +98,20 @@ class _ARState extends State<AR> {
       return "Place your first cone down";
     } else if (uState == UserState.oneCone) {
       return "Place your second cone down";
-    } else if (uState  == UserState.tooFar) {
+    } else if (uState == UserState.tooFar) {
       return "Move cones closer";
-    } else if (uState == UserState.tooClose){
+    } else if (uState == UserState.tooClose) {
       return "Move cones further away";
     } else {
       return "Done";
     }
   }
 
-  void onARViewCreated(ARSessionManager arSessionManager, ARObjectManager arObjectManager, ARAnchorManager arAnchorManager, ARLocationManager arLocationManager) {
+  void onARViewCreated(
+      ARSessionManager arSessionManager,
+      ARObjectManager arObjectManager,
+      ARAnchorManager arAnchorManager,
+      ARLocationManager arLocationManager) {
     for (UserState uState in UserState.values) {
       var s = userState.newState(uState);
       if (uState == UserState.confirmCones) {
@@ -128,10 +131,9 @@ class _ARState extends State<AR> {
     this.arObjectManager = arObjectManager;
     this.arAnchorManager = arAnchorManager;
 
-    this.arSessionManager.onInitialize(
-      handlePans: true,
-      showAnimatedGuide: false
-    );
+    this
+        .arSessionManager
+        .onInitialize(handlePans: true, showAnimatedGuide: false);
     this.arObjectManager.onInitialize();
 
     this.arSessionManager.onPlaneOrPointTap = onPlaneOrPointTapped;
@@ -148,7 +150,8 @@ class _ARState extends State<AR> {
     if (!(uState == UserState.start || uState == UserState.oneCone)) {
       return;
     }
-    ARHitTestResult result = results.firstWhere((r) => r.type == ARHitTestResultType.plane);
+    ARHitTestResult result =
+        results.firstWhere((r) => r.type == ARHitTestResultType.plane);
     var anchor = ARPlaneAnchor(transformation: result.worldTransform);
     var added = await arAnchorManager.addAnchor(anchor);
     if (added == null || added == false) {
@@ -158,7 +161,7 @@ class _ARState extends State<AR> {
     var node = ARNode(
         type: NodeType.webGLB,
         uri:
-        "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF-Binary/Duck.glb",
+            "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF-Binary/Duck.glb",
         scale: Vector3(0.2, 0.2, 0.2),
         position: Vector3(0, 0, 0),
         rotation: Vector4(1.0, 0.0, 0.0, 0.0));
@@ -174,10 +177,11 @@ class _ARState extends State<AR> {
     } else {
       cone2Anchor = anchor;
       cone2Node = node;
-      coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(cone1Anchor!, cone2Anchor!))!);
+      coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(
+          cone1Anchor!, cone2Anchor!))!);
       if (coneDistance < 1.0) {
         userState.current = UserState.tooClose;
-      }  else if (coneDistance > 1.0)  {
+      } else if (coneDistance > 1.0) {
         userState.current = UserState.tooFar;
       } else {
         userState.current = UserState.confirmCones;
@@ -185,7 +189,6 @@ class _ARState extends State<AR> {
           DeviceOrientation.landscapeRight,
           DeviceOrientation.landscapeLeft,
         ]);
-
       }
 
       setState(() {});
@@ -197,7 +200,8 @@ class _ARState extends State<AR> {
     if (uState == UserState.start || uState == UserState.oneCone) {
       return;
     }
-    coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(cone1Anchor!, cone2Anchor!))!);
+    coneDistance = round1((await arSessionManager.getDistanceBetweenAnchors(
+        cone1Anchor!, cone2Anchor!))!);
     if (coneDistance < 1) {
       userState.current = UserState.tooClose;
     } else if (coneDistance > 1) {

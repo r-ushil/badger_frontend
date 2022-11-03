@@ -40,8 +40,10 @@ class _DashboardState extends State<Dashboard> {
             labels: "assets/ssd_mobilenet.txt",
           );
           //TODO: Look into async gap warning
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ConeDrillMobilenet(cameras: cameras)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ConeDrillMobilenet(cameras: cameras)));
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
