@@ -27,7 +27,7 @@ class _ConeDrill extends State<ConeDrillPosenet> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Cone"),
+          title: const Text("Cone"),
         ),
         body: FutureBuilder(
             future: _initializeControllerFuture,
