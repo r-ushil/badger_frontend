@@ -5,6 +5,17 @@ import 'package:tflite/tflite.dart';
 
 late List<CameraDescription> _cameras;
 
+class BoundingBox {
+  BoundingBox(this.x, this.y, this.width, this.height, this.className, this.confidenceScore);
+
+  double x;
+  double y;
+  double width;
+  double height;
+  String className;
+  double confidenceScore;
+}
+
 class ConeDrillMobilenet extends StatefulWidget {
   ConeDrillMobilenet({super.key, required List<CameraDescription> cameras}) {
     _cameras = cameras;
@@ -17,48 +28,51 @@ class ConeDrillMobilenet extends StatefulWidget {
 class _ConeDrill extends State<ConeDrillMobilenet> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
-  // List<dynamic> _results = List.empty();
+  // List<BoundingBox> _results = List.empty();
   // double _previewWidth = 0;
   // double _previewHeight = 0;
   bool _isDetecting = false;
 
+  List<BoundingBox> mobileNetOutputToBoundingBoxes(List<dynamic>? outputs) {
+    if (outputs == null) {
+      return List.empty();
+    }
+    return outputs.map((output) {
+        var rectangle = output["rect"];
+        return BoundingBox(rectangle["x"],  rectangle["y"],
+            rectangle["w"], rectangle["h"], output["detectedClass"],
+            output["confidenceInClass"]);
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // {
-    //   detectedClass: "hot dog",
-    // confidenceInClass: 0.123,
-    // rect: {
-    // x: 0.15,
-    // y: 0.33,
-    // w: 0.80,
-    // h: 0.27
-    // }
-    // }
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Cone"),
-        ),
-        body: FutureBuilder(
-            future: _initializeControllerFuture,
-            builder: (context, snapshot) {
-              //TODO: Check if other states need to be handled explicitly
-              if (!(snapshot.connectionState == ConnectionState.done)) {
-                //TODO: Replace with loading icon, extract shared widget
-                return const Icon(Icons.downloading);
-              }
-              return Stack(
-                children: [
-                  OrientationBuilder(builder: (context, orientation) {
-                    return AspectRatio(
-                        aspectRatio: orientation == Orientation.portrait
-                            ? 1 / _controller.value.aspectRatio
-                            : _controller.value.aspectRatio,
-                        child: CameraPreview(_controller));
-                  }),
-                ],
-              );
-            }));
+      appBar: AppBar(title: Text("Cone"),),
+      body: FutureBuilder(
+          future: _initializeControllerFuture,
+          builder: (context, snapshot) {
+            //TODO: Check if other states need to be handled explicitly
+            if (!(snapshot.connectionState == ConnectionState.done)) {
+              //TODO: Replace with loading icon, extract shared widget
+              return const Icon(Icons.downloading);
+            }
+
+
+
+            return Stack(
+              children: [
+                OrientationBuilder(builder: (context, orientation) {
+                  return AspectRatio(
+                      aspectRatio: orientation == Orientation.portrait ? 1 / _controller.value.aspectRatio : _controller.value.aspectRatio,
+                      child: CameraPreview(_controller)
+                  );
+                }),
+              ],
+            );
+          })
+    );
   }
 
   @override
@@ -88,7 +102,10 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
                 imageHeight: image.height,
                 imageWidth: image.width)
             .then((results) {
-          // print(results);
+          // _results = mobileNetOutputToBoundingBoxes(results);
+          // if (_results.length >= 1) {
+          //   print(_results[0].className);
+          // }
           _isDetecting = false;
         });
       });
