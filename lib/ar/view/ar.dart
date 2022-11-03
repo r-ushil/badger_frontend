@@ -76,17 +76,17 @@ class _ARState extends State<AR> {
               onPressed: () async {
                 // TODO: do this initialization inside the class, and pass cameras down
                 // view hierarchy
-                var cameras = await availableCameras();
-                
-                await Tflite.loadModel(
-                  model: "assets/ssd_mobilenet.tflite",
-                  labels: "assets/ssd_mobilenet.txt",
-                ).then((_) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ConeDrillMobilenet(cameras: cameras)));
+                await availableCameras().then((cameras) async {
+                  await Tflite.loadModel(
+                    model: "assets/ssd_mobilenet.tflite",
+                    labels: "assets/ssd_mobilenet.txt",
+                  ).then((_) {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ConeDrillMobilenet(cameras: cameras)));
+                  });
                 });
               },
               icon: const Icon(
