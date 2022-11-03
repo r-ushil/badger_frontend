@@ -32,12 +32,11 @@ class _DashboardState extends State<Dashboard> {
         child: const Icon(Icons.add),
         onPressed: () async {
           List<CameraDescription> cameras = await availableCameras();
-          String model = (await Tflite.loadModel(
-            model: "assets/yolov2_tiny.tflite",
-            labels: "assets/yolov2_tiny.txt",
-          ))!;
+          await Tflite.loadModel(
+              model: "assets/posenet_mv1_075_float_from_checkpoints.tflite");
+          print("loaded");
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ConeDrill(cameras: cameras,model: model)));
+              MaterialPageRoute(builder: (context) => ConeDrill(cameras: cameras)));
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
