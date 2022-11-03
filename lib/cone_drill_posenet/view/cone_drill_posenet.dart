@@ -5,16 +5,16 @@ import 'package:tflite/tflite.dart';
 
 late List<CameraDescription> _cameras;
 
-class ConeDrill extends StatefulWidget {
-  ConeDrill({super.key, required List<CameraDescription> cameras}) {
+class ConeDrillPosenet extends StatefulWidget {
+  ConeDrillPosenet({super.key, required List<CameraDescription> cameras}) {
     _cameras = cameras;
   }
 
   @override
-  State<ConeDrill> createState() => _ConeDrill();
+  State<ConeDrillPosenet> createState() => _ConeDrill();
 }
 
-class _ConeDrill extends State<ConeDrill> {
+class _ConeDrill extends State<ConeDrillPosenet> {
 
   late CameraController controller;
   late Future<void> _initializeControllerFuture;
@@ -95,8 +95,9 @@ class _ConeDrill extends State<ConeDrill> {
   }
 
   @override
-  void dispose() {
+  Future<void> dispose() async {
     controller.dispose();
+    await Tflite.close();
     super.dispose();
   }
 }
