@@ -2,8 +2,17 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tflite/tflite.dart';
+import 'package:statemachine/statemachine.dart' as state;
 
 late List<CameraDescription> _cameras;
+
+enum DrillStatus {
+  notReady,
+  ready,
+  runningThere,
+  runningBack,
+  fininshed
+}
 
 // TODO: make sure this class is in the correct place
 class BoundingBox {
@@ -43,6 +52,8 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   double _previewWidth = 0;
   double _previewHeight = 0;
   bool _isDetecting = false;
+  final state.Machine<DrillStatus> _drillStatusStateMachine = state.Machine<DrillStatus>();
+  bool _startButtonVisible = false;
 
   static const confidenceThreshold = 0.5;
 
@@ -62,8 +73,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
     var filteredResults = results.where((result) =>
         result["detectedClass"] == "person" ||
         result["detectedClass"] == "bottle");
-
-    filteredResults = results
+filteredResults = results
         .where((result) => result["confidenceInClass"] > confidenceThreshold);
 
     for (var result in filteredResults) {
@@ -156,6 +166,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   @override
   void initState() {
     super.initState();
+    initializeDrillStatusStateMachine();
 
     _controller = CameraController(_cameras[0], ResolutionPreset.low);
     _initializeControllerFuture = _controller.initialize().then((_) {
@@ -183,6 +194,26 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
         });
       });
     });
+  }
+
+  void initializeDrillStatusStateMachine() {
+    for (DrillStatus drillStatus in DrillStatus.values) {
+      var state = _drillStatusStateMachine.newState(drillStatus);
+      if (drillStatus == DrillStatus.ready) {
+        state.onEntry(() {
+          _startButtonVisible= true;
+          setState(() {});
+        });
+        state.onExit(() {
+          _startButtonVisible = false;
+          setState(() {});
+        });
+      }
+    }
+
+    _drillStatusStateMachine.start();
+    _drillStatusStateMachine.current = DrillStatus.notReady;
+    setState(() {});
   }
 
   @override
