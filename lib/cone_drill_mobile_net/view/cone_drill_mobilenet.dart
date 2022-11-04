@@ -50,11 +50,11 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   bool _isDetecting = false;
   final state.Machine<DrillStatus> _drillStatusStateMachine =
       state.Machine<DrillStatus>();
-  bool _startButtonVisible = false;
+  // bool _startButtonVisible = false; TODO: uncomment
 
   static const confidenceThreshold = 0.5;
-  
-  GoalCone? _goalCone;
+
+  // GoalCone? _goalCone; TODO: uncomment
 
   BoundingBox mobileNetResultToBoundingBox(dynamic result) {
     var rectangle = result["rect"];
@@ -200,29 +200,59 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
       var state = _drillStatusStateMachine.newState(drillStatus);
       if (drillStatus == DrillStatus.ready) {
         state.onEntry(() {
-          _startButtonVisible = true;
+          // _startButtonVisible = true; TODO: uncomment
           setState(() {});
         });
         state.onExit(() {
-          _startButtonVisible = false;
+          // _startButtonVisible = false; TODO: uncomment
           setState(() {});
         });
       } else if (drillStatus == DrillStatus.runningThere) {
         state.onEntry(() {
-          _goalCone = GoalCone.secondCone;
+          // TODO: Check to see if this is the first lap ever,
+          // start timer if necessary
+          // _goalCone = GoalCone.secondCone; TODO: uncomment
           setState(() {});
         });
       } else if (drillStatus == DrillStatus.runningBack) {
         state.onEntry(() {
-          _goalCone = GoalCone.firstCone;
+          // _goalCone = GoalCone.firstCone; TODO: uncomment
           setState(() {});
         });
       }
+      // TODO: Add onEntry case for finished that stops timer
     }
 
     _drillStatusStateMachine.start();
-    _drillStatusStateMachine.current = DrillStatus.notReady;
-    setState(() {});
+    setDrillStatus(DrillStatus.notReady);
+  }
+
+  DrillStatus updateDrillStaus() {
+    final drillStatus = getDrillStatus();
+
+    switch (drillStatus) {
+      case DrillStatus.notReady:
+        // TODO: Check that the user has moved to the first cone
+        setDrillStatus(DrillStatus.notReady);
+        break;
+      case DrillStatus.ready:
+        // TODO: Wait for the user to click the button
+        setDrillStatus(DrillStatus.ready);
+        break;
+      case DrillStatus.runningThere:
+        // TODO: if the user intersects with the secondCone, change state to running back,
+        //       increment the current lap count
+        setDrillStatus(DrillStatus.runningThere);
+        break;
+      case DrillStatus.runningBack:
+        // TODO: move to finished or running there based on lap count
+        setDrillStatus(DrillStatus.runningBack);
+        break;
+      case DrillStatus.finished:
+        break;
+    }
+
+    return getDrillStatus();
   }
 
   String getInstruction() {
@@ -244,6 +274,11 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
 
   DrillStatus getDrillStatus() {
     return _drillStatusStateMachine.current!.identifier;
+  }
+
+  void setDrillStatus(DrillStatus drillStatus) {
+    _drillStatusStateMachine.current = drillStatus;
+    setState(() {});
   }
 
   @override
