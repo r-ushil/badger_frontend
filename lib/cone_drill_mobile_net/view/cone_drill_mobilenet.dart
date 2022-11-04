@@ -51,8 +51,11 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   final state.Machine<DrillStatus> _drillStatusStateMachine =
       state.Machine<DrillStatus>();
   bool _startButtonVisible = false;
+  final _stopwatch = Stopwatch();
 
   static const confidenceThreshold = 0.5;
+  
+  int _sprintLegs = 0;
 
   // GoalCone? _goalCone; TODO: uncomment
 
@@ -212,25 +215,28 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
       if (drillStatus == DrillStatus.ready) {
         state.onEntry(() {
           _startButtonVisible = true;
-          setState(() {});
         });
         state.onExit(() {
           _startButtonVisible = false;
-          setState(() {});
         });
       } else if (drillStatus == DrillStatus.runningThere) {
         state.onEntry(() {
-          // TODO: Check to see if this is the first lap ever,
-          // start timer if necessary
+          if (_sprintLegs == 0) {
+            _stopwatch.start();
+          }
           // _goalCone = GoalCone.secondCone; TODO: uncomment
-          setState(() {});
         });
       } else if (drillStatus == DrillStatus.runningBack) {
         state.onEntry(() {
           // _goalCone = GoalCone.firstCone; TODO: uncomment
-          setState(() {});
+        });
+      } else if (drillStatus == DrillStatus.finished) {
+        state.onEntry(() {
+          _stopwatch.stop();
         });
       }
+
+      setState(() {});
       // TODO: Add onEntry case for finished that stops timer
     }
 
