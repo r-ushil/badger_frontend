@@ -139,33 +139,35 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
               var red = const Color.fromRGBO(255, 0, 0, 1);
               var blue = const Color.fromRGBO(0, 0, 255, 1);
 
-              return Column(children: [Stack(
-                children: [
-                  OrientationBuilder(builder: (context, orientation) {
-                    return AspectRatio(
-                        aspectRatio: orientation == Orientation.portrait
-                            ? 1 / _controller.value.aspectRatio
-                            : _controller.value.aspectRatio,
-                        child: CameraPreview(_controller));
-                  }),
-                  boundingBoxToWidget(
-                      personBoundingBox,
-                      collidingWithLeftBottle || collidingWithRightBottle
-                          ? red
-                          : blue),
-                  boundingBoxToWidget(leftBottleBoundingBox,
-                      collidingWithLeftBottle ? red : blue),
-                  boundingBoxToWidget(rightBottleBoundingBox,
-                      collidingWithRightBottle ? red : blue),
-                  
-                  Visibility(visible: _startButtonVisible,
-                    child: IconButton(icon: const Icon(
-                      Icons.check_circle,
-                      color: Color(0x0000FFc8)),
-                    onPressed: () => setDrillStatus(DrillStatus.runningThere)
-                    ))
-                ],
-              )]);
+              return Column(children: [
+                Stack(
+                  children: [
+                    OrientationBuilder(builder: (context, orientation) {
+                      return AspectRatio(
+                          aspectRatio: orientation == Orientation.portrait
+                              ? 1 / _controller.value.aspectRatio
+                              : _controller.value.aspectRatio,
+                          child: CameraPreview(_controller));
+                    }),
+                    boundingBoxToWidget(
+                        personBoundingBox,
+                        collidingWithLeftBottle || collidingWithRightBottle
+                            ? red
+                            : blue),
+                    boundingBoxToWidget(leftBottleBoundingBox,
+                        collidingWithLeftBottle ? red : blue),
+                    boundingBoxToWidget(rightBottleBoundingBox,
+                        collidingWithRightBottle ? red : blue),
+                    Visibility(
+                        visible: _startButtonVisible,
+                        child: IconButton(
+                            icon: const Icon(Icons.check_circle,
+                                color: Color(0x0000FFc8)),
+                            onPressed: () =>
+                                setDrillStatus(DrillStatus.runningThere)))
+                  ],
+                )
+              ]);
             }));
 
     // const AlertDialog(title: Text("Smashed it!"), content: Text("You sprinted X laps, for X seconds at a speed of X! "),)
@@ -209,11 +211,11 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
       var state = _drillStatusStateMachine.newState(drillStatus);
       if (drillStatus == DrillStatus.ready) {
         state.onEntry(() {
-          // _startButtonVisible = true; TODO: uncomment
+          _startButtonVisible = true;
           setState(() {});
         });
         state.onExit(() {
-          // _startButtonVisible = false; TODO: uncomment
+          _startButtonVisible = false;
           setState(() {});
         });
       } else if (drillStatus == DrillStatus.runningThere) {
