@@ -55,6 +55,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
 
   static const confidenceThreshold = 0.5;
 
+  static const int _goalSprintLegs = 4;
   int _sprintLegs = 0;
 
   // GoalCone? _goalCone; TODO: uncomment
@@ -243,7 +244,6 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
       }
 
       setState(() {});
-      // TODO: Add onEntry case for finished that stops timer
     }
 
     _drillStatusStateMachine.start();
@@ -255,21 +255,43 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
 
     switch (drillStatus) {
       case DrillStatus.notReady:
-        // TODO: Check that the user has moved to the first cone
-        setDrillStatus(DrillStatus.notReady);
+        if (personBoundingBox != null &&
+            leftBottleBoundingBox != null &&
+            BoundingBox.areColliding(
+                personBoundingBox!, leftBottleBoundingBox!)) {
+          // If the person moves in line with the first cone
+          setDrillStatus(DrillStatus.ready);
+        }
         break;
       case DrillStatus.ready:
-        // TODO: Wait for the user to click the button
-        setDrillStatus(DrillStatus.ready);
+        if (personBoundingBox != null &&
+            leftBottleBoundingBox != null &&
+            !BoundingBox.areColliding(
+                personBoundingBox!, leftBottleBoundingBox!)) {
+          // If the person moves out of line with the first cone
+          setDrillStatus(DrillStatus.notReady);
+        }
+
+        // Note: Manual button click will perform the state transition to runningThere
+        // that triggers the sprinting drill start
         break;
       case DrillStatus.runningThere:
-        // TODO: if the user intersects with the secondCone, change state to running back,
-        //       increment the current lap count
-        setDrillStatus(DrillStatus.runningThere);
+        if (BoundingBox.areColliding(
+            personBoundingBox!, rightBottleBoundingBox!)) {
+          // If the person gets to the right cone when running there
+          setDrillStatus(DrillStatus.runningBack);
+        }
         break;
       case DrillStatus.runningBack:
-        // TODO: move to finished or running there based on lap count
-        setDrillStatus(DrillStatus.runningBack);
+        if (BoundingBox.areColliding(
+            personBoundingBox!, rightBottleBoundingBox!)) {
+          // If the person gets to the left cone when running back
+          if (_sprintLegs == _goalSprintLegs - 1) {
+            setDrillStatus(DrillStatus.finished);
+          } else {
+            setDrillStatus(DrillStatus.runningThere);
+          }
+        }
         break;
       case DrillStatus.finished:
         break;
