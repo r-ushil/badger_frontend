@@ -239,7 +239,11 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
       } else if (drillStatus == DrillStatus.finished) {
         state.onEntry(() {
           _stopwatch.stop();
-          AlertDialog(title: const Text("Smashed it!"), content: Text("You sprinted $_sprintLegs legs, for ${getSprintTime()} seconds at a speed of ${getSprintSpeed()}m/s! "),);
+          AlertDialog(
+            title: const Text("Smashed it!"),
+            content: Text(
+                "You sprinted $_sprintLegs legs, for ${getSprintTime()} seconds at a speed of ${getSprintSpeed()}m/s! "),
+          );
         });
       }
 
