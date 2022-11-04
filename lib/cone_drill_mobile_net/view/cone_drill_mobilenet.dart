@@ -54,7 +54,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   final _stopwatch = Stopwatch();
 
   static const confidenceThreshold = 0.5;
-  
+
   int _sprintLegs = 0;
 
   // GoalCone? _goalCone; TODO: uncomment
@@ -226,9 +226,15 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
           }
           // _goalCone = GoalCone.secondCone; TODO: uncomment
         });
+        state.onExit(() {
+          _sprintLegs++;
+        });
       } else if (drillStatus == DrillStatus.runningBack) {
         state.onEntry(() {
           // _goalCone = GoalCone.firstCone; TODO: uncomment
+        });
+        state.onExit(() {
+          _sprintLegs++;
         });
       } else if (drillStatus == DrillStatus.finished) {
         state.onEntry(() {
