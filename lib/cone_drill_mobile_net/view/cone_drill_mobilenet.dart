@@ -6,7 +6,7 @@ import 'package:statemachine/statemachine.dart' as state;
 
 late List<CameraDescription> _cameras;
 
-enum DrillStatus { notReady, ready, runningThere, runningBack, fininshed }
+enum DrillStatus { notReady, ready, runningThere, runningBack, finished }
 
 // TODO: make sure this class is in the correct place
 class BoundingBox {
@@ -206,7 +206,6 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
       }
     }
 
-
     _drillStatusStateMachine.start();
     _drillStatusStateMachine.current = DrillStatus.notReady;
     setState(() {});
@@ -224,7 +223,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
         return "Run to the first cone";
       case DrillStatus.runningBack:
         return "Run back";
-      case DrillStatus.fininshed:
+      case DrillStatus.finished:
         return "";
     }
   }
