@@ -50,7 +50,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   bool _isDetecting = false;
   final state.Machine<DrillStatus> _drillStatusStateMachine =
       state.Machine<DrillStatus>();
-  // bool _startButtonVisible = false; TODO: uncomment
+  bool _startButtonVisible = false;
 
   static const confidenceThreshold = 0.5;
 
@@ -139,7 +139,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
               var red = const Color.fromRGBO(255, 0, 0, 1);
               var blue = const Color.fromRGBO(0, 0, 255, 1);
 
-              return Stack(
+              return Column(children: [Stack(
                 children: [
                   OrientationBuilder(builder: (context, orientation) {
                     return AspectRatio(
@@ -156,10 +156,19 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
                   boundingBoxToWidget(leftBottleBoundingBox,
                       collidingWithLeftBottle ? red : blue),
                   boundingBoxToWidget(rightBottleBoundingBox,
-                      collidingWithRightBottle ? red : blue)
+                      collidingWithRightBottle ? red : blue),
+                  
+                  Visibility(visible: _startButtonVisible,
+                    child: IconButton(icon: const Icon(
+                      Icons.check_circle,
+                      color: Color(0x0000FFc8)),
+                    onPressed: () => setDrillStatus(DrillStatus.runningThere)
+                    ))
                 ],
-              );
+              )]);
             }));
+
+    // const AlertDialog(title: Text("Smashed it!"), content: Text("You sprinted X laps, for X seconds at a speed of X! "),)
   }
 
   @override
