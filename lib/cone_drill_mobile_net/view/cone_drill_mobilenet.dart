@@ -16,6 +16,13 @@ class BoundingBox {
   double height;
   String className;
   double confidenceScore;
+
+  static bool areColliding(BoundingBox box1, BoundingBox box2) {
+    return box1.x < box2.x + box2.width &&
+        box1.x + box1.width > box2.x &&
+        box1.y < box2.y + box2.height &&
+        box1.height + box1.y > box2.y;
+  }
 }
 
 class ConeDrillMobilenet extends StatefulWidget {
@@ -75,7 +82,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
     setState(() {});
   }
 
-  Widget boundingBoxToWidget(BoundingBox? boundingBox) {
+  Widget boundingBoxToWidget(BoundingBox? boundingBox, Color color) {
     if (boundingBox == null) {
       //TODO: handler case when bounding box not initialised better
       return Container();
@@ -88,7 +95,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: const Color.fromRGBO(37, 213, 253, 1.0),
+            color: color,
             width: 3.0,
           ),
         ),
@@ -111,6 +118,18 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
                 //TODO: Replace with loading icon, extract shared widget
                 return const Icon(Icons.downloading);
               }
+              var collidingWithLeftBottle = personBoundingBox != null &&
+                  leftBottleBoundingBox != null &&
+                  BoundingBox.areColliding(
+                      personBoundingBox!, leftBottleBoundingBox!);
+
+              var collidingWithRightBottle = personBoundingBox != null &&
+                  rightBottleBoundingBox != null &&
+                  BoundingBox.areColliding(
+                      personBoundingBox!, rightBottleBoundingBox!);
+              var red = const Color.fromRGBO(255, 0, 0, 1);
+              var blue = const Color.fromRGBO(0, 0, 255, 1);
+
               return Stack(
                 children: [
                   OrientationBuilder(builder: (context, orientation) {
@@ -120,9 +139,15 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
                             : _controller.value.aspectRatio,
                         child: CameraPreview(_controller));
                   }),
-                  boundingBoxToWidget(personBoundingBox),
-                  boundingBoxToWidget(leftBottleBoundingBox),
-                  boundingBoxToWidget(rightBottleBoundingBox)
+                  boundingBoxToWidget(
+                      personBoundingBox,
+                      collidingWithLeftBottle || collidingWithRightBottle
+                          ? red
+                          : blue),
+                  boundingBoxToWidget(leftBottleBoundingBox,
+                      collidingWithLeftBottle ? red : blue),
+                  boundingBoxToWidget(rightBottleBoundingBox,
+                      collidingWithRightBottle ? red : blue)
                 ],
               );
             }));
