@@ -30,46 +30,71 @@ class ConeDrillMobilenet extends StatefulWidget {
 class _ConeDrill extends State<ConeDrillMobilenet> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
-  List<BoundingBox> _detectedBoundingBoxes = List.empty();
+  BoundingBox? personBoundingBox;
+  BoundingBox? leftBottleBoundingBox;
+  BoundingBox? rightBottleBoundingBox;
   double _previewWidth = 0;
   double _previewHeight = 0;
   bool _isDetecting = false;
 
-  static const confidenceThreshold = 0.4;
+  static const confidenceThreshold = 0.5;
 
-  List<BoundingBox> mobileNetOutputToBoundingBoxes(List<dynamic>? outputs) {
-    if (outputs == null) {
-      return List.empty();
-    }
-    outputs = outputs
-        .where((output) => output["confidenceInClass"] > confidenceThreshold)
-        .toList();
-    return outputs.map((output) {
-      var rectangle = output["rect"];
-      return BoundingBox(rectangle["x"], rectangle["y"], rectangle["w"],
-          rectangle["h"], output["detectedClass"], output["confidenceInClass"]);
-    }).toList();
+  BoundingBox mobileNetResultToBoundingBox(dynamic result) {
+    var rectangle = result["rect"];
+    return BoundingBox(rectangle["x"], rectangle["y"], rectangle["w"],
+        rectangle["h"], result["detectedClass"], result["confidenceInClass"]);
   }
 
-  Widget boundingBoxesToWidget(List<BoundingBox> boundingBoxes) {
-    return Stack(
-        children: boundingBoxes.map((boundingBox) {
-      return Positioned(
-        top: boundingBox.y * _previewHeight,
-        left: boundingBox.x * _previewWidth,
-        width: boundingBox.width * _previewWidth,
-        height: boundingBox.height * _previewHeight,
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: const Color.fromRGBO(37, 213, 253, 1.0),
-              width: 3.0,
-            ),
+  void updateBoundingBoxesFromMobilenetResults(List? results) {
+    //no results returned from mobilenet
+    if (results == null) {
+      return;
+    }
+
+    // maximum of 2 results per class so filteredResults has a max of 4 elements
+    var filteredResults = results.where((result) =>
+        result["detectedClass"] == "person" ||
+        result["detectedClass"] == "bottle");
+
+    filteredResults = results
+        .where((result) => result["confidenceInClass"] > confidenceThreshold);
+
+    for (var result in filteredResults) {
+      var boundingBox = mobileNetResultToBoundingBox(result);
+      if (boundingBox.className == "person") {
+        personBoundingBox = boundingBox;
+      } else if (boundingBox.className == "bottle") {
+        //TODO: replace with more thorough way to distinguish left and right bottles
+        if (boundingBox.x > 0.5) {
+          rightBottleBoundingBox = boundingBox;
+        } else {
+          leftBottleBoundingBox = boundingBox;
+        }
+      }
+    }
+    setState(() {});
+  }
+
+  Widget boundingBoxToWidget(BoundingBox? boundingBox) {
+    if (boundingBox == null) {
+      //TODO: handler case when bounding box not initialised better
+      return Container();
+    }
+    return Positioned(
+      top: boundingBox.y * _previewHeight,
+      left: boundingBox.x * _previewWidth,
+      width: boundingBox.width * _previewWidth,
+      height: boundingBox.height * _previewHeight,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: const Color.fromRGBO(37, 213, 253, 1.0),
+            width: 3.0,
           ),
-          child: Text(boundingBox.className),
         ),
-      );
-    }).toList());
+        child: Text(boundingBox.className),
+      ),
+    );
   }
 
   @override
@@ -95,7 +120,9 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
                             : _controller.value.aspectRatio,
                         child: CameraPreview(_controller));
                   }),
-                  boundingBoxesToWidget(_detectedBoundingBoxes),
+                  boundingBoxToWidget(personBoundingBox),
+                  boundingBoxToWidget(leftBottleBoundingBox),
+                  boundingBoxToWidget(rightBottleBoundingBox)
                 ],
               );
             }));
@@ -104,10 +131,6 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   @override
   void initState() {
     super.initState();
-
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-    ]);
 
     _controller = CameraController(_cameras[0], ResolutionPreset.low);
     _initializeControllerFuture = _controller.initialize().then((_) {
@@ -124,12 +147,12 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
         Tflite.detectObjectOnFrame(
                 bytesList: image.planes.map((plane) => plane.bytes).toList(),
                 model: "SSDMobileNet",
-                numResultsPerClass: 1,
+                numResultsPerClass: 2,
                 rotation: 180, // 180 for landscapeRight, 90 for portrait
                 imageHeight: image.height,
                 imageWidth: image.width)
             .then((results) {
-          _detectedBoundingBoxes = mobileNetOutputToBoundingBoxes(results);
+          updateBoundingBoxesFromMobilenetResults(results);
           setState(() {});
           _isDetecting = false;
         });
