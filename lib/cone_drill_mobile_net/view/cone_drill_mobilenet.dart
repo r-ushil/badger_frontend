@@ -227,7 +227,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
     setDrillStatus(DrillStatus.notReady);
   }
 
-  DrillStatus updateDrillStaus() {
+  DrillStatus updateDrillStatus() {
     final drillStatus = getDrillStatus();
 
     switch (drillStatus) {
