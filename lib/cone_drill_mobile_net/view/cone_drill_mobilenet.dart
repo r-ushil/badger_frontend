@@ -6,13 +6,7 @@ import 'package:statemachine/statemachine.dart' as state;
 
 late List<CameraDescription> _cameras;
 
-enum DrillStatus {
-  notReady,
-  ready,
-  runningThere,
-  runningBack,
-  fininshed
-}
+enum DrillStatus { notReady, ready, runningThere, runningBack, fininshed }
 
 // TODO: make sure this class is in the correct place
 class BoundingBox {
@@ -52,7 +46,8 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   double _previewWidth = 0;
   double _previewHeight = 0;
   bool _isDetecting = false;
-  final state.Machine<DrillStatus> _drillStatusStateMachine = state.Machine<DrillStatus>();
+  final state.Machine<DrillStatus> _drillStatusStateMachine =
+      state.Machine<DrillStatus>();
   bool _startButtonVisible = false;
 
   static const confidenceThreshold = 0.5;
@@ -73,7 +68,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
     var filteredResults = results.where((result) =>
         result["detectedClass"] == "person" ||
         result["detectedClass"] == "bottle");
-filteredResults = results
+    filteredResults = results
         .where((result) => result["confidenceInClass"] > confidenceThreshold);
 
     for (var result in filteredResults) {
@@ -201,7 +196,7 @@ filteredResults = results
       var state = _drillStatusStateMachine.newState(drillStatus);
       if (drillStatus == DrillStatus.ready) {
         state.onEntry(() {
-          _startButtonVisible= true;
+          _startButtonVisible = true;
           setState(() {});
         });
         state.onExit(() {
@@ -211,9 +206,31 @@ filteredResults = results
       }
     }
 
+
     _drillStatusStateMachine.start();
     _drillStatusStateMachine.current = DrillStatus.notReady;
     setState(() {});
+  }
+
+  String getInstruction() {
+    final drillStatus = getDrillStatus();
+
+    switch (drillStatus) {
+      case DrillStatus.notReady:
+        return "Move to the first cone";
+      case DrillStatus.ready:
+        return "Press the button when you're ready to start";
+      case DrillStatus.runningThere:
+        return "Run to the first cone";
+      case DrillStatus.runningBack:
+        return "Run back";
+      case DrillStatus.fininshed:
+        return "";
+    }
+  }
+
+  DrillStatus getDrillStatus() {
+    return _drillStatusStateMachine.current!.identifier;
   }
 
   @override
