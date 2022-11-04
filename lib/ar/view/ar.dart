@@ -34,7 +34,7 @@ class AR extends StatefulWidget {
 }
 
 class _ARState extends State<AR> {
-  static const idealConeDistance = 1;
+  static const double idealConeDistance = 1;
 
   late ARSessionManager arSessionManager;
   late ARObjectManager arObjectManager;
@@ -89,8 +89,10 @@ class _ARState extends State<AR> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                ConeDrillMobilenet(cameras: cameras)));
+                            builder: (context) => ConeDrillMobilenet(
+                                  cameras: cameras,
+                                  distanceBetweenCones: idealConeDistance,
+                                )));
                   });
                 });
               },
