@@ -98,7 +98,7 @@ class _ARState extends State<AR> {
               },
               icon: const Icon(
                 Icons.check_circle,
-                color: Color(0x0000FFc8),
+                color: Color.fromRGBO(0, 0, 255, 1),
               )))
     ]);
   }
