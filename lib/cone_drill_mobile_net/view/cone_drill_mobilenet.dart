@@ -56,8 +56,6 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   bool _startButtonVisible = false;
   final _stopwatch = Stopwatch();
 
-  static const confidenceThreshold = 0;
-
   static const int _goalSprintLegs = 4;
   int _sprintLegsCompleted = 0;
 
@@ -74,24 +72,32 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
     }
 
     // maximum of 2 results per class so filteredResults has a max of 4 elements
-    var filteredResults = results.where((result) =>
-        result["detectedClass"] == "person" ||
-        result["detectedClass"] == "bottle");
-    filteredResults = results
-        .where((result) => result["confidenceInClass"] > confidenceThreshold);
+    var personResults =
+        results.where((result) => result["detectedClass"] == "person");
+    var bottleResults =
+        results.where((result) => result["detectedClass"] == "bottle");
 
-    for (var result in filteredResults) {
+    for (var result in bottleResults) {
       var boundingBox = mobileNetResultToBoundingBox(result);
-      if (boundingBox.className == "person") {
-        personBoundingBox = boundingBox;
-      } else if (boundingBox.className == "bottle") {
-        //TODO: replace with more thorough way to distinguish left and right bottles
-        if (boundingBox.x > 0.5) {
-          rightBottleBoundingBox = boundingBox;
-        } else {
-          leftBottleBoundingBox = boundingBox;
-        }
+      if (boundingBox.x > 0.5) {
+        rightBottleBoundingBox = boundingBox;
+      } else {
+        leftBottleBoundingBox = boundingBox;
       }
+    }
+
+    if (personResults.length == 2) {
+      var person1BoundingBox =
+          mobileNetResultToBoundingBox(personResults.elementAt(0));
+      var person2BoundingBox =
+          mobileNetResultToBoundingBox(personResults.elementAt(1));
+      personBoundingBox = person1BoundingBox.confidenceScore >
+              person2BoundingBox.confidenceScore
+          ? person1BoundingBox
+          : person2BoundingBox;
+    } else if (personResults.length == 1) {
+      personBoundingBox =
+          mobileNetResultToBoundingBox(personResults.elementAt(0));
     }
     setState(() {});
   }
