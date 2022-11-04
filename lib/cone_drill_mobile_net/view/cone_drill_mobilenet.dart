@@ -54,6 +54,8 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   static const confidenceThreshold = 0.5;
 
   static const int _goalSprintLegs = 4;
+  // TODO: Take this in from the calling object
+  static const int _sprintLegDistance = 1;
   int _sprintLegs = 0;
 
   // GoalCone? _goalCone; TODO: uncomment
@@ -171,8 +173,6 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
                 )
               ]);
             }));
-
-    // const AlertDialog(title: Text("Smashed it!"), content: Text("You sprinted X laps, for X seconds at a speed of X! "),)
   }
 
   @override
@@ -239,6 +239,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
       } else if (drillStatus == DrillStatus.finished) {
         state.onEntry(() {
           _stopwatch.stop();
+          AlertDialog(title: const Text("Smashed it!"), content: Text("You sprinted $_sprintLegs legs, for ${getSprintTime()} seconds at a speed of ${getSprintSpeed()}m/s! "),);
         });
       }
 
@@ -336,5 +337,18 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
     ]);
     _controller.dispose();
     await Tflite.close();
+  }
+
+  double getSprintTime() {
+    assert(getDrillStatus() == DrillStatus.finished);
+
+    return _stopwatch.elapsedMilliseconds / 1000;
+  }
+
+  double getSprintSpeed() {
+    assert(getDrillStatus() == DrillStatus.finished);
+
+    // TODO: rename sprintLegs to sprintLegsCompleted
+    return getSprintTime() / (_sprintLegDistance * _sprintLegs);
   }
 }
