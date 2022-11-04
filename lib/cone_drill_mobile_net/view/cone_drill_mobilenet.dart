@@ -8,8 +8,6 @@ late List<CameraDescription> _cameras;
 
 enum DrillStatus { notReady, ready, runningThere, runningBack, finished }
 
-enum GoalCone { firstCone, secondCone }
-
 // TODO: make sure this class is in the correct place
 class BoundingBox {
   BoundingBox(this.x, this.y, this.width, this.height, this.className,
@@ -214,6 +212,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
     for (DrillStatus drillStatus in DrillStatus.values) {
       var state = _drillStatusStateMachine.newState(drillStatus);
       if (drillStatus == DrillStatus.ready) {
+        // Show the start button if we're ready (touching the leftmost cone)
         state.onEntry(() {
           _startButtonVisible = true;
         });
@@ -221,19 +220,19 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
           _startButtonVisible = false;
         });
       } else if (drillStatus == DrillStatus.runningThere) {
+        // Start the timer if this is our first sprint leg
         state.onEntry(() {
           if (_sprintLegs == 0) {
             _stopwatch.start();
           }
-          // _goalCone = GoalCone.secondCone; TODO: uncomment
         });
+
+        // Increment the sprint legs when we finish a sprint leg
         state.onExit(() {
           _sprintLegs++;
         });
       } else if (drillStatus == DrillStatus.runningBack) {
-        state.onEntry(() {
-          // _goalCone = GoalCone.firstCone; TODO: uncomment
-        });
+        // Increment the sprint legs when we finish a sprint leg
         state.onExit(() {
           _sprintLegs++;
         });
