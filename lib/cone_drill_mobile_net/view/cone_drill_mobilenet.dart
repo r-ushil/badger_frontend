@@ -5,6 +5,7 @@ import 'package:tflite/tflite.dart';
 import 'package:statemachine/statemachine.dart' as state;
 
 late List<CameraDescription> _cameras;
+late double _sprintLegDistance;
 
 enum DrillStatus { notReady, ready, runningThere, runningBack, finished }
 
@@ -29,8 +30,12 @@ class BoundingBox {
 }
 
 class ConeDrillMobilenet extends StatefulWidget {
-  ConeDrillMobilenet({super.key, required List<CameraDescription> cameras}) {
+  ConeDrillMobilenet(
+      {super.key,
+      required List<CameraDescription> cameras,
+      required double distanceBetweenCones}) {
     _cameras = cameras;
+    _sprintLegDistance = distanceBetweenCones;
   }
 
   @override
@@ -54,11 +59,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   static const confidenceThreshold = 0.5;
 
   static const int _goalSprintLegs = 4;
-  // TODO: Take this in from the calling object
-  static const int _sprintLegDistance = 1;
-  int _sprintLegs = 0;
-
-  // GoalCone? _goalCone; TODO: uncomment
+  int _sprintLegsCompleted = 0;
 
   BoundingBox mobileNetResultToBoundingBox(dynamic result) {
     var rectangle = result["rect"];
@@ -222,19 +223,19 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
       } else if (drillStatus == DrillStatus.runningThere) {
         // Start the timer if this is our first sprint leg
         state.onEntry(() {
-          if (_sprintLegs == 0) {
+          if (_sprintLegsCompleted == 0) {
             _stopwatch.start();
           }
         });
 
         // Increment the sprint legs when we finish a sprint leg
         state.onExit(() {
-          _sprintLegs++;
+          _sprintLegsCompleted++;
         });
       } else if (drillStatus == DrillStatus.runningBack) {
         // Increment the sprint legs when we finish a sprint leg
         state.onExit(() {
-          _sprintLegs++;
+          _sprintLegsCompleted++;
         });
       } else if (drillStatus == DrillStatus.finished) {
         state.onEntry(() {
@@ -242,7 +243,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
           AlertDialog(
             title: const Text("Smashed it!"),
             content: Text(
-                "You sprinted $_sprintLegs legs, for ${getSprintTime()} seconds at a speed of ${getSprintSpeed()}m/s! "),
+                "You sprinted $_sprintLegsCompleted legs, for ${getSprintTime()} seconds at a speed of ${getSprintSpeed()}m/s! "),
           );
         });
       }
@@ -290,7 +291,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
         if (BoundingBox.areColliding(
             personBoundingBox!, rightBottleBoundingBox!)) {
           // If the person gets to the left cone when running back
-          if (_sprintLegs == _goalSprintLegs - 1) {
+          if (_sprintLegsCompleted == _goalSprintLegs - 1) {
             setDrillStatus(DrillStatus.finished);
           } else {
             setDrillStatus(DrillStatus.runningThere);
@@ -352,7 +353,6 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   double getSprintSpeed() {
     assert(getDrillStatus() == DrillStatus.finished);
 
-    // TODO: rename sprintLegs to sprintLegsCompleted
-    return getSprintTime() / (_sprintLegDistance * _sprintLegs);
+    return getSprintTime() / (_sprintLegDistance * _sprintLegsCompleted);
   }
 }
