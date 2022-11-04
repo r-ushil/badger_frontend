@@ -56,7 +56,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   bool _startButtonVisible = false;
   final _stopwatch = Stopwatch();
 
-  static const confidenceThreshold = 0.5;
+  static const confidenceThreshold = 0;
 
   static const int _goalSprintLegs = 4;
   int _sprintLegsCompleted = 0;
@@ -144,35 +144,36 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
               var red = const Color.fromRGBO(255, 0, 0, 1);
               var blue = const Color.fromRGBO(0, 0, 255, 1);
 
-              return Column(children: [
-                Stack(
-                  children: [
-                    OrientationBuilder(builder: (context, orientation) {
-                      return AspectRatio(
-                          aspectRatio: orientation == Orientation.portrait
-                              ? 1 / _controller.value.aspectRatio
-                              : _controller.value.aspectRatio,
-                          child: CameraPreview(_controller));
-                    }),
-                    boundingBoxToWidget(
-                        personBoundingBox,
-                        collidingWithLeftBottle || collidingWithRightBottle
-                            ? red
-                            : blue),
-                    boundingBoxToWidget(leftBottleBoundingBox,
-                        collidingWithLeftBottle ? red : blue),
-                    boundingBoxToWidget(rightBottleBoundingBox,
-                        collidingWithRightBottle ? red : blue),
-                    Visibility(
-                        visible: _startButtonVisible,
-                        child: IconButton(
-                            icon: const Icon(Icons.check_circle,
-                                color: Color(0x0000FFc8)),
-                            onPressed: () =>
-                                setDrillStatus(DrillStatus.runningThere)))
-                  ],
-                )
-              ]);
+              return Stack(
+                children: [
+                  OrientationBuilder(builder: (context, orientation) {
+                    return AspectRatio(
+                        aspectRatio: orientation == Orientation.portrait
+                            ? 1 / _controller.value.aspectRatio
+                            : _controller.value.aspectRatio,
+                        child: CameraPreview(_controller));
+                  }),
+                  boundingBoxToWidget(
+                      personBoundingBox,
+                      collidingWithLeftBottle || collidingWithRightBottle
+                          ? red
+                          : blue),
+                  boundingBoxToWidget(leftBottleBoundingBox,
+                      collidingWithLeftBottle ? red : blue),
+                  boundingBoxToWidget(rightBottleBoundingBox,
+                      collidingWithRightBottle ? red : blue),
+                  Text(getInstruction()),
+                  Visibility(
+                      visible: _startButtonVisible,
+                      child: IconButton(
+                          icon: const Icon(
+                            Icons.check_circle,
+                            color: Color.fromRGBO(0, 0, 255, 1),
+                          ),
+                          onPressed: () =>
+                              setDrillStatus(DrillStatus.runningThere)))
+                ],
+              );
             }));
   }
 
@@ -202,6 +203,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
                 imageWidth: image.width)
             .then((results) {
           updateBoundingBoxesFromMobilenetResults(results);
+          updateDrillStatus();
           setState(() {});
           _isDetecting = false;
         });
@@ -240,11 +242,13 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
       } else if (drillStatus == DrillStatus.finished) {
         state.onEntry(() {
           _stopwatch.stop();
-          AlertDialog(
-            title: const Text("Smashed it!"),
-            content: Text(
-                "You sprinted $_sprintLegsCompleted legs, for ${getSprintTime()} seconds at a speed of ${getSprintSpeed()}m/s! "),
-          );
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: const Text("Smashed it!"),
+                    content: Text(
+                        "You sprinted $_sprintLegsCompleted legs, for ${getSprintTime()} seconds at a speed of ${getSprintSpeed()}m/s! "),
+                  ));
         });
       }
 
@@ -289,7 +293,7 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
         break;
       case DrillStatus.runningBack:
         if (BoundingBox.areColliding(
-            personBoundingBox!, rightBottleBoundingBox!)) {
+            personBoundingBox!, leftBottleBoundingBox!)) {
           // If the person gets to the left cone when running back
           if (_sprintLegsCompleted == _goalSprintLegs - 1) {
             setDrillStatus(DrillStatus.finished);
@@ -353,6 +357,6 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   double getSprintSpeed() {
     assert(getDrillStatus() == DrillStatus.finished);
 
-    return getSprintTime() / (_sprintLegDistance * _sprintLegsCompleted);
+    return (_sprintLegDistance * _sprintLegsCompleted) / getSprintTime();
   }
 }
