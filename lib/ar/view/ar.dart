@@ -76,6 +76,11 @@ class _ARState extends State<AR> {
               onPressed: () async {
                 // TODO: do this initialization inside the class, and pass cameras down
                 // view hierarchy
+                //TODO: Set orientation inside init of cone drill screen
+                await SystemChrome.setPreferredOrientations([
+                  DeviceOrientation.landscapeRight,
+                ]);
+
                 await availableCameras().then((cameras) async {
                   await Tflite.loadModel(
                     model: "assets/ssd_mobilenet.tflite",
@@ -265,10 +270,6 @@ class _ARState extends State<AR> {
   Future<void> dispose() async {
     super.dispose();
     arSessionManager.dispose();
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
   }
 
   // Static methods
