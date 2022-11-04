@@ -8,6 +8,8 @@ late List<CameraDescription> _cameras;
 
 enum DrillStatus { notReady, ready, runningThere, runningBack, finished }
 
+enum GoalCone { firstCone, secondCone }
+
 // TODO: make sure this class is in the correct place
 class BoundingBox {
   BoundingBox(this.x, this.y, this.width, this.height, this.className,
@@ -51,6 +53,8 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
   bool _startButtonVisible = false;
 
   static const confidenceThreshold = 0.5;
+  
+  GoalCone? _goalCone;
 
   BoundingBox mobileNetResultToBoundingBox(dynamic result) {
     var rectangle = result["rect"];
@@ -201,6 +205,16 @@ class _ConeDrill extends State<ConeDrillMobilenet> {
         });
         state.onExit(() {
           _startButtonVisible = false;
+          setState(() {});
+        });
+      } else if (drillStatus == DrillStatus.runningThere) {
+        state.onEntry(() {
+          _goalCone = GoalCone.secondCone;
+          setState(() {});
+        });
+      } else if (drillStatus == DrillStatus.runningBack) {
+        state.onEntry(() {
+          _goalCone = GoalCone.firstCone;
           setState(() {});
         });
       }
