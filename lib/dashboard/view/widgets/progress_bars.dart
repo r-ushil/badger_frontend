@@ -23,9 +23,9 @@ class MetricProgressBars extends StatelessWidget {
             padding: const EdgeInsets.all(4.0),
             child: ProgressBarWithText(
                 metricName: metric.name,
-                icon: cricketIcon,
+                icon: Icon(metric.icon, color: metric.color),
                 value: metric.score,
-                color: Colors.lightBlueAccent),
+                color: metric.color),
           ),
       ],
     );
@@ -55,11 +55,11 @@ class ProgressBarWithText extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(50, 0, 0, 0),
-            child: icon,
+            child: icon, //icon
           ),
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-            child: LinearPercentIndicator(
+            child: LinearPercentIndicator( // bar
               percent: value / 100,
               width: MediaQuery.of(context).size.width * 0.45,
               lineHeight: 10,
@@ -73,11 +73,11 @@ class ProgressBarWithText extends StatelessWidget {
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
             child: SelectionArea(
-                child: Text(
+                child: Text( // name
               metricName,
-              style: const TextStyle(
-                fontSize: 10,
-                color: Colors.white,
+              style: TextStyle(
+                fontSize: 14,
+                color: color,
               ),
             )),
           ),

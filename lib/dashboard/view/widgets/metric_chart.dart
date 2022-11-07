@@ -11,6 +11,7 @@ class MetricChart extends StatelessWidget {
     final dashboardViewModel = Provider.of<DashboardViewModel>(context);
     final metricData = dashboardViewModel.getMetrics();
     final totalScore = dashboardViewModel.getTotalScore();
+    final profpic = dashboardViewModel.getProfilePicture();
 
     return SfCircularChart(series: <CircularSeries>[
       // Render pie chart
@@ -21,15 +22,14 @@ class MetricChart extends StatelessWidget {
           innerRadius: '70%',
           explode: false,
           dataLabelMapper: (MetricData data, _) =>
-              "${data.name}: ${data.score}",
+              "${data.score}",
+          pointColorMapper: (MetricData data, _) => data.color,
+          dataLabelSettings: const DataLabelSettings(isVisible: true, labelPosition: ChartDataLabelPosition.outside, useSeriesColor: true, textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
           animationDuration: 1000)
     ], annotations: <CircularChartAnnotation>[
       CircularChartAnnotation(
-          widget: Text(
-        '$totalScore',
-        style: const TextStyle(
-            fontWeight: FontWeight.w500, fontSize: 64, fontFamily: 'Segoe UI'),
-      ))
+          widget: profpic,
+      )
     ]);
   }
 }
