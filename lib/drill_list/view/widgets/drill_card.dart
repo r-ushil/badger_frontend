@@ -25,6 +25,7 @@ class DrillCard extends StatelessWidget {
           },
           color: const Color(0x00262627),
           titleText: drill.name,
+<<<<<<< HEAD
           description: Text(drill.description,
               style: const TextStyle(fontSize: 12, color: Colors.deepOrange)),
           avatar: SizedBox(
@@ -32,6 +33,12 @@ class DrillCard extends StatelessWidget {
               width: 100,
               child: Image.network(drill.thumbnailUrl)),
           icon: drill.skills[0],
+=======
+          description:
+              Text(drill.description, style: const TextStyle(fontSize: 12)),
+          avatar: SizedBox(height: 100, width: 100, child: Image.network(drill.thumbnailUrl)),
+          icon: const Icon(Icons.flash_on), //TODO: icon matching
+>>>>>>> 18dde70 (feat: thin-slice of getDrill api call)
           padding: const EdgeInsets.all(4.0),
         ));
   }
