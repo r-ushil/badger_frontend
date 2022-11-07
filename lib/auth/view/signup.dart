@@ -1,5 +1,5 @@
-import 'package:badger_frontend/dashboard/view/dashboard.dart';
 import 'package:badger_frontend/auth/view/login.dart';
+import 'package:badger_frontend/auth/view/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:badger_frontend/auth/view/widgets/header.dart';
 import 'package:badger_frontend/auth/view/widgets/textbox_with_label_and_icon.dart';
@@ -31,7 +31,7 @@ class _SignupState extends State<Signup> {
                   TextBoxWithLabelAndIcon("Password", Icons.lock),
             ],)),
             const SizedBox(height: 20),
-            const CustomButton("Sign up", Dashboard()), // TODO
+            const CustomButton("Sign up", Auth()),
             const CustomTextButton("Already a user? LOGIN", Login()),
           ])),
     );
