@@ -1,10 +1,10 @@
 import 'package:badger_frontend/ar/view/ar.dart';
-import 'package:badger_frontend/drill_list/view-model/drill_view_model.dart';
+import 'package:badger_frontend/drill_list/model/drill_model.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 
 class DrillCard extends StatelessWidget {
-  final DrillData drill;
+  final DisplayableDrill drill;
 
   const DrillCard({Key? key, required this.drill}) : super(key: key);
 
@@ -17,13 +17,11 @@ class DrillCard extends StatelessWidget {
           onTap: () => Navigator.push(
               context, MaterialPageRoute(builder: (context) => const AR())),
           color: const Color(0x00262627),
-          subTitle: Text("${drill.timeTaken} minutes",
-              style: const TextStyle(fontSize: 12)),
           titleText: drill.name,
           description:
               Text(drill.description, style: const TextStyle(fontSize: 12)),
-          avatar: SizedBox(height: 100, width: 100, child: drill.thumbnail),
-          icon: drill.skill,
+          avatar: SizedBox(height: 100, width: 100, child: Image.network(drill.thumbnailUrl)),
+          icon: const Icon(Icons.flash_on), //TODO: icon matching
           padding: const EdgeInsets.all(4.0),
         ));
   }
