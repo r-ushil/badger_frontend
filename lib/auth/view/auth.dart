@@ -1,0 +1,44 @@
+import 'package:badger_frontend/auth/view/widgets/digit_input.dart';
+import 'package:badger_frontend/dashboard/view/dashboard.dart';
+import 'package:badger_frontend/auth/view/login.dart';
+import 'package:flutter/material.dart';
+import 'package:badger_frontend/auth/view/widgets/header.dart';
+import 'package:badger_frontend/auth/view/widgets/textbox_with_label_and_icon.dart';
+import 'package:badger_frontend/auth/view/widgets/custom_text_button.dart';
+import 'package:badger_frontend/auth/view/widgets/custom_button.dart';
+
+class Auth extends StatefulWidget {
+  const Auth({Key? key}) : super(key: key);
+
+  @override
+  State<Auth> createState() => _AuthState();
+}
+
+class _AuthState extends State<Auth> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: SingleChildScrollView(child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const Text("Verify your Number \n"),
+            const Text("A 6-digit code is sent to ***-***-****.", style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
+            const Text("Please confirm your account by entering the code.", style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
+            const SizedBox(height: 30), // margin
+            Row(mainAxisAlignment: MainAxisAlignment.center,children: const [
+              DigitInput(),
+              DigitInput(),
+              DigitInput(),
+              DigitInput(),
+              DigitInput(),
+              DigitInput(),
+              ],
+            ),
+            const SizedBox(height: 30), // margin
+            const CustomButton("Verify", Dashboard()), // TODO
+            const CustomTextButton("Didn't get the code? RESEND", Auth()), //TODO
+          ])),
+    );
+  }
+}
