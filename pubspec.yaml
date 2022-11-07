@@ -53,6 +53,7 @@ dependencies:
   statemachine: ^3.3.0
   camera: ^0.10.0+4
   image: ^3.2.2
+  grpc: ^3.1.0
   tflite:
     git:
       url: https://github.com/zhengbomo/flutter_tflite.git
