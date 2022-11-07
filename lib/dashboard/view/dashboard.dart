@@ -14,24 +14,44 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dashboard'),
-      ),
       body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const <Widget>[
-            MetricChart(),
-            MetricProgressBars(),
+          children: <Widget>[
+            Row(children: [
+              Container(
+                  margin: const EdgeInsets.only(left:10, top: 50),
+                  width: (MediaQuery.of(context).size.width - 20)/ 2,
+                  child: TextButton(onPressed: () {}, style: TextButton.styleFrom(shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10))), backgroundColor: Colors.green, foregroundColor: Colors.white,), child: const Text("Overview"))
+              ),
+              Container(
+                  margin: const EdgeInsets.only(right: 10, top: 50),
+                  width: (MediaQuery.of(context).size.width - 20)/ 2,
+                  child: TextButton(onPressed: () {}, style: TextButton.styleFrom(shape: const RoundedRectangleBorder(side: BorderSide(color: Colors.green, width: 3), borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10))), backgroundColor: Colors.green.withOpacity(0.5), foregroundColor: Colors.white), child: const Text("History"))
+              ),
+            ],),
+            const MetricChart(),
+            const MetricProgressBars(),
           ]),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add_circle, size: 60),
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const DrillList()));
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      //bottomNavigationBar: const BottomTabBar(),
+      bottomNavigationBar: BottomAppBar(
+        color: const Color.fromRGBO(64, 235, 133, 50),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(onPressed: () {}, icon: const Icon(Icons.home, color: Colors.white)),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.star, color: Colors.white)),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.people, color: Colors.white)),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.settings, color: Colors.white)),
+          ]
+        )
+      ),
     );
   }
 }
