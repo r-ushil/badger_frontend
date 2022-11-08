@@ -14,31 +14,31 @@ class DrillCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final dashboardViewModel = Provider.of<DrillViewModel>(context);
 
-
     return Material(
         color: const Color(0x00121212),
         child: GFListTile(
           //TODO: change on tap to navigate to correct screen depending on drill
-          onTap: () async {
-            await availableCameras().then((cameras) async {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => RecordVideo(camera: cameras[0])));
-            });
-          },
-          color: const Color(0x00262627),
-          titleText: drill.name,
-          description:
-          Column(children: [
-            Row(children: [
-              drill.skills[0],
-              const Text("fix me", style: TextStyle(fontSize: 12), textAlign: TextAlign.left,),
-            ],),
-            Text(drill.description, style: const TextStyle(fontSize: 12)),
-          ],),
-          avatar: SizedBox(height: 100, width: 100, child: Image.network(drill.thumbnailUrl)),
-          icon: drill.skills[0],
+          onTap: () {},
+          color: const Color(0xff262627),
+          subTitle: const Text("fix me minutes",
+              style: TextStyle(fontSize: 12)),
+          title: Text(drill.name, style: const TextStyle(fontSize: 16, color: Colors.white)),
+          description: Column(
+            children: [
+              Row(
+                children: [
+                  drill.skills[0],
+                  const Text(
+                    "fix me",
+                    style: TextStyle(fontSize: 12),
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+              Text(drill.description, style: const TextStyle(fontSize: 12)),
+            ],
+          ),
+          avatar: SizedBox(height: 100, width: 150, child: Image.network(drill.thumbnailUrl)),
           padding: const EdgeInsets.all(4.0),
         ));
   }

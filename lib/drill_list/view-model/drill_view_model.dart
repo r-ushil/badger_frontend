@@ -4,16 +4,15 @@ import 'package:provider/provider.dart';
 
 class DrillData {
   //todo - replace with builder pattern for better readability
-  DrillData(this.name, this.skill, this.timeTaken, this.thumbnail,
-      this.videoUrl, this.description, this.metricname);
+  DrillData(this.name, this.metricname, this.timeTaken, this.thumbnail,
+      this.videoUrl, this.description);
 
   final String name;
-  final Icon skill;
+  final String metricname;
   final int timeTaken;
   final Image thumbnail;
   final String videoUrl;
   final String description;
-  final String metricname;
 }
 
 // create drill view model
@@ -23,34 +22,28 @@ class DrillViewModel {
     return [
       DrillData(
           "Sprint",
-          const Icon(Icons.flash_on),
+          "Agility",
           1,
           Image.network(
               "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg"),
           "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          "Sprint back and forth between two cones 5 times as quickly as you can!",
-          "Agility"
-      ),
+          "Sprint back and forth between two cones 5 times as quickly as you can!"),
       DrillData(
           "Sprint",
-          const Icon(Icons.flash_on),
+          "Agility",
           1,
           Image.network(
               "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg"),
           "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          "Sprint back and forth between two cones 5 times as quickly as you can!",
-          "Agility"
-      ),
+          "Sprint back and forth between two cones 5 times as quickly as you can!"),
       DrillData(
           "Sprint",
-          const Icon(Icons.flash_on),
+          "Agility",
           1,
           Image.network(
               "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg"),
           "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          "Sprint back and forth between two cones 5 times as quickly as you can!",
-          "Agility"
-      ),
+          "Sprint back and forth between two cones 5 times as quickly as you can!"),
     ];
   }
 
@@ -58,7 +51,7 @@ class DrillViewModel {
     final dashboardViewModel = Provider.of<DashboardViewModel>(context);
     final metricData = dashboardViewModel.getMetrics();
     for (MetricData m in metricData) {
-      if(metricname.compareTo(m.name) == 0) {
+      if (metricname.compareTo(m.name) == 0) {
         return Icon(m.icon, color: m.color);
       }
     }
