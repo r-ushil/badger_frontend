@@ -1,5 +1,5 @@
 import 'package:badger_frontend/dashboard/view/dashboard.dart';
-import 'package:badger_frontend/auth/view/signup.dart';
+import 'package:badger_frontend/auth/view/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:badger_frontend/auth/view/widgets/logo.dart';
 import 'package:badger_frontend/auth/view/widgets/header.dart';
@@ -28,13 +28,13 @@ class _LoginState extends State<Login> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: const <Widget>[
                 TextBoxWithLabelAndIcon("Phone Number", Icons.phone),
-                TextBoxWithLabelAndIcon("Password", Icons.lock),
-                CustomTextButton("Forgot your Password?", Dashboard()), //TODO
+                //TextBoxWithLabelAndIcon("Password", Icons.lock),
+                //CustomTextButton("Forgot your Password?", Dashboard()), //TODO
               ],
             ),
             const SizedBox(height: 20),
-            const CustomButton("Login", Dashboard()),
-            const CustomTextButton("Need an account? SIGNUP", Signup()),
+            const CustomButton("Login", Auth()),
+            //const CustomTextButton("Need an account? SIGNUP", Signup()),
           ])),
     );
   }
