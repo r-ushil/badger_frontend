@@ -1,11 +1,32 @@
 import 'package:badger_frontend/drill_list/model/drill_model.dart';
 import 'package:flutter/material.dart';
 
+class DisplayableDrill {
+  //todo - replace with builder pattern for better readability
+  DisplayableDrill(
+      this.name, this.thumbnailUrl, this.mediaUrl, this.description);
+
+  final String name;
+  final String thumbnailUrl;
+  final String mediaUrl;
+  final String description;
+}
+
 // create drill view model
 class DrillViewModel {
-  static Future<List<DisplayableDrill>> getDrillData() {
-    const dummyId = "6352414e50c7d61db5d52861";
-    return DrillModel.getDrillData(dummyId);
+  static Future<List<DisplayableDrill>> getDrillsData() async {
+    List<DisplayableDrill> displayableDrills = List.empty(growable: true);
+    var drills = await DrillModel.getDrillsData();
+    for (var drill in drills) {
+      var instrs = await DrillModel.getDrillInstructionData(drill.drillId);
+      displayableDrills.add(DisplayableDrill(
+          drill.drillName,
+          //TODO: correct for thumbnail/media urls?
+          instrs.steps.first.mediaUrl,
+          instrs.steps.first.mediaUrl,
+          drill.drillDescription));
+    }
+    return displayableDrills;
 
     // to replace with api call handling
     // return [

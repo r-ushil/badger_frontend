@@ -1,5 +1,5 @@
 import 'package:badger_frontend/ar/view/ar.dart';
-import 'package:badger_frontend/drill_list/model/drill_model.dart';
+import 'package:badger_frontend/drill_list/view-model/drill_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 

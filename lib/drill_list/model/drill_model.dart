@@ -1,8 +1,6 @@
 import 'package:badger_frontend/badger-api/drill/v1/drill_instructions.pb.dart';
-//import 'package:flutter/material.dart';
-//import 'drills.dart' as $drills_api;
-//import 'package:protobuf/protobuf.dart' as $pb;
 import 'package:badger_frontend/badger-api/drill/v1/drill_api.pbgrpc.dart';
+import 'package:badger_frontend/drill_list/model/api_client_channel.dart';
 import 'package:grpc/grpc.dart';
 
 //classes directly representing backend implementations
@@ -48,73 +46,58 @@ MediaTypeData toMediaTypeData(MediaType mt) {
   }
 }
 
-class DisplayableDrill {
-  //todo - replace with builder pattern for better readability
-  DisplayableDrill(
-      this.name, this.thumbnailUrl, this.mediaUrl, this.description);
-
-  final String name;
-  final String thumbnailUrl;
-  final String mediaUrl;
-  final String description;
-}
-
 class DrillModel {
-  static DisplayableDrill toDisplayableDrill(DrillInstructionStepData step) {
-    return DisplayableDrill(
-        step.title,
-        "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg",
-        step.mediaUrl,
-        step.description);
-  }
+  static final drillServiceClient = DrillServiceClient(
+      ApiClientChannel.getClientChannel(),
+      options: CallOptions(timeout: const Duration(minutes: 1)));
 
-  static Future<List<DisplayableDrill>> getDrillData(String id) async {
-    print("here1");
-    final clientChannel = ClientChannel('0.0.0.0',
-        port: 3000, // TODO: Extract to environment variable
-        options:
-            const ChannelOptions(credentials: ChannelCredentials.insecure()));
-    print("here2");
-    final drillServiceClient = DrillServiceClient(clientChannel,
-        options: CallOptions(timeout: const Duration(minutes: 1)));
-    print("here3");
-    List<DisplayableDrill> drillDataSteps = List.empty(growable: true);
-
-    final req = GetDrillRequest(drillId: id);
-    final instrReq = GetDrillInstructionsRequest(drillId: id);
-    print("here4");
+  static Future<List<DrillModelData>> getDrillsData() async {
+    List<DrillModelData> drills = List.empty(growable: false);
+    final req = GetDrillsRequest();
     try {
-      final drill = await drillServiceClient.getDrill(req).then((res) =>
-          DrillModelData(res.drill.drillId, res.drill.drillName,
-              res.drill.drillDescription));
-      print("got Drill");
-      final drillInstructions = await drillServiceClient
-          .getDrillInstructions(instrReq)
-          .then((res) => DrillInstructionData(
-              res.drillInstructions.introduction,
-              res.drillInstructions.steps
-                  .map((s) => DrillInstructionStepData(s.title, s.description,
-                      s.mediaUrl, toMediaTypeData(s.mediaType)))
-                  .toList(growable: false)));
-      print("got drill instrs");
-      for (var drillStep in drillInstructions.steps) {
-        drillDataSteps.add(toDisplayableDrill(drillStep));
-      }
+      final res = await drillServiceClient.getDrills(req);
+      drills = res.drills
+          .map((drill) => DrillModelData(
+              drill.drillId, drill.drillName, drill.drillDescription))
+          .toList();
     } catch (e) {
       print("Error");
       print(e); //TODO: error handling
     }
-    return drillDataSteps;
+    return drills;
+  }
+
+  static Future<DrillModelData> getDrillData(String drillId) async {
+    final req = GetDrillRequest(drillId: drillId);
+    DrillModelData drill = DrillModelData("0", "dummy", "dummy");
+    try {
+      final res = await drillServiceClient.getDrill(req);
+      drill = DrillModelData(
+          res.drill.drillId, res.drill.drillName, res.drill.drillDescription);
+    } catch (e) {
+      print("Error");
+      print(e); //TODO: error handling
+    }
+    return drill;
+  }
+
+  static Future<DrillInstructionData> getDrillInstructionData(
+      String drillId) async {
+    final req = GetDrillInstructionsRequest(drillId: drillId);
+    DrillInstructionData drillInstructions =
+        DrillInstructionData("dummy", List.empty());
+    try {
+      final res = await drillServiceClient.getDrillInstructions(req);
+      final drillInstructionSteps = res.drillInstructions.steps
+          .map((step) => DrillInstructionStepData(step.title, step.description,
+              step.mediaUrl, toMediaTypeData(step.mediaType)))
+          .toList(growable: false);
+      drillInstructions = DrillInstructionData(
+          res.drillInstructions.introduction, drillInstructionSteps);
+    } catch (e) {
+      print("Error");
+      print(e); //TODO: error handling
+    }
+    return drillInstructions;
   }
 }
-
-// Icon matchIcon() {
-//   //TODO: switch statement matching drill ids to icons
-//   return const Icon(Icons.flash_on);
-// }
-
-// Image matchThumbnail() {
-//   //TODO: switch statement fetching thumbnail
-//   return Image.network(
-//       "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg");
-// }
