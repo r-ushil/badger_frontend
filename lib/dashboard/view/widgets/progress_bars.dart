@@ -11,11 +11,6 @@ class MetricProgressBars extends StatelessWidget {
     final dashboardViewModel = Provider.of<DashboardViewModel>(context);
     final metricData = dashboardViewModel.getMetrics();
 
-    const cricketIcon = Icon(
-      Icons.sports_cricket,
-      color: Colors.white,
-    );
-
     return Column(
       children: [
         for (var metric in metricData)
@@ -59,7 +54,8 @@ class ProgressBarWithText extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-            child: LinearPercentIndicator( // bar
+            child: LinearPercentIndicator(
+              // bar
               percent: value / 100,
               width: MediaQuery.of(context).size.width * 0.45,
               lineHeight: 10,
@@ -73,7 +69,8 @@ class ProgressBarWithText extends StatelessWidget {
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
             child: SelectionArea(
-                child: Text( // name
+                child: Text(
+              // name
               metricName,
               style: TextStyle(
                 fontSize: 14,

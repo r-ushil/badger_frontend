@@ -12,24 +12,17 @@ class CustomTextButton extends StatelessWidget {
     final LoginViewModel lvm = LoginViewModel();
 
     return TextButton(
-      style: TextButton.styleFrom(
-          foregroundColor: Colors.grey
-      ),
-      onPressed: () {
-        Navigator.push(context,
-          MaterialPageRoute(builder: (context) => goto));},
-      child: RichText(
-          text: TextSpan(
-              style: const TextStyle(fontSize: 20),
-              children: [
-                TextSpan(text: lvm.getMainText(text)),
-                TextSpan(
-                    text : lvm.getUnderlined(text),
-                    style: const TextStyle(decoration: TextDecoration.underline)
-                )
-              ]
-          )
-      )
-    );
+        style: TextButton.styleFrom(foregroundColor: Colors.grey),
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => goto));
+        },
+        child: RichText(
+            text: TextSpan(style: const TextStyle(fontSize: 20), children: [
+          TextSpan(text: lvm.getMainText(text)),
+          TextSpan(
+              text: lvm.getUnderlined(text),
+              style: const TextStyle(decoration: TextDecoration.underline))
+        ])));
   }
 }

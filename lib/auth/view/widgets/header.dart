@@ -8,9 +8,6 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(text,
-                style: const TextStyle(fontSize: 50,
-                                 fontWeight: FontWeight.bold
-                                )
-                );
+        style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold));
   }
 }

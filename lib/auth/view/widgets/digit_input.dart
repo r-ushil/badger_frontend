@@ -14,8 +14,8 @@ class DigitInput extends StatelessWidget {
         ),
         child: const TextField(
           textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey, fontSize: 20, fontWeight: FontWeight.bold),
-        )
-    );
+          style: TextStyle(
+              color: Colors.grey, fontSize: 20, fontWeight: FontWeight.bold),
+        ));
   }
 }

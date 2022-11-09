@@ -18,22 +18,26 @@ class _SignupState extends State<Signup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(child: Column(
-          children: <Widget>[
-            const Center(child: Header("REGISTER")),
-            const SizedBox(height: 30), // margin
-            Container(
-                padding: const EdgeInsets.all(15.0),
-                decoration: BoxDecoration(border: Border.all(color: Colors.green), borderRadius: const BorderRadius.all(Radius.circular(20))),
-                child: Column(children: const [
-                  TextBoxWithLabelAndIcon("Phone Number", Icons.phone),
-                  TextBoxWithLabelAndIcon("Full Name", Icons.person),
-                  TextBoxWithLabelAndIcon("Password", Icons.lock),
-            ],)),
-            const SizedBox(height: 20),
-            const CustomButton("Sign up", Auth()),
-            const CustomTextButton("Already a user? LOGIN", Login()),
-          ])),
+      body: SingleChildScrollView(
+          child: Column(children: <Widget>[
+        const Center(child: Header("REGISTER")),
+        const SizedBox(height: 30), // margin
+        Container(
+            padding: const EdgeInsets.all(15.0),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.green),
+                borderRadius: const BorderRadius.all(Radius.circular(20))),
+            child: Column(
+              children: const [
+                TextBoxWithLabelAndIcon("Phone Number", Icons.phone),
+                TextBoxWithLabelAndIcon("Full Name", Icons.person),
+                TextBoxWithLabelAndIcon("Password", Icons.lock),
+              ],
+            )),
+        const SizedBox(height: 20),
+        const CustomButton("Sign up", Auth()),
+        const CustomTextButton("Already a user? LOGIN", Login()),
+      ])),
     );
   }
 }

@@ -5,7 +5,9 @@ class LoginViewModel {
     List<String> words = text.trim().split(" ");
     String lastWord = words[words.length - 1];
 
-    if (lastWord.endsWith("?")) {return "";}
+    if (lastWord.endsWith("?")) {
+      return "";
+    }
 
     return lastWord;
   }
@@ -15,7 +17,9 @@ class LoginViewModel {
     List<String> words = trim.split(" ");
 
     String lastWord = words[words.length - 1];
-    if (lastWord.endsWith("?")) {return text;}
+    if (lastWord.endsWith("?")) {
+      return text;
+    }
 
     return trim.replaceAll(lastWord, "");
   }
