@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 class DisplayableDrill {
   //todo - replace with builder pattern for better readability
   DisplayableDrill(
-      this.name, this.thumbnailUrl, this.mediaUrl, this.description);
+      this.name, this.skills, this.thumbnailUrl, this.videoUrl, this.description);
 
   final String name;
-  final Icon skill = const Icon(Icons.flash_on); //TODO: match icon function
+  final List<Icon> skills;
   final String thumbnailUrl;
-  final String mediaUrl;
+  final String videoUrl;
   final String description;
 }
 
@@ -19,42 +19,18 @@ class DrillViewModel {
     List<DisplayableDrill> displayableDrills = List.empty(growable: true);
     var drills = await DrillModel.getDrillsData();
     for (var drill in drills) {
-      var instrs = await DrillModel.getDrillInstructionData(drill.drillId);
       displayableDrills.add(DisplayableDrill(
           drill.drillName,
-          //TODO: correct for thumbnail/media urls?
-          instrs.steps.first.mediaUrl,
-          instrs.steps.first.mediaUrl,
+          matchIcons(drill.skills),
+          drill.thumbnailUrl,
+          drill.videoUrl,
           drill.drillDescription));
     }
     return displayableDrills;
+  }
 
-    // to replace with api call handling
-    // return [
-    //   DrillData(
-    //       "Sprint",
-    //       const Icon(Icons.flash_on),
-    //       1,
-    //       Image.network(
-    //           "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg"),
-    //       "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    //       "Sprint back and forth between two cones 5 times as quickly as you can!"),
-    //   DrillData(
-    //       "Sprint",
-    //       const Icon(Icons.flash_on),
-    //       1,
-    //       Image.network(
-    //           "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg"),
-    //       "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    //       "Sprint back and forth between two cones 5 times as quickly as you can!"),
-    //   DrillData(
-    //       "Sprint",
-    //       const Icon(Icons.flash_on),
-    //       1,
-    //       Image.network(
-    //           "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg"),
-    //       "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    //       "Sprint back and forth between two cones 5 times as quickly as you can!"),
-    // ];
+  static List<Icon> matchIcons(List<String> skills) {
+    //TODO: implement
+    return List.empty();
   }
 }
