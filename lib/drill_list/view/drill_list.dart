@@ -23,7 +23,7 @@ class StatefulDrillList extends StatefulWidget {
 
 class _StatefulDrillList extends State<StatefulDrillList> {
   final Future<List<DisplayableDrill>> _drillData =
-      DrillViewModel.getDrillsData();
+      DrillViewModel.getDisplayableDrills();
 
   @override
   Widget build(BuildContext context) {
