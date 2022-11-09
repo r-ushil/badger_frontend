@@ -40,9 +40,10 @@ class _RecordVideo extends State<RecordVideo> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Column(children: [
-              Container(
-                  padding: const EdgeInsets.all(32),
-                  child: CameraPreview(_controller))
+              Expanded(
+                  child: Container(
+                      padding: const EdgeInsets.all(32),
+                      child: CameraPreview(_controller)))
             ]);
           } else {
             return const Center(child: CircularProgressIndicator());
