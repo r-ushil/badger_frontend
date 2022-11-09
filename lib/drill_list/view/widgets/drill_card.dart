@@ -30,7 +30,7 @@ class DrillCard extends StatelessWidget {
           description:
               Text(drill.description, style: const TextStyle(fontSize: 12)),
           avatar: SizedBox(height: 100, width: 100, child: Image.network(drill.thumbnailUrl)),
-          icon: drill.skill,
+          icon: drill.skills[0],
           padding: const EdgeInsets.all(4.0),
         ));
   }
