@@ -1,4 +1,6 @@
 import 'package:badger_frontend/drill_list/view-model/drill_view_model.dart';
+import 'package:badger_frontend/record_video/view/record_video_view.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 
@@ -13,7 +15,14 @@ class DrillCard extends StatelessWidget {
         color: const Color(0x00121212),
         child: GFListTile(
           //TODO: change on tap to navigate to correct screen depending on drill
-          onTap: () {},
+          onTap: () async {
+            await availableCameras().then((cameras) async {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RecordVideo(camera: cameras[0])));
+            });
+          },
           color: const Color(0x00262627),
           subTitle: Text("${drill.timeTaken} minutes",
               style: const TextStyle(fontSize: 12)),
