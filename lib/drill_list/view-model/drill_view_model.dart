@@ -7,6 +7,7 @@ class DisplayableDrill {
       this.name, this.thumbnailUrl, this.mediaUrl, this.description);
 
   final String name;
+  final Icon skill = const Icon(Icons.flash_on); //TODO: match icon function
   final String thumbnailUrl;
   final String mediaUrl;
   final String description;
@@ -14,7 +15,7 @@ class DisplayableDrill {
 
 // create drill view model
 class DrillViewModel {
-  static Future<List<DisplayableDrill>> getDrillsData() async {
+  static Future<List<DisplayableDrill>> getDisplayableDrills() async {
     List<DisplayableDrill> displayableDrills = List.empty(growable: true);
     var drills = await DrillModel.getDrillsData();
     for (var drill in drills) {
