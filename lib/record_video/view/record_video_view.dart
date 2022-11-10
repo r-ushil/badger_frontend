@@ -50,6 +50,7 @@ class _RecordVideo extends State<RecordVideo> {
                     InkWell(
                         onTap: () async {
                           _isRecording = !_isRecording;
+                          setState(() {});
                           // if (_isRecording) {
                           //   var xFileVideo = await _controller!.stopVideoRecording();
                           //   _isRecording = false;
