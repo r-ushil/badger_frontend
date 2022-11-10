@@ -15,7 +15,8 @@ class DashboardViewModel {
   List<MetricData> getMetrics() {
     // TODO: replace with api call handling
     return [
-      MetricData("Power", 15, Icons.local_fire_department, const Color(0xffff7d03)),
+      MetricData(
+          "Power", 15, Icons.local_fire_department, const Color(0xffff7d03)),
       MetricData("Timing", 25, Icons.timer, const Color(0xffa05dc7)),
       MetricData("Reaction Time", 15, Icons.flash_on, const Color(0xff8dfe00)),
       MetricData("Agility", 25, Icons.directions_run, const Color(0xff00d9dd)),
@@ -30,8 +31,6 @@ class DashboardViewModel {
 
   getProfilePicture() {
     // TODO: replace with api call handling
-    return Image.asset("images/profilepic.png",
-      height: 170,
-      width: 170);
+    return Image.asset("images/profilepic.png", height: 170, width: 170);
   }
 }

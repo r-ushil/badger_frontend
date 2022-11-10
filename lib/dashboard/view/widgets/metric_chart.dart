@@ -10,7 +10,7 @@ class MetricChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final dashboardViewModel = Provider.of<DashboardViewModel>(context);
     final metricData = dashboardViewModel.getMetrics();
-    final totalScore = dashboardViewModel.getTotalScore();
+    //final totalScore = dashboardViewModel.getTotalScore();
     final profpic = dashboardViewModel.getProfilePicture();
 
     return SfCircularChart(series: <CircularSeries>[
@@ -21,14 +21,18 @@ class MetricChart extends StatelessWidget {
           yValueMapper: (MetricData data, _) => data.score,
           innerRadius: '70%',
           explode: false,
-          dataLabelMapper: (MetricData data, _) =>
-              "${data.score}",
+          dataLabelMapper: (MetricData data, _) => "${data.score}",
           pointColorMapper: (MetricData data, _) => data.color,
-          dataLabelSettings: const DataLabelSettings(isVisible: true, labelPosition: ChartDataLabelPosition.outside, useSeriesColor: true, textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+          dataLabelSettings: const DataLabelSettings(
+            isVisible: true,
+            labelPosition: ChartDataLabelPosition.outside,
+            useSeriesColor: true,
+            textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          ),
           animationDuration: 1000)
     ], annotations: <CircularChartAnnotation>[
       CircularChartAnnotation(
-          widget: profpic,
+        widget: profpic,
       )
     ]);
   }
