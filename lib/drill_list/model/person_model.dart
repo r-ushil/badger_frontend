@@ -39,13 +39,9 @@ class PersonModel {
               PersonData(person.userId, person.userScore, person.firebaseId))
           .toList();
     } catch (e) {
-<<<<<<< HEAD
       rethrow;
       //TODO: error handling
-=======
-      print("Error");
-      print(e); //TODO: error handling
->>>>>>> 99d3987 (refactor: make changes to reflect backend api refactor)
+
     }
     return people;
   }
