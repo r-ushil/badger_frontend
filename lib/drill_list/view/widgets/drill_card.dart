@@ -18,9 +18,12 @@ class DrillCard extends StatelessWidget {
               context, MaterialPageRoute(builder: (context) => const AR())),
           color: const Color(0x00262627),
           titleText: drill.name,
-          description:
-              Text(drill.description, style: const TextStyle(fontSize: 12)),
-          avatar: SizedBox(height: 100, width: 100, child: Image.network(drill.thumbnailUrl)),
+          description: Text(drill.description,
+              style: const TextStyle(fontSize: 12, color: Colors.deepOrange)),
+          avatar: SizedBox(
+              height: 100,
+              width: 100,
+              child: Image.network(drill.thumbnailUrl)),
           icon: drill.skills[0],
           padding: const EdgeInsets.all(4.0),
         ));

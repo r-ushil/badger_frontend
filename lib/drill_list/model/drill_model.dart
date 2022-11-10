@@ -12,7 +12,8 @@ class DrillData {
   final List<String> skills;
   final String videoUrl;
 
-  DrillData(this.drillId, this.drillName, this.drillDescription, this.instructions, this.thumbnailUrl, this.skills, this.videoUrl);
+  DrillData(this.drillId, this.drillName, this.drillDescription,
+      this.instructions, this.thumbnailUrl, this.skills, this.videoUrl);
 }
 
 class DrillModel {
@@ -26,26 +27,39 @@ class DrillModel {
     try {
       final res = await drillServiceClient.getDrills(req);
       drills = res.drills
-          .map((drill) =>
-              DrillData(drill.drillId, drill.drillName, drill.drillDescription, drill.instructions, drill.thumbnailUrl, drill.skills, drill.videoUrl))
+          .map((drill) => DrillData(
+              drill.drillId,
+              drill.drillName,
+              drill.drillDescription,
+              drill.instructions,
+              drill.thumbnailUrl,
+              drill.skills,
+              drill.videoUrl))
           .toList();
     } catch (e) {
-      print("Error");
-      print(e); //TODO: error handling
+      rethrow;
+      //TODO: error handling
     }
     return drills;
   }
 
   static Future<DrillData> getDrillData(String drillId) async {
     final req = GetDrillRequest(drillId: drillId);
-    DrillData drill = DrillData("0", "dummy", "dummy", "dummy", "dummy", List.empty(), "dummy");
+    DrillData drill = DrillData(
+        "0", "dummy", "dummy", "dummy", "dummy", List.empty(), "dummy");
     try {
       final res = await drillServiceClient.getDrill(req);
       drill = DrillData(
-          res.drill.drillId, res.drill.drillName, res.drill.drillDescription, res.drill.instructions, res.drill.thumbnailUrl, drill.skills, drill.videoUrl);
+          res.drill.drillId,
+          res.drill.drillName,
+          res.drill.drillDescription,
+          res.drill.instructions,
+          res.drill.thumbnailUrl,
+          drill.skills,
+          drill.videoUrl);
     } catch (e) {
-      print("Error");
-      print(e); //TODO: error handling
+      rethrow;
+      //TODO: error handling
     }
     return drill;
   }

@@ -23,8 +23,8 @@ class PersonModel {
       person = PersonData(
           res.person.userId, res.person.userScore, res.person.firebaseId);
     } catch (e) {
-      print("Error");
-      print(e); //TODO: error handling
+      rethrow;
+      //TODO: error handling
     }
     return person;
   }
@@ -39,8 +39,8 @@ class PersonModel {
               PersonData(person.userId, person.userScore, person.firebaseId))
           .toList();
     } catch (e) {
-      print("Error");
-      print(e); //TODO: error handling
+      rethrow;
+      //TODO: error handling
     }
     return people;
   }
