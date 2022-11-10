@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class DisplayableDrill {
   //todo - replace with builder pattern for better readability
-  DisplayableDrill(
-      this.name, this.skills, this.thumbnailUrl, this.videoUrl, this.description);
+  DisplayableDrill(this.name, this.skills, this.thumbnailUrl, this.videoUrl,
+      this.description);
 
   final String name;
   final List<Icon> skills;
@@ -30,7 +30,25 @@ class DrillViewModel {
   }
 
   static List<Icon> matchIcons(List<String> skills) {
-    //TODO: implement
-    return List.empty();
+    return skills.map((skill) {
+      switch (skill) {
+        case "reaction_time":
+          return const Icon(
+            Icons.flash_on,
+            color: Colors.lightBlue,
+          );
+        case "power":
+          return const Icon(Icons.local_fire_department,
+              color: Colors.lightBlue);
+        case "timing":
+          return const Icon(Icons.timer, color: Colors.lightBlue);
+        case "agility":
+          return const Icon(Icons.directions_run, color: Colors.lightBlue);
+        case "hand_speed":
+          return const Icon(Icons.speed, color: Colors.lightBlue);
+        default:
+          return const Icon(Icons.error, color: Colors.lightBlue);
+      }
+    }).toList();
   }
 }
