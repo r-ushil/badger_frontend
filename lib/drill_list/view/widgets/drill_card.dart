@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 
 class DrillCard extends StatelessWidget {
-  final DrillData drill;
+  final DisplayableDrill drill;
 
   const DrillCard({Key? key, required this.drill}) : super(key: key);
 
@@ -24,13 +24,14 @@ class DrillCard extends StatelessWidget {
             });
           },
           color: const Color(0x00262627),
-          subTitle: Text("${drill.timeTaken} minutes",
-              style: const TextStyle(fontSize: 12)),
           titleText: drill.name,
-          description:
-              Text(drill.description, style: const TextStyle(fontSize: 12)),
-          avatar: SizedBox(height: 100, width: 100, child: drill.thumbnail),
-          icon: drill.skill,
+          description: Text(drill.description,
+              style: const TextStyle(fontSize: 12, color: Colors.deepOrange)),
+          avatar: SizedBox(
+              height: 100,
+              width: 100,
+              child: Image.network(drill.thumbnailUrl)),
+          icon: drill.skills[0],
           padding: const EdgeInsets.all(4.0),
         ));
   }

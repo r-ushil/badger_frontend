@@ -7,25 +7,85 @@ class DrillList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DrillViewModel drillViewModel = DrillViewModel();
-    final List<DrillData> drillData = drillViewModel.getDrillData();
+    return const MaterialApp(
+      title: "Drill List Widget",
+      home: StatefulDrillList(),
+    );
+  }
+}
 
-    return Stack(alignment: Alignment.topLeft, children: [
-      Expanded(
-          child: ListView.builder(
-              itemCount: drillData.length,
-              itemBuilder: (BuildContext context, int index) {
-                return DrillCard(drill: drillData[index]);
-              })),
-      Material(
-          color: Colors.black,
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            color: Colors.white,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ))
-    ]);
+class StatefulDrillList extends StatefulWidget {
+  const StatefulDrillList({super.key});
+
+  @override
+  State<StatefulDrillList> createState() => _StatefulDrillList();
+}
+
+class _StatefulDrillList extends State<StatefulDrillList> {
+  final Future<List<DisplayableDrill>> _drillData =
+      DrillViewModel.getDisplayableDrills();
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTextStyle(
+      style: Theme.of(context).textTheme.displayMedium!,
+      textAlign: TextAlign.center,
+      child: FutureBuilder<List<DisplayableDrill>>(
+        future: _drillData,
+        builder: (BuildContext context,
+            AsyncSnapshot<List<DisplayableDrill>> snapshot) {
+          List<Widget> children;
+          if (snapshot.hasData) {
+            children = <Widget>[
+              Expanded(
+                  child: ListView.builder(
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return DrillCard(drill: snapshot.data![index]);
+                      })),
+              Material(
+                  color: Colors.black,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    color: Colors.white,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ))
+            ];
+          } else if (snapshot.hasError) {
+            children = <Widget>[
+              const Icon(
+                Icons.error_outline,
+                color: Colors.red,
+                size: 60,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text('Error: ${snapshot.error}'),
+              ),
+            ];
+          } else {
+            children = const <Widget>[
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: CircularProgressIndicator(),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: Text('Awaiting result...'),
+              ),
+            ];
+          }
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: children,
+            ),
+          );
+        },
+      ),
+    );
   }
 }

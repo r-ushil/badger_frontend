@@ -1,0 +1,5 @@
+version: v1
+plugins:
+  - name: dart
+    opt: grpc
+    out: lib/badger-api
