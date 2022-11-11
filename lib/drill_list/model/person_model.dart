@@ -41,7 +41,6 @@ class PersonModel {
     } catch (e) {
       rethrow;
       //TODO: error handling
-
     }
     return people;
   }

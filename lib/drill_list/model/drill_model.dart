@@ -64,4 +64,3 @@ class DrillModel {
     return drill;
   }
 }
-
