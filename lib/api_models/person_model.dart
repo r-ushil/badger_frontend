@@ -1,5 +1,5 @@
-import 'package:badger_frontend/badger-api/person/v1/person_api.pbgrpc.dart';
-import 'package:badger_frontend/drill_list/model/api_client_channel.dart';
+import 'package:badger_frontend/api_models/badger-api/person/v1/person_api.pbgrpc.dart';
+import 'package:badger_frontend/api_models/api_client_channel.dart';
 import 'package:grpc/grpc.dart';
 
 class PersonData {

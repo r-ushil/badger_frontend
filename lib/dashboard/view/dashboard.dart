@@ -1,6 +1,6 @@
 import 'package:badger_frontend/dashboard/view/widgets/metric_chart.dart';
 import 'package:badger_frontend/dashboard/view/widgets/progress_bars.dart';
-import 'package:badger_frontend/drill_list/view/drill_list.dart';
+import 'package:badger_frontend/drill_list/drill_list.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
