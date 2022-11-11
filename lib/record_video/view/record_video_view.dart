@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 class RecordVideo extends StatefulWidget {
   const RecordVideo({
@@ -90,13 +91,23 @@ class _RecordVideo extends State<RecordVideo> {
   }
 
   void videoPreviewDialogBox(File videoFile) {
+    var videoController = VideoPlayerController.file(videoFile);
+    var videoControllerInitialisationFuture = videoController.initialize();
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
               title: const Center(child: Text("Confrim Submission?")),
               titleTextStyle:
                   const TextStyle(fontSize: 40, color: Colors.black),
-              content: Container(),
+              content: Scaffold(
+                  body: Center(
+                      child: FutureBuilder(
+                future: videoControllerInitialisationFuture,
+                builder: (context, snapshot) =>
+                    snapshot.connectionState == ConnectionState.done
+                        ? Container()
+                        : const Center(child: CircularProgressIndicator()),
+              ))),
             ));
   }
 }
