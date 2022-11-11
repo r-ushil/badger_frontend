@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
@@ -49,19 +51,19 @@ class _RecordVideo extends State<RecordVideo> {
                     Expanded(child: _controller.buildPreview()),
                     InkWell(
                         onTap: () async {
-                          _isRecording = !_isRecording;
+                          if (_isRecording) {
+                            var xFileVideo =
+                                await _controller.stopVideoRecording();
+                            _isRecording = false;
+                            setState(() {});
+                            var videoFile = File(xFileVideo.path);
+                            videoPreviewDialogBox(videoFile);
+                          } else {
+                            await _controller.startVideoRecording();
+                            _isRecording = true;
+                            setState(() {});
+                          }
                           setState(() {});
-                          // if (_isRecording) {
-                          //   var xFileVideo = await _controller!.stopVideoRecording();
-                          //   _isRecording = false;
-                          //   setState(() {});
-                          //   var videoFile = File(xFileVideo.path);
-                          // } else {
-                          //   await _controller.stopVideoRecording();
-                          //   _isRecording = true;
-                          //   setState(() {});
-                          // }
-                          // setState(() {});
                         },
                         child: Align(
                             alignment: Alignment.bottomCenter,
@@ -85,5 +87,16 @@ class _RecordVideo extends State<RecordVideo> {
         },
       ),
     );
+  }
+
+  void videoPreviewDialogBox(File videoFile) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Center(child: Text("Confrim Submission?")),
+              titleTextStyle:
+                  const TextStyle(fontSize: 40, color: Colors.black),
+              content: Container(),
+            ));
   }
 }
