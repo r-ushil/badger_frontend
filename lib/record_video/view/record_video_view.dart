@@ -95,19 +95,22 @@ class _RecordVideo extends State<RecordVideo> {
     var videoControllerInitialisationFuture = videoController.initialize();
     showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-              title: const Center(child: Text("Confrim Submission?")),
-              titleTextStyle:
-                  const TextStyle(fontSize: 40, color: Colors.black),
-              content: Scaffold(
-                  body: Center(
-                      child: FutureBuilder(
-                future: videoControllerInitialisationFuture,
-                builder: (context, snapshot) =>
-                    snapshot.connectionState == ConnectionState.done
-                        ? Container()
-                        : const Center(child: CircularProgressIndicator()),
-              ))),
-            ));
+        builder: (context) => StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+                  title: const Center(child: Text("Confrim Submission?")),
+                  titleTextStyle:
+                      const TextStyle(fontSize: 40, color: Colors.black),
+                  content: Scaffold(
+                    body: Center(
+                        child: FutureBuilder(
+                      future: videoControllerInitialisationFuture,
+                      builder: (context, snapshot) => snapshot
+                                  .connectionState ==
+                              ConnectionState.done
+                          ? Center(child: VideoPlayer(videoController))
+                          : const Center(child: CircularProgressIndicator()),
+                    )),
+                  ),
+                )));
   }
 }
