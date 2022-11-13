@@ -92,14 +92,33 @@ class _RecordVideo extends State<RecordVideo> {
 
   void videoPreviewDialogBox(File videoFile) {
     var videoController = VideoPlayerController.file(videoFile);
+    videoController.setLooping(true);
     var videoControllerInitialisationFuture = videoController.initialize();
     showDialog(
         context: context,
         builder: (context) => StatefulBuilder(
             builder: (context, setState) => AlertDialog(
-                  title: const Center(child: Text("Confirm Submission?")),
+                  actions: [
+                    TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text("CANCEL",
+                            style: TextStyle(color: Colors.grey))),
+                    TextButton(
+                        onPressed: () {},
+                        child: const Text("CONFIRM",
+                            style: TextStyle(color: Colors.grey)))
+                  ],
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
+                      side: BorderSide(color: Colors.green, width: 2)),
+                  backgroundColor: Colors.black,
+                  title: const Center(
+                      child: Text(
+                    "Confirm Submission?",
+                    textAlign: TextAlign.center,
+                  )),
                   titleTextStyle:
-                      const TextStyle(fontSize: 40, color: Colors.black),
+                      const TextStyle(color: Colors.grey, fontSize: 30),
                   content: Scaffold(
                       body: Center(
                           child: FutureBuilder(
@@ -112,8 +131,12 @@ class _RecordVideo extends State<RecordVideo> {
                                     alignment: Alignment.bottomCenter,
                                     children: [
                                     VideoPlayer(videoController),
-                                    VideoProgressIndicator(videoController,
-                                        allowScrubbing: true)
+                                    VideoProgressIndicator(
+                                      videoController,
+                                      allowScrubbing: true,
+                                      colors: const VideoProgressColors(
+                                          playedColor: Colors.green),
+                                    )
                                   ]))
                             : const Center(child: CircularProgressIndicator()),
                       )),
@@ -127,6 +150,7 @@ class _RecordVideo extends State<RecordVideo> {
                                     : videoController.play();
                               });
                             },
+                            backgroundColor: Colors.green,
                             child: Icon(
                               videoController.value.isPlaying
                                   ? Icons.pause
