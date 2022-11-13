@@ -97,20 +97,42 @@ class _RecordVideo extends State<RecordVideo> {
         context: context,
         builder: (context) => StatefulBuilder(
             builder: (context, setState) => AlertDialog(
-                  title: const Center(child: Text("Confrim Submission?")),
+                  title: const Center(child: Text("Confirm Submission?")),
                   titleTextStyle:
                       const TextStyle(fontSize: 40, color: Colors.black),
                   content: Scaffold(
-                    body: Center(
-                        child: FutureBuilder(
-                      future: videoControllerInitialisationFuture,
-                      builder: (context, snapshot) => snapshot
-                                  .connectionState ==
-                              ConnectionState.done
-                          ? Center(child: VideoPlayer(videoController))
-                          : const Center(child: CircularProgressIndicator()),
-                    )),
-                  ),
+                      body: Center(
+                          child: FutureBuilder(
+                        future: videoControllerInitialisationFuture,
+                        builder: (context, snapshot) => snapshot
+                                    .connectionState ==
+                                ConnectionState.done
+                            ? Center(
+                                child: Stack(
+                                    alignment: Alignment.bottomCenter,
+                                    children: [
+                                    VideoPlayer(videoController),
+                                    VideoProgressIndicator(videoController,
+                                        allowScrubbing: true)
+                                  ]))
+                            : const Center(child: CircularProgressIndicator()),
+                      )),
+                      floatingActionButton: Container(
+                          alignment: Alignment.bottomCenter,
+                          child: FloatingActionButton(
+                            onPressed: () {
+                              setState(() {
+                                videoController.value.isPlaying
+                                    ? videoController.pause()
+                                    : videoController.play();
+                              });
+                            },
+                            child: Icon(
+                              videoController.value.isPlaying
+                                  ? Icons.pause
+                                  : Icons.play_arrow,
+                            ),
+                          ))),
                 )));
   }
 }
