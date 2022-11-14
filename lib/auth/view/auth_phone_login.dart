@@ -1,4 +1,4 @@
-import 'package:badger_frontend/auth/model/auth_phone_model.dart';
+import 'package:badger_frontend/common/auth/auth_phone_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +13,7 @@ class AuthPhoneLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authPhoneVerify = Provider.of<AuthPhoneVerificationModel>(context);
+    final authPhoneVerify = Provider.of<BadgerAuthPhoneModel>(context);
 
     return GestureDetector(
       onTap: () {

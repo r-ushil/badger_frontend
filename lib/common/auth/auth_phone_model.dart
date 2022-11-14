@@ -1,22 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-enum AuthPhoneVerificationState {
+enum BadgerAuthPhoneState {
   waitingForPhoneNumber,
   waitingForVerification,
   completed,
 }
 
-class AuthPhoneVerificationModel {
+class BadgerAuthPhoneModel {
   final auth = FirebaseAuth.instance;
 
   String? _verificationId;
-  AuthPhoneVerificationState progress =
-      AuthPhoneVerificationState.waitingForPhoneNumber;
+  BadgerAuthPhoneState progress = BadgerAuthPhoneState.waitingForPhoneNumber;
 
   Future<void> signInWithPhoneNumber(String phoneNumber) async {
-    if (progress != AuthPhoneVerificationState.waitingForPhoneNumber) return;
+    if (progress != BadgerAuthPhoneState.waitingForPhoneNumber) return;
 
-    progress = AuthPhoneVerificationState.waitingForVerification;
+    progress = BadgerAuthPhoneState.waitingForVerification;
 
     await auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
@@ -44,7 +43,7 @@ class AuthPhoneVerificationModel {
   Future<void> _verificationCompleted(PhoneAuthCredential credential) async {
     await auth.signInWithCredential(credential);
 
-    progress = AuthPhoneVerificationState.completed;
+    progress = BadgerAuthPhoneState.completed;
     _verificationId = null;
   }
 
@@ -53,7 +52,7 @@ class AuthPhoneVerificationModel {
   }
 
   void _codeSent(String verificationId, int? resendToken) async {
-    progress = AuthPhoneVerificationState.waitingForVerification;
+    progress = BadgerAuthPhoneState.waitingForVerification;
     _verificationId = verificationId;
   }
 
