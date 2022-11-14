@@ -42,4 +42,8 @@ class BadgerAuth {
   }
 
   initiateSignInWithPhoneNumber(String phoneNumber) {}
+
+  Future<void> logout() {
+    return FirebaseAuth.instance.signOut();
+  }
 }

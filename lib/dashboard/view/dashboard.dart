@@ -1,6 +1,8 @@
+import 'package:badger_frontend/common/auth/auth_model.dart';
 import 'package:badger_frontend/dashboard/view/widgets/metric_chart.dart';
 import 'package:badger_frontend/dashboard/view/widgets/progress_bars.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../drill_list/view/drill_list.dart';
 
@@ -14,6 +16,8 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<BadgerAuth>(context);
+
     return Scaffold(
       body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,7 +85,9 @@ class _DashboardState extends State<Dashboard> {
                     onPressed: () {},
                     icon: const Icon(Icons.people, color: Colors.white)),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await auth.logout();
+                    },
                     icon: const Icon(Icons.settings, color: Colors.white)),
               ])),
     );
