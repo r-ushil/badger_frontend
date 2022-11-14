@@ -39,14 +39,19 @@ class _StatefulDrillList extends State<StatefulDrillList> {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[
-                Expanded(
-                    child: ListView.separated(
-                        separatorBuilder: (context, index) => SizedBox(height: 10),
-                        padding: const EdgeInsets.all(7),
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return DrillCard(drill: snapshot.data![index]);
-                        })),
+                Column(
+                  children: [
+                    const Text("Choose your drill!"),
+                    Expanded(
+                        child: ListView.separated(
+                            separatorBuilder: (context, index) => SizedBox(height: 10),
+                            padding: const EdgeInsets.all(7),
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return DrillCard(drill: snapshot.data![index]);
+                            }))
+                  ],
+                ),
                 Material(
                     color: Colors.black,
                     child: IconButton(

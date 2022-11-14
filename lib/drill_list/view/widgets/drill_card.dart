@@ -49,7 +49,7 @@ class DrillCard extends StatelessWidget {
                 Text(
                   drill.description,
                   style: const TextStyle(fontSize: 12, color: Colors.white),
-                  textAlign: TextAlign.justify,
+                  //textAlign: TextAlign.justify,
                 ),
               ],
             ),
