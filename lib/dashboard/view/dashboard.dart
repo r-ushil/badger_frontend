@@ -1,6 +1,5 @@
 import 'package:badger_frontend/dashboard/view/widgets/metric_chart.dart';
 import 'package:badger_frontend/dashboard/view/widgets/progress_bars.dart';
-import 'package:badger_frontend/drill_list/drill_list.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -56,7 +55,7 @@ class _DashboardState extends State<Dashboard> {
         child: const Icon(Icons.add_circle, size: 60),
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const DrillList()));
+              MaterialPageRoute(builder: (context) => const DrillList())); //TODO: change implementation
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
