@@ -2,4 +2,4 @@ version: v1
 plugins:
   - name: dart
     opt: grpc
-    out: lib/badger-api
+    out: lib/api_models/badger-api

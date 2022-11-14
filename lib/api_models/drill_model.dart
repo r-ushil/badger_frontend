@@ -1,5 +1,5 @@
-import 'package:badger_frontend/badger-api/drill/v1/drill_api.pbgrpc.dart';
-import 'package:badger_frontend/drill_list/model/api_client_channel.dart';
+import 'package:badger_frontend/api_models/badger-api/drill/v1/drill_api.pbgrpc.dart';
+import 'package:badger_frontend/api_models/api_client_channel.dart';
 import 'package:grpc/grpc.dart';
 
 //classes directly representing backend implementations
