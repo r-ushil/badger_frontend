@@ -60,11 +60,16 @@ class DrillCard extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: metricList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return const Align(alignment: Alignment.topRight, child:MetricCard(metricName: "Power"));
-                  }, separatorBuilder: (context, index) => const SizedBox(height: 5),
+                    return const Align(
+                        alignment: Alignment.topRight,
+                        child: MetricCard(metricName: "Power"));
+                  },
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 5),
                 )),
             contentPadding: const EdgeInsets.all(4.0),
-            visualDensity: const VisualDensity(vertical: VisualDensity.maximumDensity),
+            visualDensity:
+                const VisualDensity(vertical: VisualDensity.maximumDensity),
             shape: RoundedRectangleBorder(
                 side: const BorderSide(color: Colors.green, width: 2),
                 borderRadius: BorderRadius.circular(5))));
