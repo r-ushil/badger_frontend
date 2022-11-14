@@ -25,7 +25,8 @@ class DrillViewModel {
           "Agility",
           1,
           Image.network(
-              "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg"),
+              "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg",
+          ),
           "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
           "Sprint back and forth between two cones 5 times as quickly as you can!"),
       DrillData(
@@ -33,7 +34,8 @@ class DrillViewModel {
           "Agility",
           1,
           Image.network(
-              "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg"),
+            "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg",
+          ),
           "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
           "Sprint back and forth between two cones 5 times as quickly as you can!"),
       DrillData(
@@ -41,10 +43,22 @@ class DrillViewModel {
           "Agility",
           1,
           Image.network(
-              "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg"),
+            "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg",
+          ),
           "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
           "Sprint back and forth between two cones 5 times as quickly as you can!"),
     ];
+  }
+
+  Color getMetricColor(String metricname, context) {
+    final dashboardViewModel = Provider.of<DashboardViewModel>(context);
+    final metricData = dashboardViewModel.getMetrics();
+    for (MetricData m in metricData) {
+      if (metricname.compareTo(m.name) == 0) {
+        return m.color;
+      }
+    }
+    return Colors.red;
   }
 
   Icon getMetricIcon(String metricname, context) {
@@ -52,7 +66,7 @@ class DrillViewModel {
     final metricData = dashboardViewModel.getMetrics();
     for (MetricData m in metricData) {
       if (metricname.compareTo(m.name) == 0) {
-        return Icon(m.icon, color: m.color);
+        return Icon(m.icon, color: Colors.white);
       }
     }
     return const Icon(Icons.error, color: Colors.red);
