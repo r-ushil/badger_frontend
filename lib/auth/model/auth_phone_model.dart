@@ -13,7 +13,7 @@ class AuthPhoneVerificationModel {
   AuthPhoneVerificationState progress =
       AuthPhoneVerificationState.waitingForPhoneNumber;
 
-  void signInWithPhoneNumber(String phoneNumber) async {
+  Future<void> signInWithPhoneNumber(String phoneNumber) async {
     if (progress != AuthPhoneVerificationState.waitingForPhoneNumber) return;
 
     progress = AuthPhoneVerificationState.waitingForVerification;
@@ -27,7 +27,7 @@ class AuthPhoneVerificationModel {
     );
   }
 
-  void verifyPhoneNumberWIthOtp(String otp) async {
+  Future<void> verifyPhoneNumberWithOtp(String otp) async {
     String? verificationId = _verificationId;
     if (verificationId == null) return;
 
@@ -41,14 +41,16 @@ class AuthPhoneVerificationModel {
     _verificationId = null;
   }
 
-  void _verificationCompleted(PhoneAuthCredential credential) async {
+  Future<void> _verificationCompleted(PhoneAuthCredential credential) async {
     await auth.signInWithCredential(credential);
 
     progress = AuthPhoneVerificationState.completed;
     _verificationId = null;
   }
 
-  void _verificationFailed(FirebaseAuthException e) {}
+  void _verificationFailed(FirebaseAuthException e) {
+    print(e);
+  }
 
   void _codeSent(String verificationId, int? resendToken) async {
     progress = AuthPhoneVerificationState.waitingForVerification;
