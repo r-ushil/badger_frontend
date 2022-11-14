@@ -8,7 +8,7 @@ class AuthLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onSelectAuthPhone() {
-      Navigator.pushNamed(context, "auth");
+      Navigator.pushNamed(context, "/auth/phone");
     }
 
     return GestureDetector(
