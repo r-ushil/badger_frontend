@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -104,7 +106,14 @@ class _RecordVideo extends State<RecordVideo> {
                         child: const Text("CANCEL",
                             style: TextStyle(color: Colors.grey))),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          await Firebase.initializeApp();
+                          FirebaseStorage.instance
+                              .ref()
+                              .child(
+                                  "videos/${DateTime.now().millisecondsSinceEpoch.toString()}.mp4")
+                              .putFile(videoFile);
+                        },
                         child: const Text("CONFIRM",
                             style: TextStyle(color: Colors.grey)))
                   ],
