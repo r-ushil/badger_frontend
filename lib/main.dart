@@ -108,6 +108,10 @@ class LoggedOutApp extends StatelessWidget {
     return MaterialApp(
       theme: getThemeData(),
       home: AuthLogin(),
+      routes: {
+        '/auth/phone': (context) => AuthPhoneLogin(),
+        '/auth/phone/verify': (context) => AuthPhoneVerify(),
+      },
     );
   }
 }
