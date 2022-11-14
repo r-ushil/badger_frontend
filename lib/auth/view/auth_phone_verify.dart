@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../model/auth_phone_model.dart';
+import '../../common/auth/auth_phone_model.dart';
 
 class AuthPhoneVerify extends StatelessWidget {
   AuthPhoneVerify({Key? key}) : super(key: key);
@@ -11,7 +11,7 @@ class AuthPhoneVerify extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authPhoneVerify = Provider.of<AuthPhoneVerificationModel>(context);
+    final authPhoneVerify = Provider.of<BadgerAuthPhoneModel>(context);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Login with Phone Number")),

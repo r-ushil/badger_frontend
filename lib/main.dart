@@ -1,4 +1,4 @@
-import 'package:badger_frontend/auth/model/auth_phone_model.dart';
+import 'package:badger_frontend/common/auth/auth_phone_model.dart';
 import 'package:badger_frontend/auth/view-model/login_view_model.dart';
 import 'package:badger_frontend/auth/view/auth_phone_login.dart';
 import 'package:badger_frontend/auth/view/auth_phone_verify.dart';
@@ -43,8 +43,8 @@ class RootApp extends StatelessWidget {
             create: (context) => RecordVideoViewModel()),
         Provider<BadgerAuth>(create: (context) => BadgerAuth()),
         // TODO: Ensure we have a proper provider structure
-        Provider<AuthPhoneVerificationModel>(
-            create: (context) => AuthPhoneVerificationModel()),
+        Provider<BadgerAuthPhoneModel>(
+            create: (context) => BadgerAuthPhoneModel()),
       ],
       child:
           const AuthGuard(), // MaterialApp(theme: getThemeData(), routes: const Routes()),
