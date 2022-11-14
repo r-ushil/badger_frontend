@@ -44,7 +44,7 @@ class _StatefulDrillList extends State<StatefulDrillList> {
                     const Text("Choose your drill!"),
                     Expanded(
                         child: ListView.separated(
-                            separatorBuilder: (context, index) => SizedBox(height: 10),
+                            separatorBuilder: (context, index) => const SizedBox(height: 10),
                             padding: const EdgeInsets.all(7),
                             itemCount: snapshot.data!.length,
                             itemBuilder: (BuildContext context, int index) {
