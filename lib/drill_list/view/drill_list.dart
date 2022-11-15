@@ -47,26 +47,27 @@ class _StatefulDrillList extends State<StatefulDrillList> {
                   decoration: const BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage("images/drill_list_banner3.webp"),
-                          fit: BoxFit.cover
-                      )
-                  ),
+                          fit: BoxFit.cover)),
                   child: Container(
                       height: 50,
                       width: 300,
+                      padding: const EdgeInsets.only(left: 8),
                       decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.horizontal(right: Radius.circular(50)),
-                          color: Colors.green
-                      ),
-                      child: Align(alignment: Alignment.centerLeft, child:Text(
-                        "Choose your drill!".toUpperCase(),
-                        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                      ))
-                  ),
+                          borderRadius: BorderRadius.horizontal(
+                              right: Radius.circular(50)),
+                          color: Colors.green),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Choose your drill!".toUpperCase(),
+                            style: const TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.bold),
+                          ))),
                 ),
                 Expanded(
                     child: ListView.separated(
                         separatorBuilder: (context, index) =>
-                        const SizedBox(height: 10),
+                            const SizedBox(height: 10),
                         padding: const EdgeInsets.all(7),
                         itemCount: snapshot.data!.length,
                         itemBuilder: (BuildContext context, int index) {
