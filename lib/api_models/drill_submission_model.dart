@@ -4,20 +4,6 @@ import 'package:badger_frontend/api_models/badger-api/google/type/datetime.pb.da
     as google_date_time;
 import 'package:grpc/grpc.dart';
 
-import 'badger-api/drill_submission/v1/drill_submission_api.pbgrpc.dart';
-
-static DateTime convertFromGoogleDateTime(
-  google_date_time.DateTime dateTime) {
-    return DateTime(
-      dateTime.year,
-      dateTime.month,
-      dateTime.day,
-      dateTime.hours,
-      dateTime.minutes,
-      dateTime.seconds,
-    );
-  }
-
 class DrillSubmissionData {
   final String userId;
   final String drillId;
@@ -31,11 +17,23 @@ class DrillSubmissionData {
 }
 
 class DrillSubmissionModel {
+  static DateTime convertFromGoogleDateTime(
+      google_date_time.DateTime dateTime) {
+    return DateTime(
+      dateTime.year,
+      dateTime.month,
+      dateTime.day,
+      dateTime.hours,
+      dateTime.minutes,
+      dateTime.seconds,
+    );
+  }
+
   static final drillSubmissionServiceClient = DrillSubmissionServiceClient(
       ApiClientChannel.getClientChannel(),
       options: CallOptions(timeout: const Duration(minutes: 1)));
 
-    static Future<List<DrillSubmissionData>> getDrillSubmissionsData() async {
+  static Future<List<DrillSubmissionData>> getDrillSubmissionsData() async {
     List<DrillSubmissionData> drills = List.empty(growable: false);
     final req = GetDrillSubmissionsRequest();
     try {
@@ -45,7 +43,7 @@ class DrillSubmissionModel {
               drillSubmission.userId,
               drillSubmission.drillId,
               drillSubmission.bucketUrl,
-              drillSubmission.timestamp,
+              convertFromGoogleDateTime(drillSubmission.timestamp),
               drillSubmission.processingStatus,
               drillSubmission.drillScore))
           .toList();
@@ -56,17 +54,19 @@ class DrillSubmissionModel {
     return drills;
   }
 
-  static Future<List<DrillSubmissionData>> getUserDrillSubmissionsData(String userId) async {
+  static Future<List<DrillSubmissionData>> getUserDrillSubmissionsData(
+      String userId) async {
     List<DrillSubmissionData> drills = List.empty(growable: false);
     final req = GetUserDrillSubmissionsRequest(userId: userId);
     try {
-      final res = await drillSubmissionServiceClient.getUserDrillSubmissions(req);
+      final res =
+          await drillSubmissionServiceClient.getUserDrillSubmissions(req);
       drills = res.drillSubmissions
           .map((drillSubmission) => DrillSubmissionData(
               drillSubmission.userId,
               drillSubmission.drillId,
               drillSubmission.bucketUrl,
-              drillSubmission.timestamp,
+              convertFromGoogleDateTime(drillSubmission.timestamp),
               drillSubmission.processingStatus,
               drillSubmission.drillScore))
           .toList();

@@ -1,3 +1,4 @@
+import 'package:badger_frontend/dashboard/view/dashboard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:badger_frontend/auth/view/widgets/custom_text_button.dart';
@@ -73,6 +74,6 @@ class _AuthState extends State<Auth> {
 
     //TODO: change it to verify phone number
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const Auth()));
+        context, MaterialPageRoute(builder: (context) => const Dashboard()));
   }
 }
