@@ -21,6 +21,48 @@ class DrillSubmissionModel {
       ApiClientChannel.getClientChannel(),
       options: CallOptions(timeout: const Duration(minutes: 1)));
 
+    static Future<List<DrillSubmissionData>> getDrillSubmissionsData() async {
+    List<DrillSubmissionData> drills = List.empty(growable: false);
+    final req = GetDrillSubmissionsRequest();
+    try {
+      final res = await drillSubmissionServiceClient.getDrillSubmissions(req);
+      drills = res.drillSubmissions
+          .map((drillSubmission) => DrillSubmissionData(
+              drillSubmission.userId,
+              drillSubmission.drillId,
+              drillSubmission.bucketUrl,
+              drillSubmission.timestamp,
+              drillSubmission.processingStatus,
+              drillSubmission.drillScore))
+          .toList();
+    } catch (e) {
+      rethrow;
+      //TODO: error handling
+    }
+    return drills;
+  }
+
+  static Future<List<DrillSubmissionData>> getUserDrillSubmissionsData(String userId) async {
+    List<DrillSubmissionData> drills = List.empty(growable: false);
+    final req = GetUserDrillSubmissionsRequest(userId: userId);
+    try {
+      final res = await drillSubmissionServiceClient.getUserDrillSubmissions(req);
+      drills = res.drillSubmissions
+          .map((drillSubmission) => DrillSubmissionData(
+              drillSubmission.userId,
+              drillSubmission.drillId,
+              drillSubmission.bucketUrl,
+              drillSubmission.timestamp,
+              drillSubmission.processingStatus,
+              drillSubmission.drillScore))
+          .toList();
+    } catch (e) {
+      rethrow;
+      //TODO: error handling
+    }
+    return drills;
+  }
+  
   static Future<DrillSubmissionData> getDrillSubmissionData(
       String submissionId) async {
     DrillSubmissionData drillSubmission =
