@@ -46,6 +46,6 @@ app.*.map.json
 service-account-key.json
 
 # Generated proto api stubs
-lib/api-models/badger-api
+lib/api_models/badger-api/
 
 todo
