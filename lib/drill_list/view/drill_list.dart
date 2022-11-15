@@ -11,7 +11,7 @@ class DrillList extends StatefulWidget {
 
 class _DrillList extends State<DrillList> {
   final Future<List<DisplayableDrill>> _drillData =
-      DrillViewModel.getDisplayableDrills();
+      DrillListViewModel.getDisplayableDrills();
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +19,7 @@ class _DrillList extends State<DrillList> {
       appBar: AppBar(),
       body: FutureBuilder<List<DisplayableDrill>>(
         future: _drillData,
-        builder: (BuildContext context,
-            AsyncSnapshot<List<DisplayableDrill>> snapshot) {
+        builder: (context, snapshot) {
           List<Widget> children;
           if (snapshot.hasData) {
             children = <Widget>[
@@ -55,7 +54,7 @@ class _DrillList extends State<DrillList> {
                           const SizedBox(height: 10),
                       padding: const EdgeInsets.all(7),
                       itemCount: snapshot.data!.length,
-                      itemBuilder: (BuildContext context, int index) {
+                      itemBuilder: (context, index) {
                         return DrillCard(drill: snapshot.data![index]);
                       }))
             ];

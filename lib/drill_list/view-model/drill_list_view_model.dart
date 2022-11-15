@@ -14,7 +14,7 @@ class DisplayableDrill {
 }
 
 // create drill view model
-class DrillViewModel {
+class DrillListViewModel {
   static Future<List<DisplayableDrill>> getDisplayableDrills() async {
     List<DisplayableDrill> displayableDrills = List.empty(growable: true);
     var drills = await DrillModel.getDrillsData();
