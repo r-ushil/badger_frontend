@@ -4,6 +4,8 @@ import 'package:badger_frontend/api_models/badger-api/google/type/datetime.pb.da
     as google_date_time;
 import 'package:grpc/grpc.dart';
 
+import 'badger-api/drill_submission/v1/drill_submission_api.pbgrpc.dart';
+
 class DrillSubmissionData {
   final String userId;
   final String drillId;
@@ -16,7 +18,7 @@ class DrillSubmissionData {
       this.processingStatus, this.drillScore);
 }
 
-class DrillModel {
+class DrillSubmissionModel {
   static final drillSubmissionServiceClient = DrillSubmissionServiceClient(
       ApiClientChannel.getClientChannel(),
       options: CallOptions(timeout: const Duration(minutes: 1)));
