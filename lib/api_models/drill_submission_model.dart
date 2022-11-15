@@ -6,6 +6,18 @@ import 'package:grpc/grpc.dart';
 
 import 'badger-api/drill_submission/v1/drill_submission_api.pbgrpc.dart';
 
+static DateTime convertFromGoogleDateTime(
+  google_date_time.DateTime dateTime) {
+    return DateTime(
+      dateTime.year,
+      dateTime.month,
+      dateTime.day,
+      dateTime.hours,
+      dateTime.minutes,
+      dateTime.seconds,
+    );
+  }
+
 class DrillSubmissionData {
   final String userId;
   final String drillId;
@@ -23,16 +35,46 @@ class DrillSubmissionModel {
       ApiClientChannel.getClientChannel(),
       options: CallOptions(timeout: const Duration(minutes: 1)));
 
-  static DateTime convertFromGoogleDateTime(
-      google_date_time.DateTime dateTime) {
-    return DateTime(
-      dateTime.year,
-      dateTime.month,
-      dateTime.day,
-      dateTime.hours,
-      dateTime.minutes,
-      dateTime.seconds,
-    );
+    static Future<List<DrillSubmissionData>> getDrillSubmissionsData() async {
+    List<DrillSubmissionData> drills = List.empty(growable: false);
+    final req = GetDrillSubmissionsRequest();
+    try {
+      final res = await drillSubmissionServiceClient.getDrillSubmissions(req);
+      drills = res.drillSubmissions
+          .map((drillSubmission) => DrillSubmissionData(
+              drillSubmission.userId,
+              drillSubmission.drillId,
+              drillSubmission.bucketUrl,
+              drillSubmission.timestamp,
+              drillSubmission.processingStatus,
+              drillSubmission.drillScore))
+          .toList();
+    } catch (e) {
+      rethrow;
+      //TODO: error handling
+    }
+    return drills;
+  }
+
+  static Future<List<DrillSubmissionData>> getUserDrillSubmissionsData(String userId) async {
+    List<DrillSubmissionData> drills = List.empty(growable: false);
+    final req = GetUserDrillSubmissionsRequest(userId: userId);
+    try {
+      final res = await drillSubmissionServiceClient.getUserDrillSubmissions(req);
+      drills = res.drillSubmissions
+          .map((drillSubmission) => DrillSubmissionData(
+              drillSubmission.userId,
+              drillSubmission.drillId,
+              drillSubmission.bucketUrl,
+              drillSubmission.timestamp,
+              drillSubmission.processingStatus,
+              drillSubmission.drillScore))
+          .toList();
+    } catch (e) {
+      rethrow;
+      //TODO: error handling
+    }
+    return drills;
   }
 
   static Future<DrillSubmissionData> getDrillSubmissionData(
