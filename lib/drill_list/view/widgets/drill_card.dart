@@ -1,6 +1,8 @@
 import 'package:badger_frontend/drill_list/view-model/drill_list_view_model.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
+import '../../../record_video/view/record_video_view.dart';
 import 'metric_card.dart';
 
 class DrillCard extends StatelessWidget {
@@ -13,7 +15,14 @@ class DrillCard extends StatelessWidget {
     final metricList = drill.skills;
 
     return InkWell(
-        onTap: () {},
+        onTap: () async {
+          await availableCameras().then((cameras) async {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RecordVideo(camera: cameras[0])));
+          });
+        },
         child: Material(
             color: const Color(0xff262627),
             shape: RoundedRectangleBorder(
