@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:badger_frontend/auth/view/widgets/logo.dart';
 import 'package:badger_frontend/auth/view/widgets/header.dart';
@@ -40,7 +41,9 @@ class _LoginState extends State<Login> {
   }
 
   void f() {
-    // print(phoneNumberController.text); // TODO: this is the input phone number from the text field.
+    if (kDebugMode) {
+      print(phoneNumberController.text);
+    } // TODO: this is the input phone number from the text field.
 
     //TODO: change function to verify phone number
     Navigator.push(
