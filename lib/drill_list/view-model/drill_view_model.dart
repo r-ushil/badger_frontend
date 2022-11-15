@@ -40,7 +40,7 @@ class DrillViewModel {
           "Sprint back and forth between two cones 5 times as quickly as you can!"),
       DrillData(
           "Sprint",
-          ["Agility"],
+          ["Agility", "Power", "Reaction Time", "Hand Speed"],
           1,
           Image.network(
             "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg",

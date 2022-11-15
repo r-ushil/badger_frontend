@@ -16,9 +16,9 @@ class MetricCard extends StatelessWidget {
     final metricColor = dashboardViewModel.getMetricColor(metricName, context);
 
     return Container(
-      width: 80,
+      //width: 80,
       height: 25,
-      padding: const EdgeInsets.only(left: 2.0),
+      padding: const EdgeInsets.only(left: 2.0, right: 5.0),
       decoration: BoxDecoration(
           color: metricColor,
           borderRadius: const BorderRadius.all(Radius.circular(10))),

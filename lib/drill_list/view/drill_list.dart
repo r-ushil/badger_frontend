@@ -39,28 +39,39 @@ class _StatefulDrillList extends State<StatefulDrillList> {
             List<Widget> children;
             if (snapshot.hasData) {
               children = <Widget>[
-                Column(
-                  children: [
-                    const Text("Choose your drill!"),
-                    Expanded(
-                        child: ListView.separated(
-                            separatorBuilder: (context, index) => const SizedBox(height: 10),
-                            padding: const EdgeInsets.all(7),
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return DrillCard(drill: snapshot.data![index]);
-                            }))
-                  ],
+                Container(
+                  width: double.infinity,
+                  height: 200,
+                  alignment: Alignment.bottomLeft,
+                  padding: const EdgeInsets.only(bottom: 10),
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("images/drill_list_banner.jpg"),
+                          fit: BoxFit.cover
+                      )
+                  ),
+                  child: Container(
+                      height: 50,
+                      width: 300,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.horizontal(right: Radius.circular(50)),
+                          color: Colors.green
+                      ),
+                      child: Align(alignment: Alignment.centerLeft, child:Text(
+                        "Choose your drill!".toUpperCase(),
+                        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ))
+                  ),
                 ),
-                Material(
-                    color: Colors.black,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back),
-                      color: Colors.white,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ))
+                Expanded(
+                    child: ListView.separated(
+                        separatorBuilder: (context, index) =>
+                        const SizedBox(height: 10),
+                        padding: const EdgeInsets.all(7),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return DrillCard(drill: snapshot.data![index]);
+                        }))
               ];
             } else if (snapshot.hasError) {
               children = <Widget>[
@@ -89,7 +100,6 @@ class _StatefulDrillList extends State<StatefulDrillList> {
             }
             return Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: children,
               ),
             );
