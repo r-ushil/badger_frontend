@@ -6,6 +6,8 @@ import 'package:badger_frontend/styles/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'drill_list/view-model/drill_view_model.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const App());
@@ -20,6 +22,7 @@ class App extends StatelessWidget {
       providers: [
         Provider<LoginViewModel>(create: (context) => LoginViewModel()),
         Provider<DashboardViewModel>(create: (context) => DashboardViewModel()),
+        Provider<DrillListViewModel>(create: (context) => DrillListViewModel()),
         Provider<DrillViewModel>(create: (context) => DrillViewModel())
       ],
       child: MaterialApp(
