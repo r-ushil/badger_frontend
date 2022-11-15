@@ -1,6 +1,5 @@
 import 'package:badger_frontend/drill_list/view-model/drill_list_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'metric_card.dart';
 
@@ -11,7 +10,6 @@ class DrillCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dashboardViewModel = Provider.of<DrillViewModel>(context);
 
     final metricList = drill.skills;
 
@@ -25,7 +23,11 @@ class DrillCard extends StatelessWidget {
             child: Column(
               children: [
                 ExpansionTile(
+                  collapsedIconColor: Colors.white,
+                  iconColor: Colors.white,
                   //TODO: change on tap to navigate to correct screen depending on drill
+                  //onTap: () => Navigator.push(
+                  //    context, MaterialPageRoute(builder: (context) => const AR())),
                   //tileColor: const Color(0xff262627),
                   title: Text(drill.name.toUpperCase(),
                       style: const TextStyle(
