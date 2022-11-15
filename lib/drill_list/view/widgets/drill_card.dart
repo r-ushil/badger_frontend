@@ -63,20 +63,22 @@ class DrillCard extends StatelessWidget {
                 child: Align(
                     alignment: Alignment.topLeft,
                     child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
+                        scrollDirection: Axis.horizontal,
                         child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        for (var index = 0; index < metricList.length; index++)
-                          Row(
-                            children: const [
-                              MetricCard(metricName: "Power"),
-                              SizedBox(width: 5)
-                            ],
-                          )
-                      ],
-                    )))),
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            for (var index = 0;
+                                index < metricList.length;
+                                index++)
+                              Row(
+                                children: const [
+                                  MetricCard(metricName: "Power"),
+                                  SizedBox(width: 5)
+                                ],
+                              )
+                          ],
+                        )))),
           ],
         ));
   }

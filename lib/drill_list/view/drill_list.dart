@@ -46,7 +46,7 @@ class _StatefulDrillList extends State<StatefulDrillList> {
                   padding: const EdgeInsets.only(bottom: 10),
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage("images/drill_list_banner.jpg"),
+                          image: AssetImage("images/drill_list_banner3.webp"),
                           fit: BoxFit.cover
                       )
                   ),
