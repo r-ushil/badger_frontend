@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class TextBoxWithLabelAndIcon extends StatelessWidget {
-  const TextBoxWithLabelAndIcon(this.title, this.icon, {super.key});
+  const TextBoxWithLabelAndIcon(this.title, this.icon, this.textController,
+      {super.key});
 
   final String title;
   final IconData icon;
+  final TextEditingController textController;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class TextBoxWithLabelAndIcon extends StatelessWidget {
           SizedBox(
               width: 300,
               child: TextField(
+                  controller: textController,
                   style: const TextStyle(color: Colors.grey),
                   decoration: InputDecoration(
                       prefixIcon: Icon(icon, color: Colors.grey),

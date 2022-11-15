@@ -1,5 +1,4 @@
 import 'package:badger_frontend/auth/view/widgets/digit_input.dart';
-import 'package:badger_frontend/dashboard/view/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:badger_frontend/auth/view/widgets/custom_text_button.dart';
 import 'package:badger_frontend/auth/view/widgets/custom_button.dart';
@@ -44,10 +43,16 @@ class _AuthState extends State<Auth> {
               ],
             ),
             const SizedBox(height: 30), // margin
-            const CustomButton("Verify", Dashboard()), // TODO
+            CustomButton("Verify", f), // TODO
             const CustomTextButton(
                 "Didn't get the code? RESEND", Auth()), //TODO
           ])),
     );
+  }
+
+  void f() {
+    //TODO: change it to verify phone number
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const Auth()));
   }
 }
