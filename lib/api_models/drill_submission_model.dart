@@ -2,6 +2,8 @@ import 'package:badger_frontend/api_models/api_client_channel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grpc/grpc.dart';
 
+import 'badger-api/drill_submission/v1/drill_submission_api.pbgrpc.dart';
+
 class DrillSubmissionData {
   final String userId;
   final String drillId;
@@ -14,7 +16,7 @@ class DrillSubmissionData {
       this.processingStatus, this.drillScore);
 }
 
-class DrillModel {
+class DrillSubmissionModel {
   static final drillSubmissionServiceClient = DrillSubmissionServiceClient(
       ApiClientChannel.getClientChannel(),
       options: CallOptions(timeout: const Duration(minutes: 1)));
@@ -25,7 +27,7 @@ class DrillModel {
         DrillSubmissionData("0", "dummy", "dummy", Timestamp(0, 0), "dummy", 0);
     final req = GetDrillSubmissionRequest(drillSubmissionId: submissionId);
     try {
-      final res = await drillSubmissionServiceClient.getDrills(req);
+      final res = await drillSubmissionServiceClient.getDrillSubmission(req);
       drillSubmission = DrillSubmissionData(
           res.drillSubmission.userId,
           res.drillSubmission.drillId,
