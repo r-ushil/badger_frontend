@@ -10,7 +10,6 @@ class DrillCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final metricList = drill.skills;
 
     return InkWell(

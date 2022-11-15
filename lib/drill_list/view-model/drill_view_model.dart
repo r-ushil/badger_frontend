@@ -41,7 +41,7 @@ class DrillViewModel {
       DrillData(
           "Sprint",
           ["Agility", "Power", "Reaction Time", "Hand Speed"],
-          1,
+          3,
           Image.network(
             "https://post.healthline.com/wp-content/uploads/2021/04/Cone-Fitness-Male-Gym-1200x628-Facebook.jpg",
           ),
