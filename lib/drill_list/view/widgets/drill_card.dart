@@ -12,8 +12,6 @@ class DrillCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final metricList = drill.skills;
-
     return InkWell(
         onTap: () async {
           await availableCameras().then((cameras) async {
@@ -33,10 +31,6 @@ class DrillCard extends StatelessWidget {
                 ExpansionTile(
                   collapsedIconColor: Colors.white,
                   iconColor: Colors.white,
-                  //TODO: change on tap to navigate to correct screen depending on drill
-                  //onTap: () => Navigator.push(
-                  //    context, MaterialPageRoute(builder: (context) => const AR())),
-                  //tileColor: const Color(0xff262627),
                   title: Text(drill.name.toUpperCase(),
                       style: const TextStyle(
                           fontSize: 16,
@@ -54,16 +48,8 @@ class DrillCard extends StatelessWidget {
                             "fix me minutes",
                             style: TextStyle(fontSize: 12, color: Colors.white),
                           )),
-                      /*Text(
-                    drill.description,
-                    style: const TextStyle(fontSize: 12, color: Colors.white),
-                    textAlign: TextAlign.justify,
-                  ),*/
                     ],
                   ),
-                  //contentPadding: const EdgeInsets.all(4.0),
-                  //visualDensity:
-                  //    const VisualDensity(vertical: VisualDensity.maximumDensity),
                   children: <Widget>[
                     ListTile(
                         subtitle: Text(
@@ -84,12 +70,13 @@ class DrillCard extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 for (var index = 0;
-                                    index < metricList.length;
+                                    index < drill.skills.length;
                                     index++)
                                   Row(
-                                    children: const [
-                                      MetricCard(metricName: "Power"),
-                                      SizedBox(width: 5)
+                                    children: [
+                                      MetricCard(
+                                          metricName: drill.skills[index]),
+                                      const SizedBox(width: 5)
                                     ],
                                   )
                               ],
