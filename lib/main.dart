@@ -13,8 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'drill_evaluation/view-model/drill_evaluation_view_model.dart';
 
-import 'auth/view/auth_login.dart';
-
 void main() async {
   /* Initialise widgets library */
   WidgetsFlutterBinding.ensureInitialized();
@@ -107,10 +105,9 @@ class LoggedOutApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: getThemeData(),
-      home: AuthLogin(),
+      home: const AuthPhoneLogin(),
       routes: {
-        '/auth/phone': (context) => AuthPhoneLogin(),
-        '/auth/phone/verify': (context) => AuthPhoneVerify(),
+        '/auth/phone/verify': (context) => const AuthPhoneVerify(),
       },
     );
   }
