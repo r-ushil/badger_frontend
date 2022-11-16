@@ -41,12 +41,13 @@ class DrillCard extends StatelessWidget {
                           const BoxConstraints(minHeight: 300, maxHeight: 300),
                       child: Image.network(drill.thumbnailUrl)),
                   subtitle: Column(
-                    children: const [
+                    children: [
                       Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "fix me minutes",
-                            style: TextStyle(fontSize: 12, color: Colors.white),
+                            "${drill.duration} minutes",
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.white),
                           )),
                     ],
                   ),
