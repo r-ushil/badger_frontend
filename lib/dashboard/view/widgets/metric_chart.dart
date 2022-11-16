@@ -9,7 +9,7 @@ class MetricChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dashboardViewModel = Provider.of<DashboardViewModel>(context);
-    final metricData = dashboardViewModel.getMetrics();
+    final metricData = DashboardViewModel.metrics;
     final profpic = dashboardViewModel.getProfilePicture();
 
     return SfCircularChart(series: <CircularSeries>[
