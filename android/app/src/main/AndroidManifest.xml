@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.badger_frontend">
+    package="com.seg.badger">
    <application
-        android:label="badger_frontend"
+        android:label="badger"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
