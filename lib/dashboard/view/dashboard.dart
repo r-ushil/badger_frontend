@@ -51,7 +51,9 @@ class _DashboardState extends State<Dashboard> {
               ],
             ),
             const MetricChart(),
-            const MetricProgressBars(),
+            const Padding(
+                padding: EdgeInsets.only(left: 40.0),
+                child: MetricProgressBars()),
           ]),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add_circle, size: 60),

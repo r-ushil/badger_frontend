@@ -63,7 +63,8 @@ class DrillSubmissionModel {
     }
   }
 
-  static ResponseStream<SubscribeToDrillSubmissionResponse> subscribeToDrillSubmission(String submissionId) {
+  static ResponseStream<SubscribeToDrillSubmissionResponse>
+      subscribeToDrillSubmission(String submissionId) {
     final req =
         SubscribeToDrillSubmissionRequest(drillSubmissionId: submissionId);
     return drillSubmissionServiceClient.subscribeToDrillSubmission(req);

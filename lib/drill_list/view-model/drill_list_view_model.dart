@@ -2,8 +2,8 @@ import 'package:badger_frontend/api_models/drill_model.dart';
 
 class DisplayableDrill {
   //todo - replace with builder pattern for better readability
-  DisplayableDrill(this.drillId, this.name, this.skills, this.thumbnailUrl, this.videoUrl,
-      this.description, this.duration);
+  DisplayableDrill(this.drillId, this.name, this.skills, this.thumbnailUrl,
+      this.videoUrl, this.description, this.duration);
 
   final String drillId;
   final String name;

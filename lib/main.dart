@@ -7,6 +7,7 @@ import 'package:badger_frontend/styles/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'drill_evaluation/view-model/drill_evaluation_view_model.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,8 @@ class App extends StatelessWidget {
         Provider<LoginViewModel>(create: (context) => LoginViewModel()),
         Provider<DashboardViewModel>(create: (context) => DashboardViewModel()),
         Provider<DrillListViewModel>(create: (context) => DrillListViewModel()),
+        Provider<DrillEvaluationViewModel>(
+            create: (context) => DrillEvaluationViewModel()),
         ChangeNotifierProvider<RecordVideoViewModel>(
             create: (context) => RecordVideoViewModel())
       ],

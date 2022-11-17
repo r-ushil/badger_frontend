@@ -15,10 +15,12 @@ class MetricProgressBars extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: ProgressBarWithText(
-                metricName: metric.name,
-                icon: Icon(metric.icon, color: metric.color),
-                value: metric.score,
-                color: metric.color),
+              metricName: metric.name,
+              icon: Icon(metric.icon, color: metric.color),
+              value: metric.score,
+              color: metric.color,
+              width: MediaQuery.of(context).size.width * 0.38,
+            ),
           ),
       ],
     );
@@ -30,6 +32,7 @@ class ProgressBarWithText extends StatelessWidget {
   final Icon icon;
   final int value;
   final Color color;
+  final double width;
 
   const ProgressBarWithText({
     Key? key,
@@ -37,6 +40,7 @@ class ProgressBarWithText extends StatelessWidget {
     required this.value,
     required this.color,
     required this.icon,
+    required this.width,
   }) : super(key: key);
 
   @override
@@ -44,22 +48,22 @@ class ProgressBarWithText extends StatelessWidget {
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
       child: Row(
-        mainAxisSize: MainAxisSize.max,
+        //mainAxisSize: MainAxisSize.max,
         children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(50, 0, 0, 0),
-            child: icon, //icon
-          ),
+          //Padding(
+          //  padding: const EdgeInsetsDirectional.fromSTEB(50, 0, 0, 0),
+          icon, //icon
+          //),
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
             child: LinearPercentIndicator(
               // bar
               percent: value / 100,
-              width: MediaQuery.of(context).size.width * 0.45,
+              width: width, //MediaQuery.of(context).size.width * 0.45,
               lineHeight: 10,
               animation: true,
               progressColor: color,
-              backgroundColor: const Color(0xFF1F1F1F),
+              backgroundColor: Colors.white10,
               barRadius: const Radius.circular(10),
               padding: EdgeInsets.zero,
             ),
