@@ -44,15 +44,15 @@ class DrillSubmissionModel {
       ApiClientChannel.getClientChannel(),
       options: CallOptions(timeout: const Duration(minutes: 1)));
 
-  static void submitDrill(DrillSubmissionData data) async {
+  static void submitDrill(String userId, String drillId, String bucketUrl) async {
     final req = InsertDrillSubmissionRequest(
         drillSubmission: DrillSubmission(
-            userId: data.userId,
-            drillId: data.drillId,
-            bucketUrl: data.bucketUrl,
-            timestamp: convertToGoogleDateTime(data.timestamp),
-            processingStatus: data.processingStatus,
-            drillScore: data.drillScore));
+            userId: userId,
+            drillId: drillId,
+            bucketUrl: bucketUrl,
+            timestamp: google_date_time.DateTime(),
+            processingStatus: "pending",
+            drillScore: -1));
     try {
       await drillSubmissionServiceClient.insertDrillSubmission(req);
     } catch (e) {
