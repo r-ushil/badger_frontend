@@ -18,7 +18,8 @@ class DrillCard extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => RecordVideo(camera: cameras[0], drillId: drill.drillId)));
+                    builder: (context) => RecordVideo(
+                        camera: cameras[0], drillId: drill.drillId)));
           });
         },
         child: Material(

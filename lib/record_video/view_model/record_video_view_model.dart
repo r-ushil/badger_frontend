@@ -43,7 +43,8 @@ class RecordVideoViewModel with ChangeNotifier {
     UploadTask task = ref.putFile(_videoFile);
     await task.whenComplete(() {});
     String bucketUrl = await ref.getDownloadURL();
-    return await DrillSubmissionModel.submitDrill("todo: auth", drillId, bucketUrl);
+    return await DrillSubmissionModel.submitDrill(
+        "todo: auth", drillId, bucketUrl);
   }
 
   void setVideoPlayerController(VideoPlayerController controller) {
