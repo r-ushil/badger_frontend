@@ -1,5 +1,6 @@
 import 'package:badger_frontend/api_models/api_client_channel.dart';
 import 'package:badger_frontend/api_models/badger-api/drill_submission/v1/drill_submission_api.pbgrpc.dart';
+import "package:badger_frontend/api_models/badger-api/drill_submission/v1/drill_submission.pb.dart";
 import 'package:badger_frontend/api_models/badger-api/google/type/datetime.pb.dart'
     as google_date_time;
 import 'package:grpc/grpc.dart';
@@ -29,9 +30,38 @@ class DrillSubmissionModel {
     );
   }
 
+  static google_date_time.DateTime convertToGoogleDateTime(DateTime dateTime) {
+    return google_date_time.DateTime(
+        year: dateTime.year,
+        month: dateTime.month,
+        day: dateTime.day,
+        hours: dateTime.hour,
+        minutes: dateTime.minute,
+        seconds: dateTime.second);
+  }
+
   static final drillSubmissionServiceClient = DrillSubmissionServiceClient(
       ApiClientChannel.getClientChannel(),
       options: CallOptions(timeout: const Duration(minutes: 1)));
+
+  static Future<String> submitDrill(
+      String userId, String drillId, String bucketUrl) async {
+    final req = InsertDrillSubmissionRequest(
+        drillSubmission: DrillSubmission(
+            userId: userId,
+            drillId: drillId,
+            bucketUrl: bucketUrl,
+            timestamp: convertToGoogleDateTime(DateTime.now()),
+            processingStatus: "pending",
+            drillScore: 0));
+    try {
+      var res = await drillSubmissionServiceClient.insertDrillSubmission(req);
+      return res.hexId;
+    } catch (e) {
+      rethrow;
+      //TODO: error handling
+    }
+  }
 
   static Future<List<DrillSubmissionData>> getDrillSubmissionsData() async {
     List<DrillSubmissionData> drills = List.empty(growable: false);
