@@ -3,8 +3,6 @@ import 'package:badger_frontend/drill_evaluation/view/widgets/result_bars.dart';
 import 'package:badger_frontend/drill_evaluation/view/widgets/result_tile.dart';
 import 'package:badger_frontend/drill_evaluation/view/widgets/small_button.dart';
 import 'package:badger_frontend/drill_list/view/drill_list.dart';
-import 'package:badger_frontend/record_video/view/record_video_view.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:badger_frontend/auth/view/widgets/header.dart';
 import 'package:provider/provider.dart';
