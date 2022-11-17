@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:provider/provider.dart';
 
+import '../../../drill_evaluation/view/drill_evaluation.dart';
 import '../../view_model/record_video_view_model.dart';
 
 class VideoPreviewDialog extends StatefulWidget {
@@ -41,7 +42,13 @@ class _VideoPreviewDialog extends State<VideoPreviewDialog> {
             onPressed: () => Navigator.pop(context),
             child: const Text("CANCEL", style: TextStyle(color: Colors.grey))),
         TextButton(
-            onPressed: () => viewModel.uploadVideo(),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const DrillEvaluation()));
+              //viewModel.uploadVideo();
+            },
             child: const Text("CONFIRM", style: TextStyle(color: Colors.grey)))
       ],
       shape: const RoundedRectangleBorder(
