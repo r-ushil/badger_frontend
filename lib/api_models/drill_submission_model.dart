@@ -51,9 +51,9 @@ class DrillSubmissionModel {
             userId: userId,
             drillId: drillId,
             bucketUrl: bucketUrl,
-            timestamp: google_date_time.DateTime(),
+            timestamp: convertToGoogleDateTime(DateTime.now()),
             processingStatus: "pending",
-            drillScore: -1));
+            drillScore: 0));
     try {
       var res = await drillSubmissionServiceClient.insertDrillSubmission(req);
       return res.hexId;
