@@ -1,15 +1,13 @@
 import 'package:badger_frontend/dashboard/view-model/dashboard_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:provider/provider.dart';
 
 class MetricProgressBars extends StatelessWidget {
   const MetricProgressBars({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final dashboardViewModel = Provider.of<DashboardViewModel>(context);
-    final metricData = dashboardViewModel.getMetrics();
+    final metricData = DashboardViewModel.metrics;
 
     return Column(
       children: [

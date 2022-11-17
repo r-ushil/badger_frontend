@@ -11,9 +11,17 @@ class DrillData {
   final String thumbnailUrl;
   final List<String> skills;
   final String videoUrl;
+  final int duration;
 
-  DrillData(this.drillId, this.drillName, this.drillDescription,
-      this.instructions, this.thumbnailUrl, this.skills, this.videoUrl);
+  DrillData(
+      this.drillId,
+      this.drillName,
+      this.drillDescription,
+      this.instructions,
+      this.thumbnailUrl,
+      this.skills,
+      this.videoUrl,
+      this.duration);
 }
 
 class DrillModel {
@@ -34,7 +42,8 @@ class DrillModel {
               drill.instructions,
               drill.thumbnailUrl,
               drill.skills,
-              drill.videoUrl))
+              drill.videoUrl,
+              drill.duration))
           .toList();
     } catch (e) {
       rethrow;
@@ -46,7 +55,7 @@ class DrillModel {
   static Future<DrillData> getDrillData(String drillId) async {
     final req = GetDrillRequest(drillId: drillId);
     DrillData drill = DrillData(
-        "0", "dummy", "dummy", "dummy", "dummy", List.empty(), "dummy");
+        "0", "dummy", "dummy", "dummy", "dummy", List.empty(), "dummy", 0);
     try {
       final res = await drillServiceClient.getDrill(req);
       drill = DrillData(
@@ -55,8 +64,9 @@ class DrillModel {
           res.drill.drillDescription,
           res.drill.instructions,
           res.drill.thumbnailUrl,
-          drill.skills,
-          drill.videoUrl);
+          res.drill.skills,
+          res.drill.videoUrl,
+          res.drill.duration);
     } catch (e) {
       rethrow;
       //TODO: error handling

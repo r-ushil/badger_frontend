@@ -2,7 +2,6 @@ import 'package:badger_frontend/auth/view/login.dart';
 import 'package:badger_frontend/auth/view-model/login_view_model.dart';
 import 'package:badger_frontend/dashboard/view-model/dashboard_view_model.dart';
 import 'package:badger_frontend/drill_list/view-model/drill_list_view_model.dart';
-import 'package:badger_frontend/drill_list/view-model/drill_view_model.dart';
 import 'package:badger_frontend/record_video/view_model/record_video_view_model.dart';
 import 'package:badger_frontend/styles/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,7 +24,6 @@ class App extends StatelessWidget {
         Provider<LoginViewModel>(create: (context) => LoginViewModel()),
         Provider<DashboardViewModel>(create: (context) => DashboardViewModel()),
         Provider<DrillListViewModel>(create: (context) => DrillListViewModel()),
-        Provider<DrillViewModel>(create: (context) => DrillViewModel()),
         ChangeNotifierProvider<RecordVideoViewModel>(
             create: (context) => RecordVideoViewModel())
       ],
