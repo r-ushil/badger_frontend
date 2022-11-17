@@ -63,6 +63,12 @@ class DrillSubmissionModel {
     }
   }
 
+  static ResponseStream<SubscribeToDrillSubmissionResponse> subscribeToDrillSubmission(String submissionId) {
+    final req =
+        SubscribeToDrillSubmissionRequest(drillSubmissionId: submissionId);
+    return drillSubmissionServiceClient.subscribeToDrillSubmission(req);
+  }
+
   static Future<List<DrillSubmissionData>> getDrillSubmissionsData() async {
     List<DrillSubmissionData> drills = List.empty(growable: false);
     final req = GetDrillSubmissionsRequest();
