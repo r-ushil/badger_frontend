@@ -35,11 +35,12 @@ class RecordVideoViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void uploadVideo() {
-    FirebaseStorage.instance
-        .ref()
-        .child("videos/${DateTime.now().millisecondsSinceEpoch.toString()}.mp4")
-        .putFile(_videoFile);
+  Future<String> uploadVideo() async {
+    Reference ref = FirebaseStorage.instance.ref().child(
+        "videos/${DateTime.now().millisecondsSinceEpoch.toString()}.mp4");
+    UploadTask task = ref.putFile(_videoFile);
+    await task.whenComplete(() {});
+    return await ref.getDownloadURL();
   }
 
   void setVideoPlayerController(VideoPlayerController controller) {
