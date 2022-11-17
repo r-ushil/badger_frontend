@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:badger_frontend/api_models/drill_submission_model.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ class RecordVideoViewModel with ChangeNotifier {
   bool _isRecording = false;
   late File _videoFile;
   late VideoPlayerController _videoController;
+  String drillId = "";
 
   get cameraController => _controller;
   get isRecording => _isRecording;
@@ -40,7 +42,8 @@ class RecordVideoViewModel with ChangeNotifier {
         "videos/${DateTime.now().millisecondsSinceEpoch.toString()}.mp4");
     UploadTask task = ref.putFile(_videoFile);
     await task.whenComplete(() {});
-    return await ref.getDownloadURL();
+    String bucketUrl = await ref.getDownloadURL();
+    return await DrillSubmissionModel.submitDrill("todo: auth", drillId, bucketUrl);
   }
 
   void setVideoPlayerController(VideoPlayerController controller) {
@@ -59,5 +62,9 @@ class RecordVideoViewModel with ChangeNotifier {
   void playPreview() {
     _videoController.play();
     notifyListeners();
+  }
+
+  void setDrillId(String drillId) {
+    this.drillId = drillId;
   }
 }

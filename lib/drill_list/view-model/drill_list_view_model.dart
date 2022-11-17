@@ -2,9 +2,10 @@ import 'package:badger_frontend/api_models/drill_model.dart';
 
 class DisplayableDrill {
   //todo - replace with builder pattern for better readability
-  DisplayableDrill(this.name, this.skills, this.thumbnailUrl, this.videoUrl,
+  DisplayableDrill(this.drillId, this.name, this.skills, this.thumbnailUrl, this.videoUrl,
       this.description, this.duration);
 
+  final String drillId;
   final String name;
   final List<String> skills;
   final String thumbnailUrl;
@@ -20,6 +21,7 @@ class DrillListViewModel {
     var drills = await DrillModel.getDrillsData();
     for (var drill in drills) {
       displayableDrills.add(DisplayableDrill(
+          drill.drillId,
           drill.drillName,
           drill.skills,
           drill.thumbnailUrl,

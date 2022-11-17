@@ -44,7 +44,8 @@ class DrillSubmissionModel {
       ApiClientChannel.getClientChannel(),
       options: CallOptions(timeout: const Duration(minutes: 1)));
 
-  static void submitDrill(String userId, String drillId, String bucketUrl) async {
+  static Future<String> submitDrill(
+      String userId, String drillId, String bucketUrl) async {
     final req = InsertDrillSubmissionRequest(
         drillSubmission: DrillSubmission(
             userId: userId,
@@ -54,12 +55,12 @@ class DrillSubmissionModel {
             processingStatus: "pending",
             drillScore: -1));
     try {
-      await drillSubmissionServiceClient.insertDrillSubmission(req);
+      var res = await drillSubmissionServiceClient.insertDrillSubmission(req);
+      return res.hexId;
     } catch (e) {
       rethrow;
       //TODO: error handling
     }
-    
   }
 
   static Future<List<DrillSubmissionData>> getDrillSubmissionsData() async {
