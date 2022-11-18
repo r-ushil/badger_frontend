@@ -4,6 +4,7 @@ import 'package:badger_frontend/api_models/drill_submission_model.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
 
 class RecordVideoViewModel with ChangeNotifier {
@@ -38,14 +39,14 @@ class RecordVideoViewModel with ChangeNotifier {
   }
 
   Future<String> uploadVideo() async {
-    Reference ref = FirebaseStorage.instance.ref().child(
-        "videos/${DateTime.now().millisecondsSinceEpoch.toString()}.mp4");
-    UploadTask task = ref.putFile(_videoFile);
-    await task.whenComplete(() {});
-    String bucketUrl = await ref.getDownloadURL();
-    String encodedBucketUrl = Uri.encodeComponent(bucketUrl);
+    final String videoUuid = const Uuid().v4();
+    final String videoObjName = "videos/$videoUuid.mp4";
+
+    Reference ref = FirebaseStorage.instance.ref().child(videoObjName);
+    await ref.putFile(_videoFile).whenComplete(() => null);
+
     return await DrillSubmissionModel.submitDrill(
-        "todo: auth", drillId, encodedBucketUrl);
+        "todo: auth", drillId, videoObjName);
   }
 
   void setVideoPlayerController(VideoPlayerController controller) {
