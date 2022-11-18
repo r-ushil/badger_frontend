@@ -13,7 +13,7 @@ class RecordVideoViewModel with ChangeNotifier {
   late VideoPlayerController _videoController;
   String drillId = "";
 
-  get cameraController => _controller;
+  CameraController get cameraController => _controller;
   get isRecording => _isRecording;
 
   File get videoFile => _videoFile;
