@@ -43,12 +43,14 @@ class _VideoPreviewDialog extends State<VideoPreviewDialog> {
             child: const Text("CANCEL", style: TextStyle(color: Colors.white))),
         TextButton(
             onPressed: () async {
-              viewModel.uploadVideo().then((submissionId) => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => DrillEvaluation(
-                            drillSubmissionId: submissionId,
-                          ))));
+              viewModel
+                  .uploadVideo()
+                  .then((submissionId) => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DrillEvaluation(
+                                drillSubmissionId: submissionId,
+                              ))));
             },
             child: const Text("CONFIRM", style: TextStyle(color: Colors.white)))
       ],

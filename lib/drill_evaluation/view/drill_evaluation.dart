@@ -145,9 +145,10 @@ class _DrillEvaluationState extends State<DrillEvaluation> {
                       ])),
             );
           } else {
-            return const CircularProgressIndicator(
+            return const Center(
+                child: CircularProgressIndicator(
               color: Colors.white,
-            );
+            ));
           }
         });
   }
