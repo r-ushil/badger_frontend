@@ -73,14 +73,9 @@ class _DrillList extends State<DrillList> {
           } else {
             children = const <Widget>[
               SizedBox(
-                width: 60,
-                height: 60,
-                child: CircularProgressIndicator(),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 16),
-                child: Text('Awaiting result...'),
-              ),
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(color: Colors.white)),
             ];
           }
           return Center(
