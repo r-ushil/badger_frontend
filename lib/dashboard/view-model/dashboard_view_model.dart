@@ -16,7 +16,7 @@ class DashboardViewModel {
     MetricData(
         "Power", 15, Icons.local_fire_department, const Color(0xffff7d03)),
     MetricData("Timing", 25, Icons.timer, const Color(0xffa05dc7)),
-    MetricData("Reaction Time", 15, Icons.flash_on, const Color(0xff8dfe00)),
+    MetricData("Reaction Time", 15, Icons.flash_on, const Color(0xff83da16)),
     MetricData("Agility", 25, Icons.directions_run, const Color(0xff00d9dd)),
     MetricData("Hand Speed", 20, Icons.speed, const Color(0xfff70403))
   ];
