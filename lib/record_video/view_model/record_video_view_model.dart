@@ -13,7 +13,7 @@ class RecordVideoViewModel with ChangeNotifier {
   late VideoPlayerController _videoController;
   String drillId = "";
 
-  get cameraController => _controller;
+  CameraController get cameraController => _controller;
   get isRecording => _isRecording;
 
   File get videoFile => _videoFile;
@@ -43,8 +43,9 @@ class RecordVideoViewModel with ChangeNotifier {
     UploadTask task = ref.putFile(_videoFile);
     await task.whenComplete(() {});
     String bucketUrl = await ref.getDownloadURL();
+    String encodedBucketUrl = Uri.encodeComponent(bucketUrl);
     return await DrillSubmissionModel.submitDrill(
-        "todo: auth", drillId, bucketUrl);
+        "todo: auth", drillId, encodedBucketUrl);
   }
 
   void setVideoPlayerController(VideoPlayerController controller) {

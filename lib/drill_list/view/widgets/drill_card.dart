@@ -37,10 +37,32 @@ class DrillCard extends StatelessWidget {
                           fontSize: 16,
                           color: Colors.white,
                           fontWeight: FontWeight.bold)),
-                  leading: ConstrainedBox(
-                      constraints:
-                          const BoxConstraints(minHeight: 300, maxHeight: 300),
-                      child: Image.network(drill.thumbnailUrl)),
+                  leading: SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: Image.network(
+                        drill.thumbnailUrl,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          } else {
+                            return Center(
+                                child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: CircularProgressIndicator(
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                        color: Colors.white)));
+                          }
+                        },
+                      )),
                   subtitle: Column(
                     children: [
                       Align(

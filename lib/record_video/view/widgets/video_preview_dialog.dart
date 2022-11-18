@@ -40,47 +40,58 @@ class _VideoPreviewDialog extends State<VideoPreviewDialog> {
       actions: [
         TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("CANCEL", style: TextStyle(color: Colors.grey))),
+            child: const Text("CANCEL", style: TextStyle(color: Colors.white))),
         TextButton(
             onPressed: () async {
-              viewModel.uploadVideo().then((submissionId) => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => DrillEvaluation(
-                            drillSubmissionId: submissionId,
-                          ))));
+              viewModel
+                  .uploadVideo()
+                  .then((submissionId) => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DrillEvaluation(
+                                drillSubmissionId: submissionId,
+                              ))));
             },
-            child: const Text("CONFIRM", style: TextStyle(color: Colors.grey)))
+            child: const Text("CONFIRM", style: TextStyle(color: Colors.white)))
       ],
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25)),
+          borderRadius: BorderRadius.all(Radius.circular(15)),
           side: BorderSide(color: Colors.green, width: 2)),
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromRGBO(23, 23, 23, 1.0),
       title: const Center(
           child: Text(
         "Confirm Submission?",
         textAlign: TextAlign.center,
       )),
-      titleTextStyle: const TextStyle(color: Colors.grey, fontSize: 30),
-      content: Scaffold(
-          body: Center(
-              child: FutureBuilder(
-            future: _previewInitialisationFuture,
-            builder: (context, snapshot) => snapshot.connectionState ==
-                    ConnectionState.done
-                ? Center(
-                    child: Stack(alignment: Alignment.bottomCenter, children: [
-                    VideoPlayer(viewModel.videoController),
-                    VideoProgressIndicator(
-                      viewModel.videoController,
-                      allowScrubbing: true,
-                      colors:
-                          const VideoProgressColors(playedColor: Colors.green),
-                    )
-                  ]))
-                : const Center(child: CircularProgressIndicator()),
-          )),
-          floatingActionButton: const VideoPlayerButton()),
+      titleTextStyle: const TextStyle(color: Colors.white, fontSize: 30),
+      content: Column(mainAxisSize: MainAxisSize.min, children: [
+        Center(
+            child: FutureBuilder(
+          future: _previewInitialisationFuture,
+          builder: (context, snapshot) => snapshot.connectionState ==
+                  ConnectionState.done
+              ? Center(
+                  child: AspectRatio(
+                      aspectRatio:
+                          1 / viewModel.cameraController.value.aspectRatio,
+                      child:
+                          Stack(alignment: Alignment.bottomCenter, children: [
+                        VideoPlayer(viewModel.videoController),
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: VideoPlayerButton(),
+                        ),
+                        VideoProgressIndicator(
+                          viewModel.videoController,
+                          allowScrubbing: true,
+                          colors: const VideoProgressColors(
+                              playedColor: Colors.green),
+                        )
+                      ])),
+                )
+              : const Center(child: CircularProgressIndicator()),
+        ))
+      ]),
     );
   }
 }
