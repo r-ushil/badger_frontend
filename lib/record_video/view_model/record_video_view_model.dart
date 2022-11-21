@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:badger_frontend/api_models/drill_submission_model.dart';
 import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
@@ -13,6 +14,7 @@ class RecordVideoViewModel with ChangeNotifier {
   late File _videoFile;
   late VideoPlayerController _videoController;
   String drillId = "";
+  final userId = FirebaseAuth.instance.currentUser!.uid;
 
   CameraController get cameraController => _controller;
   get isRecording => _isRecording;
@@ -46,7 +48,7 @@ class RecordVideoViewModel with ChangeNotifier {
     await ref.putFile(_videoFile).whenComplete(() => null);
 
     return await DrillSubmissionModel.submitDrill(
-        "todo: auth", drillId, videoObjName);
+        userId, drillId, videoObjName);
   }
 
   void setVideoPlayerController(VideoPlayerController controller) {

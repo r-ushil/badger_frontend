@@ -6,8 +6,11 @@ class PersonData {
   String userId;
   int userScore;
   String firebaseId;
+  int userPowerScore;
+  int userTimingScore;
+  int userAgilityScore;
 
-  PersonData(this.userId, this.userScore, this.firebaseId);
+  PersonData(this.userId, this.userScore, this.firebaseId, this.userPowerScore, this.userTimingScore, this.userAgilityScore);
 }
 
 class PersonModel {
@@ -15,18 +18,17 @@ class PersonModel {
       ApiClientChannel.getClientChannel(),
       options: CallOptions(timeout: const Duration(minutes: 1)));
 
-  Future<PersonData> getPersonData(String userId) async {
+  static Future<PersonData> getPersonData(String userId) async {
     final req = GetPersonRequest(personId: userId);
-    PersonData person = PersonData("dummy", 0, "dummy");
     try {
       final res = await personServiceClient.getPerson(req);
-      person = PersonData(
-          res.person.userId, res.person.userScore, res.person.firebaseId);
+      final person = PersonData(
+          res.person.userId, res.person.userScore, res.person.firebaseId, res.person.userPowerScore, res.person.userTimingScore, res.person.userAgilityScore);
+      return person;
     } catch (e) {
       rethrow;
       //TODO: error handling
     }
-    return person;
   }
 
   static Future<List<PersonData>> getPeopleData() async {
@@ -36,7 +38,7 @@ class PersonModel {
       final res = await personServiceClient.getPeople(req);
       people = res.people
           .map((person) =>
-              PersonData(person.userId, person.userScore, person.firebaseId))
+              PersonData(person.userId, person.userScore, person.firebaseId, person.userPowerScore, person.userTimingScore, person.userAgilityScore))
           .toList();
     } catch (e) {
       rethrow;
