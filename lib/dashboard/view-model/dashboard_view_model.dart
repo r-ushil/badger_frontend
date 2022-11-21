@@ -1,4 +1,9 @@
+import 'package:badger_frontend/api_models/person_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+final userId = FirebaseAuth.instance.currentUser!.uid;
+final user = PersonModel.getPersonData(userId);
 
 class MetricData {
   MetricData(this.name, this.score, this.icon, this.color);
@@ -13,12 +18,12 @@ class DashboardViewModel {
   DashboardViewModel();
 
   static final List<MetricData> metrics = [
+    MetricData("Power", getPowerScore(), Icons.local_fire_department,
+        const Color(0xffff7d03)),
     MetricData(
-        "Power", 15, Icons.local_fire_department, const Color(0xffff7d03)),
-    MetricData("Timing", 25, Icons.timer, const Color(0xffa05dc7)),
-    MetricData("Reaction Time", 15, Icons.flash_on, const Color(0xff83da16)),
-    MetricData("Agility", 25, Icons.directions_run, const Color(0xff00d9dd)),
-    MetricData("Hand Speed", 20, Icons.speed, const Color(0xfff70403))
+        "Timing", getTimingScore(), Icons.timer, const Color(0xffa05dc7)),
+    MetricData("Agility", getAgilityScore(), Icons.directions_run,
+        const Color(0xff00d9dd)),
   ];
 
   MetricData? getMetric(String name) {
@@ -31,12 +36,23 @@ class DashboardViewModel {
   }
 
   int getTotalScore() {
-    // TODO: replace with api call handling
-    return 65;
+    return user.totalScore;
   }
 
   getProfilePicture() {
     // TODO: replace with api call handling
     return Image.asset("images/profilepic.png", height: 170, width: 170);
+  }
+
+  int getPowerScore() {
+    return user.powerScore;
+  }
+
+  int getTimingScore() {
+    return user.timingScore;
+  }
+
+  int getAgilityScore() {
+    return user.agilityScore;
   }
 }
