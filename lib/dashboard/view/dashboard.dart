@@ -1,10 +1,11 @@
 import 'package:badger_frontend/common/auth/auth_model.dart';
+import 'package:badger_frontend/dashboard/view-model/dashboard_view_model.dart';
 import 'package:badger_frontend/dashboard/view/widgets/metric_chart.dart';
 import 'package:badger_frontend/dashboard/view/widgets/progress_bars.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../drill_list/view/drill_list.dart';
+import 'package:badger_frontend/drill_list/view/drill_list.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -14,12 +15,18 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  final Future<List<MetricData>> _metricData = DashboardViewModel.getMetrics();
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<BadgerAuth>(context);
 
     return Scaffold(
-      body: Column(
+      body: FutureBuilder<List<MetricData>>(
+          future: _metricData,
+          builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Row(
@@ -54,10 +61,10 @@ class _DashboardState extends State<Dashboard> {
                         child: const Text("History"))),
               ],
             ),
-            const MetricChart(),
+            const MetricChart(metricData: snapshot.data!),
             const Padding(
                 padding: EdgeInsets.only(left: 40.0),
-                child: MetricProgressBars()),
+                child: MetricProgressBars(metricData: snapshot.data!)),
           ]),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add_circle, size: 60),
@@ -89,7 +96,16 @@ class _DashboardState extends State<Dashboard> {
                       await auth.logout();
                     },
                     icon: const Icon(Icons.settings, color: Colors.white)),
-              ])),
-    );
+          ])),
+          
+      } else {
+            const <Widget>[
+              SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(color: Colors.white)),
+            ];
+          }
+        }));
   }
 }

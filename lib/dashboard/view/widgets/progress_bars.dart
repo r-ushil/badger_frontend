@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class MetricProgressBars extends StatelessWidget {
-  const MetricProgressBars({Key? key}) : super(key: key);
+  final List<MetricData>? metricData;
+  
+  const MetricProgressBars({Key? key, required this.metricData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final metricData = DashboardViewModel.metrics;
 
     return Column(
       children: [
-        for (var metric in metricData)
+        for (var metric in metricData!)
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: ProgressBarWithText(

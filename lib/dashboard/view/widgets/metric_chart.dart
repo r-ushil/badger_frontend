@@ -4,12 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MetricChart extends StatelessWidget {
-  const MetricChart({Key? key}) : super(key: key);
+  final List<MetricData>? metricData;
+
+  const MetricChart({Key? key, required this.metricData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final dashboardViewModel = Provider.of<DashboardViewModel>(context);
-    final metricData = DashboardViewModel.metrics;
+    
     final profpic = dashboardViewModel.getProfilePicture();
 
     return SfCircularChart(series: <CircularSeries>[
