@@ -7,7 +7,7 @@ class MetricProgressBars extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final metricData = DashboardViewModel.metrics;
+    final metricData = DashboardViewModel.dummyMetrics;
 
     return Column(
       children: [
