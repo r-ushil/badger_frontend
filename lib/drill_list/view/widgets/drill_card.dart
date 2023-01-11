@@ -11,6 +11,7 @@ import 'package:video_player/video_player.dart';
 
 import '../../../api_models/drill_submission_model.dart';
 import '../../../dashboard/view/dashboard.dart';
+import '../../../drill_evaluation/view/drill_evaluation.dart';
 import '../../../record_video/view/record_video_view.dart';
 import 'metric_card.dart';
 
@@ -238,9 +239,15 @@ class _PlayVideoState extends State<PlayVideo> {
                 backgroundColor: Colors.blue,
               ),
               onPressed: () {
-                uploadVideo();
+                uploadVideo()
+                .then((submissionId) => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DrillEvaluation(
+                                drillSubmissionId: submissionId,
+                              ))));
               },
-              
+
               child: const Text('Submit'),
             ),
             ElevatedButton(
