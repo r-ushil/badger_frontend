@@ -30,7 +30,7 @@ class MetricProgressBars extends StatelessWidget {
 class ProgressBarWithText extends StatelessWidget {
   final String metricName;
   final Icon icon;
-  final int value;
+  final double value;
   final Color color;
   final double width;
 

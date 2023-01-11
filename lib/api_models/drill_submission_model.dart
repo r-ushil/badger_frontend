@@ -17,6 +17,13 @@ class DrillSubmissionData {
       this.processingStatus, this.drillScore);
 }
 
+class UserScoreData {
+  final double coverDriveScore;
+  final double katchetBoardScore;
+
+  UserScoreData(this.coverDriveScore, this.katchetBoardScore);
+}
+
 class DrillSubmissionModel {
   static DateTime convertFromGoogleDateTime(
       google_date_time.DateTime dateTime) {
@@ -133,5 +140,18 @@ class DrillSubmissionModel {
       //TODO: error handling
     }
     return drillSubmission;
+  }
+
+  static Future<UserScoreData> getUserScoreData(String userId) async {
+    final req = GetUserScoresRequest(userId: userId);
+    try {
+      final res = await drillSubmissionServiceClient.getUserScores(req);
+      final userScores =
+          UserScoreData(res.coverDriveScore, res.katchetBoardScore);
+      return userScores;
+    } catch (e) {
+      rethrow;
+      //TODO: error handling
+    }
   }
 }

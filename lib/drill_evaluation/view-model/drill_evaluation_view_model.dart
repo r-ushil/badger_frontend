@@ -6,7 +6,7 @@ class DrillEvaluationViewModel {
   DrillEvaluationViewModel();
 
   List<MetricData> getMetrics() {
-    // TODO: replace with api call handling
+    // TODO: return same as dashboard
     return [
       MetricData(
           "Power", 15, Icons.local_fire_department, const Color(0xffff7d03)),
@@ -19,7 +19,7 @@ class DrillEvaluationViewModel {
   }
 
   Icon chooseArrow(MetricData metric) {
-    int yourAvg = 20; // TODO
+    double yourAvg = 20; // TODO
     bool isImproved = metric.score >= yourAvg;
 
     if (isImproved) {
@@ -29,8 +29,8 @@ class DrillEvaluationViewModel {
   }
 
   Text getImprovement(MetricData metric) {
-    int yourAvg = 20; // TODO
-    int improvement = metric.score - yourAvg;
+    double yourAvg = 20; // TODO
+    double improvement = metric.score - yourAvg;
     String output = "$improvement%";
 
     return Text(output,
