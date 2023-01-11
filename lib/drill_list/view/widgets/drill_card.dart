@@ -1,7 +1,16 @@
+import 'dart:io';
+
 import 'package:badger_frontend/drill_list/view-model/drill_list_view_model.dart';
 import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
+import 'package:video_player/video_player.dart';
 
+import '../../../api_models/drill_submission_model.dart';
+import '../../../dashboard/view/dashboard.dart';
 import '../../../record_video/view/record_video_view.dart';
 import 'metric_card.dart';
 
@@ -13,14 +22,15 @@ class DrillCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () async {
-          await availableCameras().then((cameras) async {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => RecordVideo(
-                        camera: cameras[0], drillId: drill.drillId)));
-          });
+        onTap: () {
+          // await availableCameras().then((cameras) async {
+          //   Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) => RecordVideo(
+          //               camera: cameras[0], drillId: drill.drillId)));
+          // });
+          showVideoSourceDialog(context, drill.drillId);
         },
         child: Material(
             color: const Color(0xff262627),
@@ -107,5 +117,142 @@ class DrillCard extends StatelessWidget {
                             )))),
               ],
             )));
+  }
+}
+
+showVideoSourceDialog(BuildContext context, String drillId) {
+  ImagePicker videoPicker = ImagePicker();
+  File? videoFile;
+
+  // set up the buttons
+  Widget cameraButton = TextButton(
+    child: const Text("Camera", style: TextStyle(color: Colors.blue)),
+    onPressed: () async {
+      final source = await videoPicker.getVideo(source: ImageSource.camera);
+      videoFile = File(source!.path);
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PlayVideo(
+                data: videoFile!,
+                drillId: drillId,
+              )));
+    },
+  );
+  Widget galleryButton = TextButton(
+    child: const Text("Gallery", style: TextStyle(color: Colors.blue)),
+    onPressed: () async {
+      final source = await videoPicker.getVideo(source: ImageSource.gallery);
+      videoFile = File(source!.path);
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => PlayVideo(
+                data: videoFile!,
+                drillId: '',
+              )));
+    },
+  );
+  Widget backButton = TextButton(
+    child: const Text("Back", style: TextStyle(color: Colors.blue)),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("Select Video Source"),
+    content: const Text("Please select a video source for your chosen drill."),
+    actions: [
+      cameraButton,
+      galleryButton,
+      backButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+class PlayVideo extends StatefulWidget {
+  final File data;
+  final userId = FirebaseAuth.instance.currentUser!.uid;
+  final String drillId;
+
+  PlayVideo({Key? key, required this.data, required this.drillId})
+      : super(key: key);
+  @override
+  State<PlayVideo> createState() => _PlayVideoState();
+}
+
+class _PlayVideoState extends State<PlayVideo> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.file(widget.data)
+      ..initialize().then((_) {
+        _controller.play();
+        setState(() {});
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<String> uploadVideo() async {
+    final String videoUuid = const Uuid().v4();
+    final String videoObjName = "videos/$videoUuid.mp4";
+
+    Reference ref = FirebaseStorage.instance.ref().child(videoObjName);
+    await ref.putFile(widget.data).whenComplete(() => null);
+
+    return await DrillSubmissionModel.submitDrill(
+        widget.userId, widget.drillId, videoObjName);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            _controller.value.isInitialized
+                ? AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  )
+                : const CircularProgressIndicator(),
+            // row of elevated buttons
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              onPressed: () {
+                uploadVideo();
+              },
+              
+              child: const Text('Submit'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+          ]),
+    ));
   }
 }

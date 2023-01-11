@@ -53,6 +53,7 @@ dependencies:
   grpc: ^3.1.0
   protobuf: ^2.1.0
   uuid: ^3.0.6
+  image_picker: ^0.7.5+1
 
   firebase_core: ^2.2.0
   firebase_auth: ^4.1.2
