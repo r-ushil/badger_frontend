@@ -27,7 +27,7 @@ class MetricProgressBars extends StatelessWidget {
                   ),
                 ),
             ],
-      );
+          );
         }
         return Center(
           child: Column(
@@ -41,7 +41,6 @@ class MetricProgressBars extends StatelessWidget {
         );
       },
     );
-    
   }
 }
 
@@ -91,7 +90,7 @@ class ProgressBarWithText extends StatelessWidget {
             child: SelectionArea(
                 child: Text(
               // name
-              metricName,
+              '$metricName: $value',
               style: TextStyle(
                 fontSize: 14,
                 color: color,
