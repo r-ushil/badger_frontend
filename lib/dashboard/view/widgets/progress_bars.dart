@@ -7,23 +7,41 @@ class MetricProgressBars extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final metricData = DashboardViewModel.dummyMetrics;
+    final metrics = DashboardViewModel.getMetrics();
 
-    return Column(
-      children: [
-        for (var metric in metricData)
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: ProgressBarWithText(
-              metricName: metric.name,
-              icon: Icon(metric.icon, color: metric.color),
-              value: metric.score,
-              color: metric.color,
-              width: MediaQuery.of(context).size.width * 0.38,
-            ),
+    return FutureBuilder<List<MetricData>>(
+      future: metrics,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Column(
+            children: [
+              for (var metric in snapshot.data!)
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: ProgressBarWithText(
+                    metricName: metric.name,
+                    icon: Icon(metric.icon, color: metric.color),
+                    value: metric.score,
+                    color: metric.color,
+                    width: MediaQuery.of(context).size.width * 0.38,
+                  ),
+                ),
+            ],
+      );
+        }
+        return Center(
+          child: Column(
+            children: const <Widget>[
+              SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(color: Colors.white)),
+            ],
           ),
-      ],
+        );
+      },
     );
+    
   }
 }
 

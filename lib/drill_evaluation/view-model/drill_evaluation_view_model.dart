@@ -9,8 +9,8 @@ class DrillEvaluationViewModel {
     // TODO: replace with api call handling
     return [
       MetricData(
-          "Power", 15, Icons.local_fire_department, const Color(0xffff7d03)),
-      MetricData("Timing", 25, Icons.timer, const Color(0xffa05dc7)),
+          "Batting", 15, 30, Icons.local_fire_department, const Color(0xffff7d03)),
+      MetricData("Fielding", 25, 30, Icons.timer, const Color(0xffa05dc7)),
     ];
   }
 

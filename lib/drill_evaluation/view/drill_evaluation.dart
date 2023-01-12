@@ -71,19 +71,10 @@ class _DrillEvaluationState extends State<DrillEvaluation> {
                               )))
                     ],
                   ),
-                  // HERE
                   const SizedBox(
                     height: 20,
                   ),
-                  Container(
-                      width: 300,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.white12,
-                        border: Border.all(color: Colors.green, width: 1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const ResultBars()),
+                 
                   const SizedBox(
                     height: 25,
                   ),
@@ -92,12 +83,18 @@ class _DrillEvaluationState extends State<DrillEvaluation> {
                     style: TextStyle(fontSize: 20),
                     textAlign: TextAlign.center,
                   ),
+                  const SizedBox(
+                    height: 30,
+                  ),
                   SizedBox(
                     width: 250,
                     child: Column(
                       children: [
                         Text("• $advice1",
                             style: const TextStyle(fontSize: 20)),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Text("• $advice2",
                             style: const TextStyle(fontSize: 20)),
                       ],
@@ -106,14 +103,12 @@ class _DrillEvaluationState extends State<DrillEvaluation> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const ResultTile(isImproved: true), // TODO
                   const SizedBox(
-                    height: 20,
+                    height: 200,
                   ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        SmallButton("Retry", true, retry),
                         SmallButton("Drill selection", false, gotoDrillList)
                       ])
                 ],
@@ -133,14 +128,7 @@ class _DrillEvaluationState extends State<DrillEvaluation> {
                             icon: const Icon(Icons.home, color: Colors.white)),
                         IconButton(
                             onPressed: () {},
-                            icon: const Icon(Icons.star, color: Colors.white)),
-                        IconButton(
-                            onPressed: () {},
-                            icon:
-                                const Icon(Icons.people, color: Colors.white)),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.settings,
+                            icon: const Icon(Icons.logout,
                                 color: Colors.white)),
                       ])),
             );
@@ -151,10 +139,6 @@ class _DrillEvaluationState extends State<DrillEvaluation> {
             ));
           }
         });
-  }
-
-  Future<void> retry() async {
-    //TODO: navigate to record video screen
   }
 
   void gotoDrillList() {

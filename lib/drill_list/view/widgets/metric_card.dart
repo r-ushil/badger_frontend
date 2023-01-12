@@ -10,21 +10,19 @@ class MetricCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var dashboardViewModel = Provider.of<DashboardViewModel>(context);
-    var metric = dashboardViewModel.getMetric(metricName)!;
 
     return Container(
       //width: 80,
       height: 25,
       padding: const EdgeInsets.only(left: 2.0, right: 5.0),
       decoration: BoxDecoration(
-          color: metric.color,
+          color: getMetricColour(metricName),
           borderRadius: const BorderRadius.all(Radius.circular(10))),
       child: Column(
         children: [
           Row(
             children: [
-              Icon(metric.icon, color: Colors.white),
+              Icon(getMetricIcon(metricName), color: Colors.white),
               Text(
                 metricName,
                 style: const TextStyle(fontSize: 12, color: Colors.white),
@@ -35,5 +33,28 @@ class MetricCard extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+getMetricIcon(String metricName) {
+  switch (metricName) {
+    case "Batting":
+      return Icons.sports_cricket;
+    case "Fielding":
+      return Icons.sports_handball;
+    case "Bowling":
+      return Icons.speed;
+  }
+}
+
+getMetricColour(String metricName) {
+  switch (metricName) {
+    case "Batting":
+      return const Color(0xffff7d03);
+    case "Fielding":
+      return const Color(0xffa05dc7);
+    case "Bowling":
+      return const Color(0xff00d9dd);
+
   }
 }

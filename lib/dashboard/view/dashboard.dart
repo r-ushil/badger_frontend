@@ -51,7 +51,7 @@ class _DashboardState extends State<Dashboard> {
                                     bottomRight: Radius.circular(10))),
                             backgroundColor: Colors.green.withOpacity(0.5),
                             foregroundColor: Colors.white),
-                        child: const Text("History"))),
+                        child: const Text("Leaderboard"))),
               ],
             ),
             const MetricChart(),
@@ -79,16 +79,10 @@ class _DashboardState extends State<Dashboard> {
                     onPressed: () {},
                     icon: const Icon(Icons.home, color: Colors.white)),
                 IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.star, color: Colors.white)),
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.people, color: Colors.white)),
-                IconButton(
                     onPressed: () async {
                       await auth.logout();
                     },
-                    icon: const Icon(Icons.settings, color: Colors.white)),
+                    icon: const Icon(Icons.logout, color: Colors.white)),
               ])),
     );
   }

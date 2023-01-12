@@ -1,6 +1,5 @@
 import 'package:badger_frontend/dashboard/view-model/dashboard_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class MetricChart extends StatefulWidget {
@@ -13,12 +12,11 @@ class MetricChart extends StatefulWidget {
 class _MetricChart extends State<MetricChart> {
   @override
   Widget build(BuildContext context) {
-    final dashboardViewModel = Provider.of<DashboardViewModel>(context);
-    final metricData = DashboardViewModel.getMetrics();
-    final profpic = dashboardViewModel.getProfilePicture();
+    final metrics = DashboardViewModel.getMetrics();
+
 
     return FutureBuilder<List<MetricData>>(
-        future: metricData,
+        future: metrics,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return SfCircularChart(series: <CircularSeries>[
@@ -41,20 +39,28 @@ class _MetricChart extends State<MetricChart> {
                   animationDuration: 1000)
             ], annotations: <CircularChartAnnotation>[
               CircularChartAnnotation(
-                widget: profpic,
+                widget: Text(getTotalSubmissions(snapshot.data!).toString()),
               )
             ]);
           }
           return Center(
             child: Column(
               children: const <Widget>[
-              SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: CircularProgressIndicator(color: Colors.white)),
+                SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: CircularProgressIndicator(color: Colors.white)),
               ],
             ),
           );
         });
   }
+}
+
+getTotalSubmissions(List<MetricData> metrics) {
+  int total = 0;
+  for (final metric in metrics) {
+    total += metric.submissions;
+  }
+  return total;
 }
