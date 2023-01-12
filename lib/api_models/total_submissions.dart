@@ -27,7 +27,6 @@ class SubmissionStatsModel {
 
   static Future<SubmissionStatistics> getSubmissionStats() async {
     String jwt = await FirebaseAuth.instance.currentUser!.getIdToken();
-    print("Bearer Token" + jwt + "\n");
 
     final req = GetMyScoreRequest();
     try {

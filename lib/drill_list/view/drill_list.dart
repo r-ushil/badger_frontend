@@ -17,15 +17,15 @@ class _DrillList extends State<DrillList> {
       "Cover Drive", ["Batting"],
       "https://images.pexels.com/photos/3657154/pexels-photo-3657154.jpeg",
       "TODO",
-      "Cover drive is a classic shot in cricket that requires great technique and timing to master. This drill will help you analyse both your balance and timing to ensure you deliver the perfect cover shot! ",
-      7);
+      "Cover drive is a classic shot in cricket that requires great technique and timing to master. This drill  will help you analyse both your balance and timing to ensure you deliver the perfect cover shot!\n\nPlease record in good lighting, and ensure you are recording side on, with the hands visible.",
+      1);
   static DisplayableDrill katchetBoardDisplayableDrill = DisplayableDrill(
       "Katchet Board",
       ["Fielding"],
       "https://cdn.pixabay.com/photo/2014/07/11/22/05/cricket-390557_1280.jpg",
       "TODO",
-      "Lightning fast reaction speed will be needed to score highly in this drill! Do your best to catch a ball that ricochets wildly against a katchet board.",
-      5);
+      "Lightning fast reaction speed will be needed to score highly in this drill! Do your best to catch a ball that ricochets wildly against a katchet board.\n\nPlease record at an angle to ensure both the Katchet board and the person are visible. Try to keep the camera as still as possible.",
+      2);
 
 
   @override
