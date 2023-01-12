@@ -16,7 +16,7 @@ class TopPlayersModel {
   static Future<List<Player>> getTopPlayers(int noPlayers) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
 
-    final req = GetTopPlayersRequest();
+    final req = GetTopPlayersRequest(count: noPlayers);
     try {
       final res = await topPlayersServiceClient.getTopPlayers(req,
           options: CallOptions(metadata: {"authorization": uid}));

@@ -39,7 +39,7 @@ class RootApp extends StatelessWidget {
         Provider<BadgerAuth>(create: (context) => BadgerAuth()),
         // TODO: Ensure we have a proper provider structure
         Provider<BadgerAuthPhoneModel>(
-            create: (context) => BadgerAuthPhoneModel()),
+            create: (context) => BadgerAuthPhoneModel())
       ],
       child:
           const AuthGuard(), // MaterialApp(theme: getThemeData(), routes: const Routes()),

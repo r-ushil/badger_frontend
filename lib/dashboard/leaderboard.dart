@@ -94,13 +94,26 @@ leaderboardList(BuildContext context) {
       future: topPlayers,
       builder: ((context, snapshot) {
         if (snapshot.hasData) {
+
+          // Sort the players by score in reverse order
+          snapshot.data!.sort((a, b) => b.score.compareTo(a.score));
+
           return Center(
               child: Column(
             children: [
+              const SizedBox(
+                  width: 60,
+                  height: 60,
+              ),
+              const Text("Leaderboard", style: TextStyle(color: Colors.white, fontSize: 25)),
+              const SizedBox(
+                  width: 60,
+                  height: 60,
+              ),
               for (var player in snapshot.data!)
                 Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Text('${player.name}: ${player.score}'))
+                    child: Text('${player.name}: ${player.score}', style: const TextStyle(color: Colors.white, fontSize: 20)))
             ],
           ));
         }
