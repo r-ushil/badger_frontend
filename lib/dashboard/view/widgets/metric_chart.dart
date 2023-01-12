@@ -42,10 +42,10 @@ class _MetricChart extends State<MetricChart> {
                 DoughnutSeries<MetricData, String>(
                     dataSource: snapshot.data,
                     xValueMapper: (MetricData data, _) => data.name,
-                    yValueMapper: (MetricData data, _) => data.score,
+                    yValueMapper: (MetricData data, _) => data.submissions,
                     innerRadius: '70%',
                     explode: false,
-                    dataLabelMapper: (MetricData data, _) => "${data.score}",
+                    dataLabelMapper: (MetricData data, _) => "${data.submissions}",
                     pointColorMapper: (MetricData data, _) => data.color,
                     dataLabelSettings: const DataLabelSettings(
                       isVisible: true,

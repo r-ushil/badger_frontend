@@ -25,7 +25,7 @@ class NameModel {
   static setName(String name) async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
 
-    final req = SetMyPublicNameRequest(name);
+    final req = SetMyPublicNameRequest(name: name);
     try {
       await nameServiceClient.setMyPublicName(req,
           options: CallOptions(metadata: {"authorization": uid}));

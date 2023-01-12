@@ -1,6 +1,4 @@
 import 'package:badger_frontend/dashboard/view/dashboard.dart';
-import 'package:badger_frontend/drill_evaluation/view/widgets/result_bars.dart';
-import 'package:badger_frontend/drill_evaluation/view/widgets/result_tile.dart';
 import 'package:badger_frontend/drill_evaluation/view/widgets/small_button.dart';
 import 'package:badger_frontend/drill_list/view/drill_list.dart';
 import 'package:flutter/material.dart';

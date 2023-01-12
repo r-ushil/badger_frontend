@@ -3,6 +3,7 @@ import 'package:badger_frontend/api_models/badger-api/drill_submission/v1/drill_
 import "package:badger_frontend/api_models/badger-api/drill_submission/v1/drill_submission.pb.dart";
 import 'package:badger_frontend/api_models/badger-api/google/type/datetime.pb.dart'
     as google_date_time;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grpc/grpc.dart';
 
 class DrillSubmissionData {
@@ -10,7 +11,7 @@ class DrillSubmissionData {
   final String drillId;
   final String bucketUrl;
   final DateTime timestamp;
-  final String processingStatus; //TODO: necessary?
+  final String processingStatus;
   final int drillScore;
 
   DrillSubmissionData(this.userId, this.drillId, this.bucketUrl, this.timestamp,
@@ -45,16 +46,21 @@ class DrillSubmissionModel {
       options: CallOptions(timeout: const Duration(minutes: 1)));
 
   static Future<String> submitDrill(
-      String userId, String bucketUrl) async {
+      String userId, String drillName, String bucketUrl) async {
+
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    
     final req = InsertDrillSubmissionRequest(
         drillSubmission: DrillSubmission(
             userId: userId,
+            drillId: drillName,
             bucketUrl: bucketUrl,
             timestamp: convertToGoogleDateTime(DateTime.now()),
             processingStatus: "pending",
             drillScore: 0));
     try {
-      var res = await drillSubmissionServiceClient.insertDrillSubmission(req);
+      var res = await drillSubmissionServiceClient.insertDrillSubmission(req, 
+        options: CallOptions(metadata: {"authorization": uid}));
       return res.hexId;
     } catch (e) {
       rethrow;
@@ -70,10 +76,14 @@ class DrillSubmissionModel {
   }
 
   static Future<List<DrillSubmissionData>> getDrillSubmissionsData() async {
+
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
     List<DrillSubmissionData> drills = List.empty(growable: false);
     final req = GetDrillSubmissionsRequest();
     try {
-      final res = await drillSubmissionServiceClient.getDrillSubmissions(req);
+      final res = await drillSubmissionServiceClient.getDrillSubmissions(req,
+        options: CallOptions(metadata: {"authorization": uid}));
       drills = res.drillSubmissions
           .map((drillSubmission) => DrillSubmissionData(
               drillSubmission.userId,
@@ -93,10 +103,11 @@ class DrillSubmissionModel {
   static Future<List<DrillSubmissionData>> getUserDrillSubmissionsData(
       String userId) async {
     List<DrillSubmissionData> drills = List.empty(growable: false);
+    String uid = FirebaseAuth.instance.currentUser!.uid;
     final req = GetUserDrillSubmissionsRequest(userId: userId);
     try {
-      final res =
-          await drillSubmissionServiceClient.getUserDrillSubmissions(req);
+      final res = await drillSubmissionServiceClient.getUserDrillSubmissions(req, 
+        options: CallOptions(metadata: {"authorization": uid}));
       drills = res.drillSubmissions
           .map((drillSubmission) => DrillSubmissionData(
               drillSubmission.userId,
@@ -118,8 +129,11 @@ class DrillSubmissionModel {
     DrillSubmissionData drillSubmission =
         DrillSubmissionData("0", "dummy", "dummy", DateTime(0), "dummy", 0);
     final req = GetDrillSubmissionRequest(drillSubmissionId: submissionId);
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
     try {
-      final res = await drillSubmissionServiceClient.getDrillSubmission(req);
+      final res = await drillSubmissionServiceClient.getDrillSubmission(req, 
+        options: CallOptions(metadata: {"authorization": uid}));
       drillSubmission = DrillSubmissionData(
           res.drillSubmission.userId,
           res.drillSubmission.drillId,

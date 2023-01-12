@@ -1,7 +1,8 @@
-import 'package:badger_frontend/dashboard/view/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../api_models/badger-api/leaderboard/v1/leaderboard.pb.dart';
+import '../api_models/leaderboard_model.dart';
 import '../common/auth/auth_model.dart';
 import '../drill_list/view/drill_list.dart';
 
@@ -13,10 +14,8 @@ class Leaderboard extends StatefulWidget {
 }
 
 class _LeaderboardState extends State<Leaderboard> {
-
   @override
   Widget build(BuildContext context) {
-
     final auth = Provider.of<BadgerAuth>(context);
 
     return Scaffold(
@@ -57,8 +56,7 @@ class _LeaderboardState extends State<Leaderboard> {
                         child: const Text("Leaderboard"))),
               ],
             ),
-            // add list for leaderboard here
-            
+            leaderboardList(context),
           ]),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add_circle, size: 60),
@@ -87,4 +85,34 @@ class _LeaderboardState extends State<Leaderboard> {
               ])),
     );
   }
+}
+
+leaderboardList(BuildContext context) {
+  final topPlayers = TopPlayersModel.getTopPlayers(5);
+
+  return FutureBuilder<List<Player>>(
+      future: topPlayers,
+      builder: ((context, snapshot) {
+        if (snapshot.hasData) {
+          return Center(
+              child: Column(
+            children: [
+              for (var player in snapshot.data!)
+                Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text('${player.name}: ${player.score}'))
+            ],
+          ));
+        }
+        return Center(
+          child: Column(
+            children: const <Widget>[
+              SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: CircularProgressIndicator(color: Colors.white)),
+            ],
+          ),
+        );
+      }));
 }

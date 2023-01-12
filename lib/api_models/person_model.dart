@@ -1,49 +1,55 @@
-import 'package:badger_frontend/api_models/badger-api/person/v1/person_api.pbgrpc.dart';
-import 'package:badger_frontend/api_models/api_client_channel.dart';
-import 'package:grpc/grpc.dart';
+// import 'badger-api/leaderboard/v1/leaderboard_api.pbgrpc.dart';
+// import 'package:badger_frontend/api_models/api_client_channel.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:grpc/grpc.dart';
 
-class PersonData {
-  String userId;
-  int userScore;
-  String firebaseId;
-  int userPowerScore;
-  int userTimingScore;
-  int userAgilityScore;
+// class Person {
+//   String id;
+//   String name;
+//   int score;
 
-  PersonData(this.userId, this.userScore, this.firebaseId, this.userPowerScore, this.userTimingScore, this.userAgilityScore);
-}
+//   Person({required this.id, required this.name, required this.score});
+// }
 
-class PersonModel {
-  static final personServiceClient = PersonServiceClient(
-      ApiClientChannel.getClientChannel(),
-      options: CallOptions(timeout: const Duration(minutes: 1)));
+// class PersonModel {
+//   static final personServiceClient = LeaderboardServiceClient(
+//       ApiClientChannel.getClientChannel(),
+//       options: CallOptions(timeout: const Duration(minutes: 1)));
 
-  static Future<PersonData> getPersonData(String userId) async {
-    final req = GetPersonRequest(personId: userId);
-    try {
-      final res = await personServiceClient.getPerson(req);
-      final person = PersonData(
-          res.person.userId, res.person.userScore, res.person.firebaseId, res.person.userPowerScore, res.person.userTimingScore, res.person.userAgilityScore);
-      return person;
-    } catch (e) {
-      rethrow;
-      //TODO: error handling
-    }
-  }
+//   static Future<Person> getPerson() async {
+//     String uid = FirebaseAuth.instance.currentUser!.uid;
 
-  static Future<List<PersonData>> getPeopleData() async {
-    List<PersonData> people = List.empty(growable: false);
-    final req = GetPeopleRequest();
-    try {
-      final res = await personServiceClient.getPeople(req);
-      people = res.people
-          .map((person) =>
-              PersonData(person.userId, person.userScore, person.firebaseId, person.userPowerScore, person.userTimingScore, person.userAgilityScore))
-          .toList();
-    } catch (e) {
-      rethrow;
-      //TODO: error handling
-    }
-    return people;
-  }
-}
+//     final req = GetPersonRequest();
+//     try {
+//       final res = await personServiceClient.getPerson(req,
+//           options: CallOptions(metadata: {"authorization": uid}));
+//       final person = Person(
+//         id: res.person.id,
+//         name: res.person.name,
+//         score: res.person.score,
+//       );
+//       return person;
+//     } catch (e) {
+//       rethrow;
+//       //TODO: error handling
+//     }
+//   }
+
+//   static Future<List<Person>> getPeopleData() async {
+//     List<Person> people = List.empty(growable: false);
+//     final req = GetPeopleRequest();
+//     try {
+//       final res = await personServiceClient.getPeople(req);
+//       people = res.people
+//           .map((person) => Person(
+//             id: res.person.id,
+//             name: res.person.name,
+//             score: res.person.score))
+//           .toList();
+//     } catch (e) {
+//       rethrow;
+//       //TODO: error handling
+//     }
+//     return people;
+//   }
+// }

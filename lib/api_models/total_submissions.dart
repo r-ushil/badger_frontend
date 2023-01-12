@@ -28,6 +28,10 @@ class SubmissionStatsModel {
   static Future<SubmissionStatistics> getSubmissionStats() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
 
+    print("\n");
+    print("uid: $uid");
+    print("\n");
+
     final req = GetMyScoreRequest();
     try {
       final res = await submissionStatsServiceClient.getMyScore(req,

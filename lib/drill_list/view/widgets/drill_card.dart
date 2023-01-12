@@ -28,7 +28,7 @@ class DrillCard extends StatelessWidget {
           //           builder: (context) => RecordVideo(
           //               camera: cameras[0], drillId: drill.drillId)));
           // });
-          showVideoSourceDialog(context);
+          showVideoSourceDialog(context, drillName: drill.name);
         },
         child: Material(
             color: const Color(0xff262627),
@@ -118,7 +118,7 @@ class DrillCard extends StatelessWidget {
   }
 }
 
-showVideoSourceDialog(BuildContext context) {
+showVideoSourceDialog(BuildContext context, {required String drillName}) {
   ImagePicker videoPicker = ImagePicker();
   File? videoFile;
 
@@ -132,6 +132,7 @@ showVideoSourceDialog(BuildContext context) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => PlayVideo(
                 data: videoFile!,
+                drillName: drillName,
               )));
     },
   );
@@ -144,6 +145,7 @@ showVideoSourceDialog(BuildContext context) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => PlayVideo(
                 data: videoFile!,
+                drillName: drillName,
               )));
     },
   );
@@ -177,9 +179,9 @@ showVideoSourceDialog(BuildContext context) {
 class PlayVideo extends StatefulWidget {
   final File data;
   final userId = FirebaseAuth.instance.currentUser!.uid;
+  final String drillName;
 
-  PlayVideo({Key? key, required this.data})
-      : super(key: key);
+  PlayVideo({Key? key, required this.data, required this.drillName}) : super(key: key);
   @override
   State<PlayVideo> createState() => _PlayVideoState();
 }
@@ -211,7 +213,7 @@ class _PlayVideoState extends State<PlayVideo> {
     await ref.putFile(widget.data).whenComplete(() => null);
 
     return await DrillSubmissionModel.submitDrill(
-        widget.userId, videoObjName);
+        widget.userId, widget.drillName, videoObjName);
   }
 
   @override
@@ -234,14 +236,13 @@ class _PlayVideoState extends State<PlayVideo> {
               ),
               onPressed: () {
                 uploadVideo()
-                .then((submissionId) => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DrillEvaluation(
-                                drillSubmissionId: submissionId,
-                              ))));
+                    .then((submissionId) => Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DrillEvaluation(
+                                  drillSubmissionId: submissionId,
+                                ))));
               },
-
               child: const Text('Submit'),
             ),
             ElevatedButton(

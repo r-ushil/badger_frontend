@@ -1,11 +1,9 @@
-import 'package:badger_frontend/api_models/person_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../api_models/total_submissions.dart';
 
 final userId = FirebaseAuth.instance.currentUser!.uid;
-PersonData? user;
 
 class MetricData {
   MetricData(this.name, this.score, this.submissions, this.icon, this.color);
