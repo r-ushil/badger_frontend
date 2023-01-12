@@ -19,6 +19,10 @@ class BadgerAuthPhoneModel {
   Future<void> signInWithPhoneNumber(String phoneNumber) async {
     if (progress != BadgerAuthPhoneState.waitingForPhoneNumber) return;
 
+    if (phoneNumber[0] == '0') {
+      phoneNumber = '+44${phoneNumber.substring(1)}';
+    }
+
     progress = BadgerAuthPhoneState.waitingForVerification;
 
     await auth.verifyPhoneNumber(
