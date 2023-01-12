@@ -48,7 +48,7 @@ class RecordVideoViewModel with ChangeNotifier {
     await ref.putFile(_videoFile).whenComplete(() => null);
 
     return await DrillSubmissionModel.submitDrill(
-        userId, drillId, videoObjName);
+        userId, videoObjName);
   }
 
   void setVideoPlayerController(VideoPlayerController controller) {
