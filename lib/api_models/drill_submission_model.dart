@@ -45,11 +45,10 @@ class DrillSubmissionModel {
       options: CallOptions(timeout: const Duration(minutes: 1)));
 
   static Future<String> submitDrill(
-      String userId, String drillId, String bucketUrl) async {
+      String userId, String bucketUrl) async {
     final req = InsertDrillSubmissionRequest(
         drillSubmission: DrillSubmission(
             userId: userId,
-            drillId: drillId,
             bucketUrl: bucketUrl,
             timestamp: convertToGoogleDateTime(DateTime.now()),
             processingStatus: "pending",

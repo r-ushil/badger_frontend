@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:badger_frontend/drill_list/view-model/drill_list_view_model.dart';
-import 'package:camera/camera.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +9,7 @@ import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../api_models/drill_submission_model.dart';
-import '../../../dashboard/view/dashboard.dart';
 import '../../../drill_evaluation/view/drill_evaluation.dart';
-import '../../../record_video/view/record_video_view.dart';
 import 'metric_card.dart';
 
 class DrillCard extends StatelessWidget {
@@ -31,7 +28,7 @@ class DrillCard extends StatelessWidget {
           //           builder: (context) => RecordVideo(
           //               camera: cameras[0], drillId: drill.drillId)));
           // });
-          showVideoSourceDialog(context, drill.drillId);
+          showVideoSourceDialog(context);
         },
         child: Material(
             color: const Color(0xff262627),
@@ -121,7 +118,7 @@ class DrillCard extends StatelessWidget {
   }
 }
 
-showVideoSourceDialog(BuildContext context, String drillId) {
+showVideoSourceDialog(BuildContext context) {
   ImagePicker videoPicker = ImagePicker();
   File? videoFile;
 
@@ -135,7 +132,6 @@ showVideoSourceDialog(BuildContext context, String drillId) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => PlayVideo(
                 data: videoFile!,
-                drillId: drillId,
               )));
     },
   );
@@ -148,7 +144,6 @@ showVideoSourceDialog(BuildContext context, String drillId) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => PlayVideo(
                 data: videoFile!,
-                drillId: '',
               )));
     },
   );
@@ -182,9 +177,8 @@ showVideoSourceDialog(BuildContext context, String drillId) {
 class PlayVideo extends StatefulWidget {
   final File data;
   final userId = FirebaseAuth.instance.currentUser!.uid;
-  final String drillId;
 
-  PlayVideo({Key? key, required this.data, required this.drillId})
+  PlayVideo({Key? key, required this.data})
       : super(key: key);
   @override
   State<PlayVideo> createState() => _PlayVideoState();
@@ -217,7 +211,7 @@ class _PlayVideoState extends State<PlayVideo> {
     await ref.putFile(widget.data).whenComplete(() => null);
 
     return await DrillSubmissionModel.submitDrill(
-        widget.userId, widget.drillId, videoObjName);
+        widget.userId, videoObjName);
   }
 
   @override
