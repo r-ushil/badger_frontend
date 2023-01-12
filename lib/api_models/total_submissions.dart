@@ -26,12 +26,12 @@ class SubmissionStatsModel {
       options: CallOptions(timeout: const Duration(minutes: 1)));
 
   static Future<SubmissionStatistics> getSubmissionStats() async {
-    String jwt = await FirebaseAuth.instance.currentUser!.getIdToken();
+    String uid = FirebaseAuth.instance.currentUser!.uid;
 
     final req = GetMyScoreRequest();
     try {
       final res = await submissionStatsServiceClient.getMyScore(req,
-          options: CallOptions(metadata: {"authorization": "Bearer $jwt"}));
+          options: CallOptions(metadata: {"authorization": uid}));
       final stats = SubmissionStatistics(
           battingScore: res.battingScore,
           fieldingScore: res.catchingScore,
